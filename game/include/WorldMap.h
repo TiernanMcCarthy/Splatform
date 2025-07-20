@@ -23,7 +23,11 @@ public:
 
     TerrainTile* GetRandomTile();
 
+    TerrainTile* GetTile(int x, int y);
+
 private:
+
+    sf::Vector2u dimensions;
 
     BoxRenderer* worldMapVisual;
 

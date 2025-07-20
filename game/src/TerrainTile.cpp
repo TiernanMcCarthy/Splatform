@@ -11,6 +11,21 @@
      owner=nullptr;
 }
 
+bool TerrainTile::IsLand()
+{
+    return isLand;
+}
+
+bool TerrainTile::IsSettled()
+{
+     if (owner!=nullptr)
+     {
+         return true;
+     }
+
+     return false;
+ }
+
 
 void TerrainTile::ClearSettlement()
 {

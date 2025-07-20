@@ -21,6 +21,10 @@ public:
 
     Settlement& GetOwner();
 
+    bool IsLand();
+
+    bool IsSettled();
+
 private:
 
     bool isLand;

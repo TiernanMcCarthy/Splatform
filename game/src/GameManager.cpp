@@ -4,10 +4,11 @@
 #include "GameManager.h"
 #include "Engine.h"
 #include "GameObject.h"
-#include "WorldMap.h"
 #include "SettlerManager.h"
+#include "TerrainTile.h"
+#include "WorldMap.h"
 
- GameManager::GameManager()
+GameManager::GameManager()
 {
 
 }
@@ -23,4 +24,8 @@ void GameManager::Start()
 
      //Create Settler Manager
      settlerManager = new SettlerManager(worldMap);
+
+     TerrainTile* temp=worldMap->GetRandomTile();
+
+      std::cout<<temp->IsLand()<<std::endl;
 }

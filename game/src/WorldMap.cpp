@@ -36,7 +36,7 @@ bool WorldMap::LoadMap(std::string path)
             return false;
         }
      worldMapVisual->ApplyImage(mapImage);
-     sf::Vector2u dimensions = worldMapVisual->renderTexture->getSize();
+     dimensions = worldMapVisual->renderTexture->getSize();
 
      gameObject->transform.localScale=sf::Vector2f(dimensions.x,dimensions.y);
      worldMapVisual->UpdateVisualComponents();
@@ -70,6 +70,23 @@ void WorldMap::DrawMap()
 
 }
 
+//Fetches a tile from the worldmap for manipulation or reading
+TerrainTile *WorldMap::GetTile(int x, int y)
+{
+     int size=world.size();
+     int location= x+ y*dimensions.x;
+
+
+     if (x>dimensions.x || x<=0 || location>=size)
+     {
+         std::cout<<"Invalid Coordinate requested"<<std::endl;
+         return nullptr;
+     }
+
+     return world[location];
+}
+
+//Returns random habitable Tile
 TerrainTile* WorldMap::GetRandomTile()
 {
      int remainingTiles=world.size()-populatedTileCount;
@@ -80,9 +97,23 @@ TerrainTile* WorldMap::GetRandomTile()
      }
      //if (remainingTiles>)
      TerrainTile* testTile;
+     int x;
+     int y;
+
      while (true)
      {
+         srand(time(NULL));
+         x = rand()%dimensions.x;
+         y = rand()%dimensions.y;
 
+         testTile=GetTile(x,y);
+         if (testTile!=nullptr)
+         {
+             if (testTile->IsLand())
+             {
+                 return testTile;
+             }
+         }
 
      }
 
