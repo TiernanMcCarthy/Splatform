@@ -12,7 +12,7 @@
 //Game
 #include "SceneCamera.h"
 #include "TestScript.h"
-#include "WorldMap.h"
+#include "GameManager.h"
 
 ObjectSpawnList::ObjectSpawnList()
 {
@@ -48,9 +48,7 @@ void ObjectSpawnList::Execute()
 
      camera->cameraView = camera->renderTarget->getView();
 
-     //Create World Map
-     GameObject *worldObject = new GameObject("WorldMap");
-     WorldMap* worldMap = worldObject->AddBehaviour<WorldMap>();
-     worldMap->LoadMap("assets/map.png");
+     GameObject* manager = new GameObject("Game Manager");
 
+     manager->AddBehaviour<GameManager>();
 }

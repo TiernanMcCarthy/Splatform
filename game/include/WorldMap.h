@@ -5,7 +5,6 @@
 
 #include "Behaviour.h"
 #include "BoxRenderer.h"
-#include "Settlement.h"
 
 class TerrainTile;
 
@@ -20,6 +19,10 @@ public:
 
     bool LoadMap(std::string path);
 
+    void DrawMap();
+
+    TerrainTile* GetRandomTile();
+
 private:
 
     BoxRenderer* worldMapVisual;
@@ -28,5 +31,8 @@ private:
 
     std::vector<TerrainTile*> world;
 
+    unsigned int populatedTileCount=0;
+
+    unsigned int habitableTileCount=0;
 
 };

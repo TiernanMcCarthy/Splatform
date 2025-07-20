@@ -4,7 +4,8 @@
 
 #ifndef GAMEMANAGER_H
 #define GAMEMANAGER_H
-#include "../../engine/include/Behaviour.h"
+#include "Behaviour.h"
+#include "SettlerManager.h"
 
 #endif //GAMEMANAGER_H
 
@@ -20,9 +21,12 @@ public:
 
     ~GameManager() = default;
 
+    void Start() override;
 
 
 
 private:
     WorldMap* worldMap;
+
+    SettlerManager* settlerManager;
 };

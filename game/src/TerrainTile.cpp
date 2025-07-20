@@ -4,9 +4,10 @@
 
 #include "TerrainTile.h"
 
- TerrainTile::TerrainTile(bool land)
+ TerrainTile::TerrainTile(bool land, sf::Color colour)
 {
     isLand=land;
+     originalColour=colour;
      owner=nullptr;
 }
 

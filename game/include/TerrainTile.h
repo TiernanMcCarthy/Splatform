@@ -13,7 +13,7 @@ class TerrainTile
 {
 public:
 
-    TerrainTile(bool isLand);
+    TerrainTile(bool isLand, sf::Color colour);
 
     void SetOwner(Settlement* newOwner);
 
@@ -24,6 +24,10 @@ public:
 private:
 
     bool isLand;
+
+    //Manages whether a tile needs to be drawn again
+    bool isDirty=false;
+
     sf::Color originalColour;
 
     Settlement* owner;

@@ -9,6 +9,7 @@
 #include "TerrainTile.h"
 
 #include <iostream>
+#include <time.h>
 #include <utility>
 
 sf::Color terrainColour=sf::Color(51, 204, 0, 255);
@@ -41,18 +42,53 @@ bool WorldMap::LoadMap(std::string path)
      worldMapVisual->UpdateVisualComponents();
 
      //Create Tilemap
-
+     sf::Color pixelColour;
+     bool validLand=false;
      for (int y=0; y<dimensions.y; y++)
      {
         for (int x=0; x<dimensions.x; x++)
         {
-            world.push_back(new TerrainTile(
-                mapImage.getPixel(sf::Vector2u(x,y))==terrainColour));
+            pixelColour=mapImage.getPixel(sf::Vector2u(x,y));
+            if (pixelColour==terrainColour)
+            {
+                validLand=true;
+                habitableTileCount++;
+            }
+            else
+            {
+                validLand=false;
+            }
+            world.push_back(new TerrainTile(validLand,pixelColour));
         }
 
      }
      return true;
 }
+
+void WorldMap::DrawMap()
+{
+
+}
+
+TerrainTile* WorldMap::GetRandomTile()
+{
+     int remainingTiles=world.size()-populatedTileCount;
+     if (remainingTiles<1)
+     {
+         std::cout<<"No Free Tiles to populate, no tiles can be returned";
+         return nullptr;
+     }
+     //if (remainingTiles>)
+     TerrainTile* testTile;
+     while (true)
+     {
+
+
+     }
+
+     return nullptr;
+}
+
 
 void WorldMap::Update(float deltatime)
 {
