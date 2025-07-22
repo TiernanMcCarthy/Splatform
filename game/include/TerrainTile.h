@@ -3,9 +3,12 @@
 //
 #pragma once
 #include "SFML/Graphics/Color.hpp"
+#include "SFML/System/Vector2.hpp"
 
-//A Settlement can own a tile, they can also reproduce and claim other tiles
+// A Settlement can own a tile, they can also reproduce and claim other tiles
 class Settlement;
+
+class WorldMap;
 
 /// Terrain Tiles are a representation of a pixel of the world map. They should be painted and contain reference to who
 /// owns them
@@ -13,7 +16,7 @@ class TerrainTile
 {
 public:
 
-    TerrainTile(bool isLand, sf::Color colour);
+    TerrainTile(bool isLand, sf::Color colour,WorldMap* worldObject, int index);
 
     void SetOwner(Settlement* newOwner);
 
@@ -21,18 +24,37 @@ public:
 
     Settlement& GetOwner();
 
+    void DrawTile(sf::Color colour);
+
+    void ResetTile();
+
+
+
+    //Getters
+
+
     bool IsLand();
 
     bool IsSettled();
+
+    sf::Color GetColour();
+
+    sf::Vector2u GetPosition();
 
 private:
 
     bool isLand;
 
-    //Manages whether a tile needs to be drawn again
-    bool isDirty=false;
 
     sf::Color originalColour;
 
+    sf::Color currentColour;
+
     Settlement* owner;
+
+    WorldMap* world;
+
+    int index;
+
+    sf::Vector2u position;
 };

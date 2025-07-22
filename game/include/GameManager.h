@@ -23,6 +23,8 @@ public:
 
     void Start() override;
 
+    void Update(float deltaTime) override;
+
 
 
 private:

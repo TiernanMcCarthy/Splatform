@@ -55,6 +55,10 @@ void BoxRenderer::UpdateVisualComponents()
     {
         box.setFillColor(color);
     }
+    else
+    {
+        box.setTexture(renderTexture);
+    }
 }
 
 

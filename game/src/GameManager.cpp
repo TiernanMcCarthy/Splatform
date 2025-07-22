@@ -27,5 +27,33 @@ void GameManager::Start()
 
      TerrainTile* temp=worldMap->GetRandomTile();
 
-      std::cout<<temp->IsLand()<<std::endl;
+     TerrainTile* newTile;
+     temp->DrawTile(sf::Color::Black);
+
+     //Above
+     newTile=worldMap->GetTile(temp->GetPosition() + sf::Vector2u(0, -1));
+     newTile->DrawTile(sf::Color::Yellow);
+
+     //Left
+    newTile=worldMap->GetTile(temp->GetPosition() + sf::Vector2u(-1, 0));
+    newTile->DrawTile(sf::Color::Red);
+     //Right
+    newTile=worldMap->GetTile(temp->GetPosition() + sf::Vector2u(1, 0));
+    newTile->DrawTile(sf::Color::Magenta);
+     //Down
+    newTile=worldMap->GetTile(temp->GetPosition() + sf::Vector2u(0, 1));
+    newTile->DrawTile(sf::Color::Blue);
+
+
+}
+
+void GameManager::Update(float deltaTime)
+{
+    //Simulate the map
+    // Settler Manager Simulate (x number of iterations per frame (game speed)
+
+    //Read and look for player interaction?
+
+    //Draw the Map
+    worldMap->DrawMap();
 }

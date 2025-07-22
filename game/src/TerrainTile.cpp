@@ -3,12 +3,17 @@
 //
 
 #include "TerrainTile.h"
+#include "WorldMap.h"
 
- TerrainTile::TerrainTile(bool land, sf::Color colour)
+ TerrainTile::TerrainTile(bool land, sf::Color colour,WorldMap* worldObject, int ind)
 {
-    isLand=land;
+     isLand=land;
      originalColour=colour;
+     currentColour=colour;
      owner=nullptr;
+     world=worldObject;
+     index=ind;
+     position=worldObject->ConvertIndexToCoordinates(index);
 }
 
 bool TerrainTile::IsLand()
@@ -44,3 +49,28 @@ Settlement& TerrainTile::GetOwner()
 {
     return *owner;
 }
+
+void TerrainTile::DrawTile(sf::Color colour)
+ {
+     currentColour=colour;
+     world->AddDrawCommand(DrawCommand(position,currentColour));
+
+ }
+
+sf::Vector2u TerrainTile::GetPosition()
+ {
+     return position;
+ }
+
+
+void TerrainTile::ResetTile()
+ {
+
+ }
+
+
+sf::Color TerrainTile::GetColour()
+ {
+     return currentColour;
+ }
+

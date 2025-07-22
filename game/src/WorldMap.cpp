@@ -44,6 +44,7 @@ bool WorldMap::LoadMap(std::string path)
      //Create Tilemap
      sf::Color pixelColour;
      bool validLand=false;
+     int index=0;
      for (int y=0; y<dimensions.y; y++)
      {
         for (int x=0; x<dimensions.x; x++)
@@ -58,16 +59,36 @@ bool WorldMap::LoadMap(std::string path)
             {
                 validLand=false;
             }
-            world.push_back(new TerrainTile(validLand,pixelColour));
+            world.push_back(new TerrainTile(validLand,pixelColour,this,index));
+            index++;
         }
 
      }
      return true;
 }
 
+sf::Vector2u WorldMap::ConvertIndexToCoordinates(int index)
+{
+     return sf::Vector2u(index%dimensions.x,index/dimensions.x);
+}
+
+
 void WorldMap::DrawMap()
 {
 
+     //Run through Draw Commands
+
+     for (int i=0; i<drawCommands.size(); i++)
+     {
+         mapImage.setPixel(drawCommands[i].coords,drawCommands[i].colour);
+     }
+
+     if (!worldMapVisual->renderTexture->loadFromImage(mapImage))
+     {
+         std::cout<<"Invalid Map Image, cannot update texture"<<std::endl;
+     }
+
+     drawCommands.clear();
 }
 
 //Fetches a tile from the worldmap for manipulation or reading
@@ -86,6 +107,22 @@ TerrainTile *WorldMap::GetTile(int x, int y)
      return world[location];
 }
 
+//Fetches a tile from the worldmap for manipulation or reading
+TerrainTile *WorldMap::GetTile(sf::Vector2u pos)
+ {
+     int size=world.size();
+     int location= pos.x+ pos.y*dimensions.x;
+
+
+     if (pos.x>dimensions.x || pos.x<=0 || location>=size)
+     {
+         std::cout<<"Invalid Coordinate requested"<<std::endl;
+         return nullptr;
+     }
+
+     return world[location];
+ }
+
 //Returns random habitable Tile
 TerrainTile* WorldMap::GetRandomTile()
 {
@@ -95,23 +132,36 @@ TerrainTile* WorldMap::GetRandomTile()
          std::cout<<"No Free Tiles to populate, no tiles can be returned";
          return nullptr;
      }
-     //if (remainingTiles>)
-     TerrainTile* testTile;
-     int x;
-     int y;
-
-     while (true)
+     //If we have more than 5% active tiles, random sort shouldn't take too long, otherwise, linear search for a tile
+     if (remainingTiles>world.size()*0.05f)
      {
-         srand(time(NULL));
-         x = rand()%dimensions.x;
-         y = rand()%dimensions.y;
-
-         testTile=GetTile(x,y);
-         if (testTile!=nullptr)
+         TerrainTile* testTile;
+         int x;
+         int y;
+         while (true)
          {
-             if (testTile->IsLand())
+             srand(time(NULL));
+             x = rand()%dimensions.x;
+             y = rand()%dimensions.y;
+
+             testTile=GetTile(x,y);
+             if (testTile!=nullptr)
              {
-                 return testTile;
+                 if (testTile->IsLand() && !testTile->IsSettled())
+                 {
+                     return testTile;
+                 }
+             }
+
+         }
+     }
+     else
+     {
+         for (int i=0; i<world.size(); i++)
+         {
+             if (world[i]->IsLand() && !world[i]->IsSettled())
+             {
+                 return world[i];
              }
          }
 
@@ -119,6 +169,12 @@ TerrainTile* WorldMap::GetRandomTile()
 
      return nullptr;
 }
+
+void WorldMap::AddDrawCommand(DrawCommand dc)
+{
+    drawCommands.push_back(dc);
+}
+
 
 
 void WorldMap::Update(float deltatime)
