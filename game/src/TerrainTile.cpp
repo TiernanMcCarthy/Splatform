@@ -39,7 +39,7 @@ void TerrainTile::ClearSettlement()
 
 void TerrainTile::SetOwner(Settlement* newOwner)
 {
-    if (owner!=nullptr)
+    if (newOwner!=nullptr)
     {
         owner=newOwner;
     }

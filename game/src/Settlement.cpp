@@ -4,6 +4,7 @@
 #include "Settlement.h"
 #include "TerrainTile.h"
 #include "WorldMap.h"
+#include "SettlerManager.h"
 
 TerrainTile & Settlement::GetHome()
 {
@@ -29,6 +30,12 @@ TerrainTile & Settlement::GetHome()
     home=nullptr;
 }
 
+void Settlement::Init()
+{
+    home->SetOwner(this);
+}
+
+
 bool CanSettleThisTile(TerrainTile* testTile)
 {
     if (testTile==nullptr)
@@ -49,36 +56,71 @@ bool CanSettleThisTile(TerrainTile* testTile)
     return true;
 }
 
-void Settlement::Reproduce()
+
+
+void Settlement::Reproduce(SettlerManager* manager)
 {
     sf::Vector2u settlementPos= home->GetPosition();
+    Settlement* newSettlement;
 
     //Above
     TerrainTile* testTile= &home->GetLand(settlementPos- sf::Vector2u(0,-1));
-
     if (CanSettleThisTile(testTile))
     {
-
+        newSettlement = new Settlement(testTile,team);
+        manager->PushSettler(newSettlement);
+        reproductionValue=0;
+        return;
     }
+    //Below
+    testTile= &home->GetLand(settlementPos- sf::Vector2u(0,1));
+    if (CanSettleThisTile(testTile))
+    {
+        newSettlement = new Settlement(testTile,team);
+        manager->PushSettler(newSettlement);
+        reproductionValue=0;
+        return;
+    }
+
+    //Left
+    testTile= &home->GetLand(settlementPos- sf::Vector2u(-1,0));
+    if (CanSettleThisTile(testTile))
+    {
+        newSettlement = new Settlement(testTile,team);
+        manager->PushSettler(newSettlement);
+        reproductionValue=0;
+        return;
+    }
+    //Right
+    testTile= &home->GetLand(settlementPos- sf::Vector2u(1,0));
+    if (CanSettleThisTile(testTile))
+    {
+        newSettlement = new Settlement(testTile,team);
+        manager->PushSettler(newSettlement);
+        reproductionValue=0;
+        return;
+    }
+
+
 
     reproductionValue=0;
 }
 
 
-void Settlement::ManageReproduction()
+void Settlement::ManageReproduction(SettlerManager* manager)
 {
     reproductionValue+=team->GetReproductionRate();
 
-    if (reproductionValue>100)
+    if (reproductionValue>1.1f)
     {
-
+        Reproduce(manager);
     }
 }
 
 
-void Settlement::Simulate()
+void Settlement::Simulate(SettlerManager* manager)
 {
-    ManageReproduction();
+    ManageReproduction(manager);
 
 }
 

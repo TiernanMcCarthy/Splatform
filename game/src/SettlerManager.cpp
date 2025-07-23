@@ -3,6 +3,7 @@
 //
 #include "SettlerManager.h"
 #include "Settlement.h"
+#include "TerrainTile.h"
 #include "WorldMap.h"
 
 #include <iostream>
@@ -30,7 +31,7 @@ void SettlerManager::StartGame(int teams)
 
     Settlement* t = new Settlement(temp,testTeam);
 
-    settlements.push_back(t);
+    PushSettler(t);
 
     for (int i=0; i<teams; i++)
     {
@@ -39,12 +40,19 @@ void SettlerManager::StartGame(int teams)
 
 }
 
+void SettlerManager::PushSettler(Settlement *settler)
+{
+    settlements.push_back(settler);
+    settler->Init();
+}
+
+
 void SettlerManager::IterateSettlements()
 {
     //Run through settler list and complete their actions
 
     for (int i=0; i<settlements.size(); i++)
     {
-        settlements[i]->Simulate();
+        settlements[i]->Simulate(this);
     }
 }

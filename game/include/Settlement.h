@@ -11,6 +11,8 @@
 
 class TerrainTile;
 
+class SettlerManager;
+
 struct Team
 {
 private:
@@ -55,13 +57,15 @@ class Settlement
 
     TerrainTile& GetHome();
 
-    void Simulate();
+    void Simulate(SettlerManager* manager);
+
+    void Init();
 
     private:
 
-    void ManageReproduction();
+    void ManageReproduction(SettlerManager* manager);
 
-    void Reproduce();
+    void Reproduce(SettlerManager* manager);
 
     TerrainTile* home;
 

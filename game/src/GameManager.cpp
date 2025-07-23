@@ -29,6 +29,8 @@ void GameManager::Start()
 
      simulationClock=sf::Clock();
 
+     iterationsPerSecond=2;
+
      /*Tile Testing
      TerrainTile* temp=worldMap->GetRandomTile();
 

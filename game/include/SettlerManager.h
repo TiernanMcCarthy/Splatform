@@ -18,6 +18,8 @@ public:
     void StartGame(int teams=2);
 
     void IterateSettlements();
+
+    void PushSettler(Settlement* settler);
 private:
 
     std::vector<Settlement*> settlements;
