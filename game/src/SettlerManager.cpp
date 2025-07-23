@@ -22,6 +22,29 @@ SettlerManager::SettlerManager(WorldMap *map)
 void SettlerManager::StartGame(int teams)
 {
 
-    std::cout<<"Starting game "<<teams<<std::endl;
+    std::cout<<"Starting game with teams: "<<teams<<std::endl;
 
+    Team* testTeam = new Team(1,1,1,sf::Color::Blue);
+
+    TerrainTile* temp=worldMap->GetRandomTile();
+
+    Settlement* t = new Settlement(temp,testTeam);
+
+    settlements.push_back(t);
+
+    for (int i=0; i<teams; i++)
+    {
+
+    }
+
+}
+
+void SettlerManager::IterateSettlements()
+{
+    //Run through settler list and complete their actions
+
+    for (int i=0; i<settlements.size(); i++)
+    {
+        settlements[i]->Simulate();
+    }
 }

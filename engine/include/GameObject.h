@@ -142,6 +142,8 @@ public:
 
 	virtual void Update(float deltaTime);
 
+    virtual void FixedUpdate(float fixedDeltaTime);
+
 	virtual void Render();
 
 	virtual void UpdateTransform();

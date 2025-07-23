@@ -16,6 +16,8 @@ public:
     ~SettlerManager() = default;
 
     void StartGame(int teams=2);
+
+    void IterateSettlements();
 private:
 
     std::vector<Settlement*> settlements;

@@ -31,4 +31,18 @@ private:
     WorldMap* worldMap;
 
     SettlerManager* settlerManager;
+
+    //Clock for managing processing
+    sf::Clock simulationClock;
+
+    //Rate of iterations per second
+    int iterationsPerSecond;
+
+    //last time an update was done (put at end of iteration)
+    float lastIterationTime;
+
+    //When iterations were started, if we go over budget in this second, skip iterations
+    float iterationStart;
+
+    int iterationCount=0;
 };

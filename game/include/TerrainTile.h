@@ -41,6 +41,8 @@ public:
 
     sf::Vector2u GetPosition();
 
+    TerrainTile& GetLand(sf::Vector2u pos);
+
 private:
 
     bool isLand;

@@ -39,10 +39,9 @@ void ObjectSpawnList::Execute()
 
      camera->minBounds = sf::Vector2f(0, 0);
 
-     camera->maxBounds = sf::Vector2f(DISPLAYWIDTH, DISPLAYHEIGHT);
+     camera->maxBounds = sf::Vector2f(DISPLAYWIDTH*1.1f, DISPLAYHEIGHT*1.1f);
      camera->minBounds = sf::Vector2f(0, 0);
 
-     camera->maxBounds = sf::Vector2f(DISPLAYWIDTH, DISPLAYHEIGHT);
 
      camera->renderTarget = &Engine::GEngine->GetRenderWindow();
 

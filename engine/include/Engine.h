@@ -54,7 +54,14 @@ private:
 	//Draw stack that contains all Behaviours that are involved in rendering
 	std::vector<RenderObject*> drawStack;
 
+    //time since previous frame
 	float deltaTime;
+
+    //fixed delta from last physics update to the next
+    float fixedDeltaTime;
+
+    //Fixed timestep of the engine, manages how often the fixed update function happens
+    float fixedTimestep=0.16f;
 
 	void EngineLoop();
 

@@ -62,6 +62,11 @@ sf::Vector2u TerrainTile::GetPosition()
      return position;
  }
 
+TerrainTile& TerrainTile::GetLand(sf::Vector2u pos)
+ {
+     return *world->GetTile(pos);
+ }
+
 
 void TerrainTile::ResetTile()
  {

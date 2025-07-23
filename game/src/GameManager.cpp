@@ -25,6 +25,11 @@ void GameManager::Start()
      //Create Settler Manager
      settlerManager = new SettlerManager(worldMap);
 
+     settlerManager->StartGame();
+
+     simulationClock=sf::Clock();
+
+     /*Tile Testing
      TerrainTile* temp=worldMap->GetRandomTile();
 
      TerrainTile* newTile;
@@ -42,7 +47,7 @@ void GameManager::Start()
     newTile->DrawTile(sf::Color::Magenta);
      //Down
     newTile=worldMap->GetTile(temp->GetPosition() + sf::Vector2u(0, 1));
-    newTile->DrawTile(sf::Color::Blue);
+    newTile->DrawTile(sf::Color::Blue);*/
 
 
 }
@@ -50,7 +55,21 @@ void GameManager::Start()
 void GameManager::Update(float deltaTime)
 {
     //Simulate the map
-    // Settler Manager Simulate (x number of iterations per frame (game speed)
+    // Settler Manager Simulate (x number of iterations per Second)(game speed)
+    if (simulationClock.getElapsedTime().asSeconds() <  1 && iterationCount<iterationsPerSecond)
+    {
+        settlerManager->IterateSettlements();
+        iterationCount++;
+    }
+    else if (simulationClock.getElapsedTime().asSeconds() >= 1) //We've iterated too many times or the clock is finished
+    {
+        if (iterationCount<iterationsPerSecond)
+        {
+            std::cout<<"Experiencing Slowdown at this speed"<<std::endl;
+        }
+        iterationCount=0;
+        simulationClock.restart(); //Reset the clock for next iteration
+    }
 
     //Read and look for player interaction?
 

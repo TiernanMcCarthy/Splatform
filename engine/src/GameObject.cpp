@@ -41,6 +41,11 @@ void GameObject::Update(float deltaTime)
 	}
 }
 
+void GameObject::FixedUpdate(float deltaTime)
+{
+    std::cout<<"Undefined Behaviour, fixed update is not implemented yet" <<std::endl;
+}
+
 void GameObject::Render()
 {
 }

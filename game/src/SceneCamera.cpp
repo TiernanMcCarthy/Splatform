@@ -25,7 +25,7 @@ void SceneCamera::ManageCamera(float deltaTime)
 		zoomLevel *= zoomSpeed;
 	}
 
-	zoomLevel = std::clamp(zoomLevel, 0.1f, 2.0f);
+	zoomLevel = std::clamp(zoomLevel, 0.05f, 2.5f);
 
 	//Get new zoom by comparing new to old
 	float zoomFactor = zoomLevel / oldZoom;
