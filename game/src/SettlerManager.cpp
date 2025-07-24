@@ -6,6 +6,8 @@
 #include "TerrainTile.h"
 #include "WorldMap.h"
 
+#include "GameSettings.h"
+
 #include <iostream>
 
 SettlerManager::SettlerManager(WorldMap *map)
@@ -25,17 +27,14 @@ void SettlerManager::StartGame(int teams)
 
     std::cout<<"Starting game with teams: "<<teams<<std::endl;
 
-    Team* testTeam = new Team(1,1,1,sf::Color::Blue);
-
-    TerrainTile* temp=worldMap->GetRandomTile();
-
-    Settlement* t = new Settlement(temp,testTeam);
-
-    PushSettler(t);
-
     for (int i=0; i<teams; i++)
     {
+        Team* testTeam = new Team(i,1,1,playerColours[i]);
+        TerrainTile* temp=worldMap->GetRandomTile();
 
+        Settlement* t = new Settlement(temp,testTeam);
+
+        PushSettler(t);
     }
 
 }

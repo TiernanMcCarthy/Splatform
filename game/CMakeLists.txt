@@ -12,6 +12,7 @@ add_executable(CellularMap
         include/SettlerManager.h
         src/GameManager.cpp
         src/SettlerManager.cpp
+        include/GameSettings.h
 )
 
 target_link_libraries(CellularMap PRIVATE Engine)
