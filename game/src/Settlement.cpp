@@ -16,6 +16,7 @@ TerrainTile & Settlement::GetHome()
     home=newHome;
     team=newTeam;
 
+
     //Draw Home Tile as team Colour
     if (home!=nullptr)
     {

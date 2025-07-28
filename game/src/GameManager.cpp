@@ -25,7 +25,7 @@ void GameManager::Start()
      //Create Settler Manager
      settlerManager = new SettlerManager(worldMap);
 
-     settlerManager->StartGame(4);
+     settlerManager->StartGame(16);
 
      simulationClock=sf::Clock();
 

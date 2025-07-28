@@ -9,4 +9,6 @@
 
 #endif // GAMESETTINGS_H
 
-inline sf::Color playerColours[]={sf::Color::Blue,sf::Color::Red,sf::Color::Yellow,sf::Color::Cyan};
+inline sf::Color playerColours[]=
+    {sf::Color::Blue,sf::Color::Red,sf::Color::Yellow,sf::Color::Cyan,
+    sf::Color::White,sf::Color::Green,sf::Color::Magenta,sf::Color(86,150,23)};

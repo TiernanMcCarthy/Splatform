@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <time.h>
+#include <bits/stdc++.h>
 #include <utility>
 
 sf::Color terrainColour=sf::Color(51, 204, 0, 255);
@@ -169,6 +170,76 @@ TerrainTile* WorldMap::GetRandomTile()
 
      return nullptr;
 }
+
+int FindHabitableTile(const std::vector<TerrainTile*>& vec, size_t start, size_t end, std::atomic<bool>& found, std::atomic<int>& index, int thread_id)
+ {
+     srand(time(NULL));
+     //int x = rand()%
+     //int y = rand()%dimensions.y
+        TerrainTile* tile=vec[start];
+         while (true)
+         {
+             int i = start + rand()%(end-start);
+             tile=vec[i];
+             if (tile->IsLand() && !tile->IsSettled())
+             {
+                 found.exchange(true);
+                 index.store(i);
+                 return i;
+             }
+         }
+
+
+     return -1;
+ }
+
+TerrainTile *WorldMap::GetRandomTileThreaded()
+{
+     int remainingTiles=world.size()-populatedTileCount;
+     if (remainingTiles<1)
+     {
+         std::cout<<"No Free Tiles to populate, no tiles can be returned";
+         return nullptr;
+     }
+
+     size_t threadCount=4;
+     size_t chunkSize=world.size()/threadCount;
+
+     std::vector<std::thread> threads;
+     std::atomic<bool> found = false;
+     std::atomic<int> index =-1;
+
+     std::vector<size_t> chunkOrder(threadCount);
+     for (size_t i = 0; i < threadCount; ++i) {
+         chunkOrder[i] = i;
+     }
+
+     //Ridiculous C++ Randomness for Shuffle...
+     std::random_device rd;
+     std::mt19937 g(rd());
+
+     std::shuffle(chunkOrder.begin(), chunkOrder.end(),g);
+     for (size_t i = 0; i < threadCount; i++) {
+         size_t t=chunkOrder[i];
+
+         size_t start = t * chunkSize;
+
+         size_t end = (t == threadCount - 1) ? world.size() : (t + 1) * chunkSize;
+
+         threads.emplace_back(FindHabitableTile, std::ref(world), start, end,std::ref(found),std::ref(index), t);
+     }
+
+     for (auto& th : threads)
+         th.join();
+
+     if (index!=-1)
+     {
+         return world[index];
+     }
+
+    return nullptr;
+}
+
 
 void WorldMap::AddDrawCommand(DrawCommand dc)
 {

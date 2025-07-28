@@ -46,6 +46,8 @@ public:
 
     sf::Vector2u ConvertIndexToCoordinates(int index);
 
+    TerrainTile *GetRandomTileThreaded();
+
 private:
 
     sf::Vector2u dimensions;

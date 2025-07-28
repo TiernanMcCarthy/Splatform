@@ -10,6 +10,8 @@
 
 #include <iostream>
 
+
+
 SettlerManager::SettlerManager(WorldMap *map)
 {
     if (map == nullptr)
@@ -27,12 +29,21 @@ void SettlerManager::StartGame(int teams)
 
     std::cout<<"Starting game with teams: "<<teams<<std::endl;
 
+
     for (int i=0; i<teams; i++)
     {
         Team* testTeam = new Team(i,1,1,playerColours[i]);
-        TerrainTile* temp=worldMap->GetRandomTile();
+        TerrainTile* temp=worldMap->GetRandomTileThreaded();
+
+        if (temp == nullptr)
+        {
+            std::cout<<"No terrain tile found at startup"<<std::endl;
+            return;
+        }
 
         Settlement* t = new Settlement(temp,testTeam);
+
+        t->Init();
 
         PushSettler(t);
     }
