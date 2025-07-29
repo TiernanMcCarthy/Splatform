@@ -10,6 +10,8 @@ add_library(Engine SHARED
         include/FunctionSubscriber.h
         src/FunctionSubscriber.cpp
         include/CameraView.h
+        include/Systems/ThreadPool.h
+        src/Systems/Threadpool.cpp
 )
 
 

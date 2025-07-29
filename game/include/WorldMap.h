@@ -48,6 +48,11 @@ public:
 
     TerrainTile *GetRandomTileThreaded();
 
+    int GetHabitableTileCount() const
+    {
+     return habitableTileCount;
+    }
+
 private:
 
     sf::Vector2u dimensions;

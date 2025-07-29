@@ -179,6 +179,10 @@ int FindHabitableTile(const std::vector<TerrainTile*>& vec, size_t start, size_t
         TerrainTile* tile=vec[start];
          while (true)
          {
+             if (found==true)
+             {
+                 return -1;
+             }
              int i = start + rand()%(end-start);
              tile=vec[i];
              if (tile->IsLand() && !tile->IsSettled())

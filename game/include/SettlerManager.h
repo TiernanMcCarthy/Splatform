@@ -7,6 +7,7 @@
 
 class Settlement;
 class WorldMap;
+class ThreadPool;
 class SettlerManager
 {
 public:
@@ -23,6 +24,8 @@ public:
 private:
 
     std::vector<Settlement*> settlements;
+
+    ThreadPool* threadPool;
 
     WorldMap* worldMap;
 };

@@ -8,9 +8,16 @@
 
 #include "GameSettings.h"
 
+#include "Systems/ThreadPool.h"
+
+#include <atomic>
 #include <iostream>
 
 
+void EpicFunction(std::atomic<bool>& testBool)
+{
+    testBool.exchange(!testBool);
+}
 
 SettlerManager::SettlerManager(WorldMap *map)
 {
@@ -20,6 +27,17 @@ SettlerManager::SettlerManager(WorldMap *map)
         return;
     }
     worldMap = map;
+
+    threadPool = new ThreadPool(4);
+
+    std::atomic<bool> testBool=false;
+    std::atomic<bool> testBool2=true;
+    std::atomic<bool> testBool3=false;
+    std::atomic<bool> testBool4=true;
+    threadPool->QueueJob([&testBool] {EpicFunction(std::ref(testBool));});
+    threadPool->QueueJob([&testBool2] {EpicFunction(std::ref(testBool2));});
+    threadPool->QueueJob([&testBool3] {EpicFunction(std::ref(testBool3));});
+    threadPool->QueueJob([&testBool4] {EpicFunction(std::ref(testBool4));});
 
 }
 
