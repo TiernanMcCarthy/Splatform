@@ -37,7 +37,9 @@ void ThreadPool::ThreadLoop()
             job=jobs.front();
             jobs.pop();
         }
+        activeJobs++;
         job();
+        activeJobs--;
     }
 }
 
@@ -53,7 +55,7 @@ bool ThreadPool::IsBusy() {
     bool poolbusy;
     {
         std::unique_lock<std::mutex> lock(queueMutex);
-        poolbusy = !jobs.empty();
+        poolbusy = !jobs.empty() || activeJobs>0;
     }
     return poolbusy;
 }
@@ -68,6 +70,16 @@ void ThreadPool::Stop() {
         active_thread.join();
     }
     threads.clear();
+}
+
+int ThreadPool::GetThreadCount()
+{
+    return threads.size();
+}
+
+ThreadPool::~ThreadPool()
+{
+    Stop();
 }
 
 

@@ -4,13 +4,15 @@
 
 #include "WorldMap.h"
 
+#include "../../cmake-build-debug/_deps/sfml-src/extlibs/headers/stb_image/stb_image.h"
 #include "Constants.h"
 #include "GameObject.h"
 #include "TerrainTile.h"
 
+#include <Systems/ThreadPool.h>
+#include <bits/stdc++.h>
 #include <iostream>
 #include <time.h>
-#include <bits/stdc++.h>
 #include <utility>
 
 sf::Color terrainColour=sf::Color(51, 204, 0, 255);
@@ -25,6 +27,8 @@ void WorldMap::Start()
 {
      worldMapVisual= gameObject->AddBehaviour<BoxRenderer>();
      gameObject->transform.localPosition=sf::Vector2f(DISPLAYWIDTH/2,DISPLAYHEIGHT/2);
+
+     threadPool= new ThreadPool(4);
 }
 
 bool WorldMap::LoadMap(std::string path)
@@ -222,6 +226,9 @@ TerrainTile *WorldMap::GetRandomTileThreaded()
      std::random_device rd;
      std::mt19937 g(rd());
 
+     std::vector<TerrainTile*> &tempWorld =world;
+
+
      std::shuffle(chunkOrder.begin(), chunkOrder.end(),g);
      for (size_t i = 0; i < threadCount; i++) {
          size_t t=chunkOrder[i];
@@ -230,7 +237,66 @@ TerrainTile *WorldMap::GetRandomTileThreaded()
 
          size_t end = (t == threadCount - 1) ? world.size() : (t + 1) * chunkSize;
 
-         threads.emplace_back(FindHabitableTile, std::ref(world), start, end,std::ref(found),std::ref(index), t);
+         threadPool->QueueJob([&tempWorld,start, end, &found, &index, t] {FindHabitableTile(std::ref(tempWorld),start,end,std::ref(found),std::ref(index),t);});
+
+         //threads.emplace_back(FindHabitableTile, std::ref(world), start, end,std::ref(found),std::ref(index), t);
+     }
+
+     while (threadPool->IsBusy())
+     {
+         std::cout<<"Waiting for threads to finish"<<std::endl;
+        //Holds Threads
+     }
+
+     if (index!=-1)
+     {
+         return world[index];
+     }
+
+     std::cout<<"No fsaffsafas tiles found";
+    return nullptr;
+}
+
+/*
+TerrainTile *WorldMap::GetRandomTileThreaded()
+ {
+     int remainingTiles=world.size()-populatedTileCount;
+     if (remainingTiles<1)
+     {
+         std::cout<<"No Free Tiles to populate, no tiles can be returned";
+         return nullptr;
+     }
+
+
+     int threadCount=threadPool->GetThreadCount();
+     size_t chunkSize=world.size()/threadCount;
+
+     std::atomic<bool> found = false;
+     std::atomic<int> index =-1;
+
+     std::vector<size_t> chunkOrder(threadCount);
+     for (size_t i = 0; i < threadCount; ++i) {
+         chunkOrder[i] = i;
+     }
+
+     //Ridiculous C++ Randomness for Shuffle...
+     std::random_device rd;
+     std::mt19937 g(rd());
+
+     std::shuffle(chunkOrder.begin(), chunkOrder.end(),g);
+     for (size_t i = 0; i < threadCount; i++) {
+         size_t t=chunkOrder[i];
+
+         size_t start = t * chunkSize;
+
+         size_t end = (t == threadCount - 1) ? world.size() : (t + 1) * chunkSize;
+         threadPool->QueueJob([world,&found] {
+             FindHabitableTile(std::ref(found));
+         });
+
+
+         //threadPool->QueueJob([world,&found] {FindHabitableTile(std::ref(found));});
+         //threads.emplace_back(FindHabitableTile, std::ref(world), start, end,std::ref(found),std::ref(index), t);
      }
 
      for (auto& th : threads)
@@ -241,8 +307,8 @@ TerrainTile *WorldMap::GetRandomTileThreaded()
          return world[index];
      }
 
-    return nullptr;
-}
+     return nullptr;
+ }*/
 
 
 void WorldMap::AddDrawCommand(DrawCommand dc)

@@ -51,6 +51,8 @@ public:
 
     bool IsBusy();
 
+    int GetThreadCount();
+
 private:
 
     void ThreadLoop();
@@ -64,5 +66,7 @@ private:
     std::vector<std::thread> threads;
 
     std::queue<std::function<void()>> jobs;
+
+    unsigned int activeJobs=0;
 
 };

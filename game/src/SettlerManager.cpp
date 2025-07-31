@@ -14,9 +14,10 @@
 #include <iostream>
 
 
-void EpicFunction(std::atomic<bool>& testBool)
+void EpicFunction(std::atomic<bool>& testBool,std::atomic<bool>& testy)
 {
     testBool.exchange(!testBool);
+    testy.exchange(!testy);
 }
 
 SettlerManager::SettlerManager(WorldMap *map)
@@ -34,10 +35,16 @@ SettlerManager::SettlerManager(WorldMap *map)
     std::atomic<bool> testBool2=true;
     std::atomic<bool> testBool3=false;
     std::atomic<bool> testBool4=true;
-    threadPool->QueueJob([&testBool] {EpicFunction(std::ref(testBool));});
-    threadPool->QueueJob([&testBool2] {EpicFunction(std::ref(testBool2));});
-    threadPool->QueueJob([&testBool3] {EpicFunction(std::ref(testBool3));});
-    threadPool->QueueJob([&testBool4] {EpicFunction(std::ref(testBool4));});
+    threadPool->QueueJob([&testBool,&testBool2] {EpicFunction(std::ref(testBool),std::ref(testBool2));});
+    //threadPool->QueueJob([&testBool2] {EpicFunction(std::ref(testBool2));});
+   // threadPool->QueueJob([&testBool3] {EpicFunction(std::ref(testBool3));});
+   // threadPool->QueueJob([&testBool4] {EpicFunction(std::ref(testBool4));});
+
+    int bot=5;
+
+    bot++;
+
+    std::cout<<"bot="<<bot<<std::endl;
 
 }
 

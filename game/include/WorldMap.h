@@ -6,6 +6,8 @@
 #include "Behaviour.h"
 #include "BoxRenderer.h"
 
+class ThreadPool;
+
 class TerrainTile;
 
 
@@ -68,5 +70,7 @@ private:
     unsigned int populatedTileCount=0;
 
     unsigned int habitableTileCount=0;
+
+    ThreadPool* threadPool;
 
 };
