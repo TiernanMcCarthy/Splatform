@@ -4,13 +4,20 @@
 
 #include "WorldMap.h"
 
-#include "../../cmake-build-debug/_deps/sfml-src/extlibs/headers/stb_image/stb_image.h"
+//#include "../../cmake-build-debug/_deps/sfml-src/extlibs/headers/stb_image/stb_image.h"
 #include "Constants.h"
 #include "GameObject.h"
 #include "TerrainTile.h"
 
 #include <Systems/ThreadPool.h>
+#ifdef WIN32
+#include <random>
+#endif
+#ifndef WIN32
 #include <bits/stdc++.h>
+#endif
+
+#include <atomic>
 #include <iostream>
 #include <time.h>
 #include <utility>
@@ -244,7 +251,7 @@ TerrainTile *WorldMap::GetRandomTileThreaded()
 
      while (threadPool->IsBusy())
      {
-         std::cout<<"Waiting for threads to finish"<<std::endl;
+        std::cout<<"Waiting for threads to finish"<<std::endl;
         //Holds Threads
      }
 

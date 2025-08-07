@@ -27,6 +27,12 @@ add_custom_command(TARGET CellularMap POST_BUILD
         ${CMAKE_BINARY_DIR}/engine/libEngine.dll
         $<TARGET_FILE_DIR:CellularMap>
 )
+add_custom_command(TARGET CellularMap POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E echo "Copying lib files from ${PROJECT_SOURCE_DIR}/lib to $<TARGET_FILE_DIR:CellularMap>"
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${PROJECT_SOURCE_DIR}/lib
+        $<TARGET_FILE_DIR:CellularMap>
+)
 endif(WIN32)
 
 add_custom_command(TARGET CellularMap POST_BUILD

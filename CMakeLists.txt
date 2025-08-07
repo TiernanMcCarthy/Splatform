@@ -1,8 +1,9 @@
-﻿cmake_minimum_required(VERSION 3.16)
+﻿cmake_minimum_required(VERSION 3.31)
 project(CellularMap)
 
 set(CMAKE_CXX_STANDARD 17)
 set(BUILD_SHARED_LIBS ON)
+set(SFML_STATIC_LIBRARIES TRUE)
 
 include(FetchContent)
 

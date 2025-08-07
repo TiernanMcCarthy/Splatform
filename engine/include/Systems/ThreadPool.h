@@ -4,6 +4,7 @@
 
 #ifndef THREADPOOL_H
 #define THREADPOOL_H
+#include <atomic>
 #include <condition_variable>
 #include <functional>
 #include <mutex>
@@ -11,7 +12,6 @@
 #include <thread>
 #include <vector>
 
-#endif //THREADPOOL_H
 
 /* Example
 void EpicFunction(std::atomic<bool>& testBool)
@@ -43,7 +43,6 @@ public:
 
     ~ThreadPool();
 
-    void Start();
 
     void QueueJob(const std::function<void()>& job);
 
@@ -57,7 +56,7 @@ private:
 
     void ThreadLoop();
 
-    bool terminateThread; //Manages whether the thread should stop looking for jobs
+    bool terminateThread=false; //Manages whether the thread should stop looking for jobs
 
     std::mutex queueMutex; //Prevents a data race for job queue
 
@@ -67,6 +66,9 @@ private:
 
     std::queue<std::function<void()>> jobs;
 
-    unsigned int activeJobs=0;
+    std::atomic<unsigned int> activeJobs{0};
+    //unsigned int activeJobs=0;
 
 };
+
+#endif // THREADPOOL_H
