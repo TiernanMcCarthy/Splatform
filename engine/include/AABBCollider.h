@@ -1,9 +1,8 @@
 #pragma once
 
-#include "Behaviour.h"
+#include "Objects/Behaviour.h"
 
-
-//Basic AABB box collider, more advanced collision system isn't needed right now
+// Basic AABB box collider, more advanced collision system isn't needed right now
 class AABBCollider : public Behaviour
 {
 private:

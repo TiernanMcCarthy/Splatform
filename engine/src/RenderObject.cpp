@@ -1,7 +1,6 @@
 #include "RenderObject.h"
+#include "../include/Objects/GameObject.h"
 #include "Engine.h"
-#include "GameObject.h"
-
 
 void RenderObject::Render(sf::RenderWindow *target)
 {

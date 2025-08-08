@@ -1,8 +1,6 @@
 #pragma once
-#include "Behaviour.h"
-#include "GameObject.h"
-#include "RenderObject.h"
-#include "SFML/Graphics/Text.hpp"
+
+#include <RenderObject.h>
 
 #include <string>
 #include <vector>
@@ -15,6 +13,8 @@ public:
     void Update(float deltaTime) override;
     void Start() override;
     void Render(sf::RenderWindow *target) override;
+
+    void SetColour(sf::Color colour);
 	 
     TextBox();
     ~TextBox() = default;

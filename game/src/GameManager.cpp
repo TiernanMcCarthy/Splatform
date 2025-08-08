@@ -1,19 +1,30 @@
 //
 // Created by tiernan on 7/20/25.
 //
-#include "GameManager.h"
+
+
+//Engine Includes
+#include "../../engine/include/Objects/GameObject.h"
 #include "Engine.h"
-#include "GameObject.h"
+
+// Game Includes
+#include "GameManager.h"
 #include "SettlerManager.h"
 #include "TerrainTile.h"
 #include "WorldMap.h"
+
+#include <atomic>
+
 
 GameManager::GameManager()
 {
 
 }
 
+void foo()
+{
 
+}
 
 void GameManager::Start()
 {
@@ -29,7 +40,16 @@ void GameManager::Start()
 
      simulationClock=sf::Clock();
 
-     iterationsPerSecond=2;
+     iterationsPerSecond=4;
+
+
+     simulationThread=  new ThreadPool(1);
+
+     simulationThread->QueueJob(
+         [this] {SimulationLoop(std::ref(killSimulationThread),std::ref(iterationsPerSecond), *settlerManager,std::ref(pauseThread));});
+
+   // threadPool->QueueJob([&tempWorld,start, end, &found, &index, t] {FindHabitableTile(std::ref(tempWorld),start,end,std::ref(found),std::ref(index),t);});
+    //SimulationLoop(&killSimulationThread,iterationsPerSecond,*settlerManager));
 
      /*Tile Testing
      TerrainTile* temp=worldMap->GetRandomTile();
@@ -54,27 +74,60 @@ void GameManager::Start()
 
 }
 
+void GameManager::SimulationLoop(const std::atomic<bool> &killThread, const std::atomic<int>& iterationsPerSec, SettlerManager& manager,const std::atomic<bool> &pauseWorld)
+{
+
+    //last time an update was done (put at end of iteration)
+    float lastIterationTime;
+
+    //When iterations were started, if we go over budget in this second, skip iterations
+    float iterationStart;
+
+    int iterationCount=0;
+    while (!killThread)
+    {
+        if (simulationClock.getElapsedTime().asSeconds() <  1 && iterationCount<iterationsPerSecond)
+        {
+            settlerManager->IterateSettlements();
+            iterationCount++;
+        }
+        else if (simulationClock.getElapsedTime().asSeconds() >= 1) //We've iterated too many times or the clock is finished
+        {
+            if (iterationCount<iterationsPerSecond)
+            {
+                std::cout<<"Experiencing Slowdown at this speed"<<std::endl;
+                int newSpeed=iterationsPerSec-1;
+                iterationsPerSecond=newSpeed;
+            }
+            iterationCount=0;
+            simulationClock.restart(); //Reset the clock for next iteration
+        }
+    }
+}
+
+void GameManager::IncreaseIterationSpeed()
+{
+    int iteration=iterationsPerSecond.load()+1;
+    iterationsPerSecond.store(std::clamp(iteration,0,1000));
+}
+
+void GameManager::DecreaseIterationSpeed()
+{
+    int iteration=iterationsPerSecond.load()-1;
+    iterationsPerSecond.store(std::clamp(iteration,0,30));
+}
+
+
 void GameManager::Update(float deltaTime)
 {
-    //Simulate the map
-    // Settler Manager Simulate (x number of iterations per Second)(game speed)
-    if (simulationClock.getElapsedTime().asSeconds() <  1 && iterationCount<iterationsPerSecond)
-    {
-        settlerManager->IterateSettlements();
-        iterationCount++;
-    }
-    else if (simulationClock.getElapsedTime().asSeconds() >= 1) //We've iterated too many times or the clock is finished
-    {
-        if (iterationCount<iterationsPerSecond)
-        {
-            std::cout<<"Experiencing Slowdown at this speed"<<std::endl;
-        }
-        iterationCount=0;
-        simulationClock.restart(); //Reset the clock for next iteration
-    }
-
     //Read and look for player interaction?
 
     //Draw the Map
     worldMap->DrawMap();
 }
+
+int GameManager::GetGameSpeed()
+{
+    return iterationsPerSecond.load();
+}
+

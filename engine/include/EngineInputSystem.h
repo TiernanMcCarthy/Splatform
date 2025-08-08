@@ -1,7 +1,7 @@
 #pragma once
 #include "SFML/System/Vector2.hpp"
 #include "SFML/Window/Event.hpp"
-#include "FunctionSubscriber.h"
+#include "Systems/FunctionSubscriber.h"
 #include <vector>
 
 

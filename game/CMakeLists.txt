@@ -13,6 +13,10 @@ add_executable(CellularMap
         src/GameManager.cpp
         src/SettlerManager.cpp
         include/GameSettings.h
+        include/UI/ScreenspaceButton.h
+        src/UI/ScreenspaceButton.cpp
+        include/UI/GameSpeedUI.h
+        src/UI/GameSpeedUI.cpp
 )
 
 target_link_libraries(CellularMap PRIVATE Engine)
@@ -28,9 +32,9 @@ add_custom_command(TARGET CellularMap POST_BUILD
         $<TARGET_FILE_DIR:CellularMap>
 )
 add_custom_command(TARGET CellularMap POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E echo "Copying lib files from ${PROJECT_SOURCE_DIR}/lib to $<TARGET_FILE_DIR:CellularMap>"
+        COMMAND ${CMAKE_COMMAND} -E echo "Copying bin files from ${PROJECT_SOURCE_DIR}/bin to $<TARGET_FILE_DIR:CellularMap>"
         COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${PROJECT_SOURCE_DIR}/lib
+        ${PROJECT_SOURCE_DIR}/bin
         $<TARGET_FILE_DIR:CellularMap>
 )
 endif(WIN32)

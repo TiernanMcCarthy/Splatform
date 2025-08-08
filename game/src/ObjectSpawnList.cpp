@@ -4,15 +4,17 @@
 
 //Engine
 #include "ObjectSpawnList.h"
-#include "GameObject.h"
+#include "../../engine/include/Objects/GameObject.h"
+#include "BoxRenderer.h"
 #include "Constants.h"
 #include "Engine.h"
-#include "BoxRenderer.h"
 
 //Game
 #include "SceneCamera.h"
 #include "TestScript.h"
 #include "GameManager.h"
+#include <UI/GameSpeedUI.h>
+#include <UI/ScreenspaceButton.h>
 
 ObjectSpawnList::ObjectSpawnList()
 {
@@ -49,5 +51,19 @@ void ObjectSpawnList::Execute()
 
      GameObject* manager = new GameObject("Game Manager");
 
-     manager->AddBehaviour<GameManager>();
+     GameManager* managerBehaviour= manager->AddBehaviour<GameManager>();
+
+
+     //Spawn UI
+    GameObject* timelineUI= new GameObject("TimelineUI");
+
+    GameSpeedUI* gameUI=timelineUI->AddBehaviour<GameSpeedUI>();
+
+    gameUI->Init(managerBehaviour);
+
+
+
+
+
+
 }

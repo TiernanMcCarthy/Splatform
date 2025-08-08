@@ -2,11 +2,18 @@
 // Created by tiernan on 7/9/25.
 //
 
+
+
+//Engine Includes
+#include "../../engine/include/Objects/GameObject.h"
+#include "Constants.h"
+#include <Systems/FastCommonExtensions.h>
+//Game Includes
 #include "WorldMap.h"
 
-//#include "../../cmake-build-debug/_deps/sfml-src/extlibs/headers/stb_image/stb_image.h"
-#include "Constants.h"
-#include "GameObject.h"
+
+
+
 #include "TerrainTile.h"
 
 #include <Systems/ThreadPool.h>
@@ -38,7 +45,7 @@ void WorldMap::Start()
      threadPool= new ThreadPool(4);
 }
 
-bool WorldMap::LoadMap(std::string path)
+bool WorldMap::LoadMap(const std::string &path)
 {
      mapImage= sf::Image();
      //Load image and set cosmetics
@@ -79,7 +86,7 @@ bool WorldMap::LoadMap(std::string path)
      return true;
 }
 
-sf::Vector2u WorldMap::ConvertIndexToCoordinates(int index)
+sf::Vector2u WorldMap::ConvertIndexToCoordinates(int index) const
 {
      return sf::Vector2u(index%dimensions.x,index/dimensions.x);
 }
@@ -88,11 +95,15 @@ sf::Vector2u WorldMap::ConvertIndexToCoordinates(int index)
 void WorldMap::DrawMap()
 {
 
+
      //Run through Draw Commands
 
-     for (int i=0; i<drawCommands.size(); i++)
+     int elementsToDraw=drawCommands.size();
+
+     for (int i=0; i<elementsToDraw; i++)
      {
-         mapImage.setPixel(drawCommands[i].coords,drawCommands[i].colour);
+         mapImage.setPixel(drawCommands[0].coords,drawCommands[0].colour);
+         drawCommands.erase(drawCommands.begin());
      }
 
      if (!worldMapVisual->renderTexture->loadFromImage(mapImage))
@@ -100,7 +111,10 @@ void WorldMap::DrawMap()
          std::cout<<"Invalid Map Image, cannot update texture"<<std::endl;
      }
 
-     drawCommands.clear();
+
+     //Clear out range but not the entire list as the thread might still be running and popping elements in
+     //drawCommands.erase(drawCommands.begin(),drawCommands.begin()+elementsToDraw-1);
+
 }
 
 //Fetches a tile from the worldmap for manipulation or reading
@@ -327,6 +341,18 @@ void WorldMap::AddDrawCommand(DrawCommand dc)
 
 void WorldMap::Update(float deltatime)
 {
+
+     //Debug Draw to show alive tiles
+     if (EngineInputSystem::InputSystem->MouseTwo->wasReleasedThisFrame==true)
+     {
+         for (int i=0; i<world.size(); i++)
+         {
+             if (world[i]->IsSettled())
+             {
+                 world[i]->DrawTile(sf::Color::Black);
+             }
+         }
+     }
 
 }
 

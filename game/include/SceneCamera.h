@@ -1,6 +1,6 @@
 #pragma once
+#include "../../engine/include/Objects/Behaviour.h"
 #include <SFML/Graphics.hpp>
-#include "Behaviour.h"
 
 class SceneCamera : public Behaviour
 {

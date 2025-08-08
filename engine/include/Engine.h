@@ -1,7 +1,7 @@
 #pragma once
 #include "EngineInputSystem.h"
-#include "GameObject.h"
-#include "Object.h"
+#include "Objects/GameObject.h"
+#include "Objects/Object.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Window.hpp"
 #include "StartupSequence.h"

@@ -1,5 +1,5 @@
 #include "BoxRenderer.h"
-#include "GameObject.h"
+#include "../include/Objects/GameObject.h"
 #include <iostream>
 bool BoxRenderer::ApplyImage(std::string path)
 {
@@ -51,6 +51,7 @@ void BoxRenderer::UpdateVisualComponents()
 {
 	box.setSize(gameObject->transform.localScale);
     box.setOrigin(sf::Vector2f(gameObject->transform.localScale.x / 2, gameObject->transform.localScale.y / 2));
+    box.setRotation(sf::degrees(gameObject->transform.localRotation.x));
     if (renderTexture==nullptr)
     {
         box.setFillColor(color);

@@ -1,10 +1,10 @@
 //
 // Created by tiernan on 7/3/25.
 //
-#include "Button.h"
+#include "../../include/UI/Button.h"
 
+#include "../../include/Objects/GameObject.h"
 #include "EngineInputSystem.h"
-#include "GameObject.h"
 
 Button::Button()
 {

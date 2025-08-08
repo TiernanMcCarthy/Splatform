@@ -1,6 +1,5 @@
-#include "Behaviour.h"
-#include "GameObject.h"
-
+#include <Objects/Behaviour.h>
+#include <Objects/GameObject.h>
 
 void Behaviour::OnDestroy()
 {

@@ -3,8 +3,10 @@
 //
 #pragma once
 
-#include "Behaviour.h"
+#include "../../engine/include/Objects/Behaviour.h"
 #include "BoxRenderer.h"
+
+#include <deque>
 
 class ThreadPool;
 
@@ -34,7 +36,7 @@ public:
     void Start() override;
     void Update(float deltatime) override;
 
-    bool LoadMap(std::string path);
+    bool LoadMap(const std::string &path);
 
     void DrawMap();
 
@@ -46,7 +48,7 @@ public:
 
     TerrainTile* GetTile(sf::Vector2u pos);
 
-    sf::Vector2u ConvertIndexToCoordinates(int index);
+    sf::Vector2u ConvertIndexToCoordinates(int index) const;
 
     TerrainTile *GetRandomTileThreaded();
 
@@ -65,7 +67,7 @@ private:
 
     std::vector<TerrainTile*> world;
 
-    std::vector<DrawCommand> drawCommands;
+    std::deque<DrawCommand> drawCommands;
 
     unsigned int populatedTileCount=0;
 

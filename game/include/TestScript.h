@@ -1,8 +1,8 @@
-#pragma once  
-#include "Behaviour.h"
+#pragma once
+#include "../../engine/include/Objects/Behaviour.h"
+#include "../../engine/include/UI/Button.h"
+#include "../../engine/include/UI/TextBox.h"
 #include "BoxRenderer.h"
-#include "Button.h"
-#include "TextBox.h"
 
 #include <iostream>
 

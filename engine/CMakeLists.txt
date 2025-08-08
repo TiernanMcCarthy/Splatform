@@ -6,12 +6,12 @@ add_library(Engine SHARED
         ${ENGINE_HEADERS}
         include/StartupSequence.h
         src/StartupSequence.cpp
-        src/Button.cpp
-        include/FunctionSubscriber.h
-        src/FunctionSubscriber.cpp
-        include/CameraView.h
+        src/UI/Button.cpp
+        include/Systems/FunctionSubscriber.h
+        src/Systems/FunctionSubscriber.cpp
         include/Systems/ThreadPool.h
         src/Systems/Threadpool.cpp
+        include/Systems/FastCommonExtensions.h
 )
 
 

@@ -1,13 +1,13 @@
 #pragma once
-#include <SFML/System.hpp>
-#include <vector>
+#include "../Engine.h"
 #include "Object.h"
-#include <unordered_map>
-#include <memory>
-#include <typeinfo>
-#include <typeindex>
-#include "Engine.h"
+#include <SFML/System.hpp>
 #include <algorithm>
+#include <memory>
+#include <typeindex>
+#include <typeinfo>
+#include <unordered_map>
+#include <vector>
 class Behaviour;
 
 struct Transform

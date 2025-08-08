@@ -4,8 +4,11 @@
 
 #ifndef GAMEMANAGER_H
 #define GAMEMANAGER_H
-#include "Behaviour.h"
+#include "../../engine/include/Objects/Behaviour.h"
 #include "SettlerManager.h"
+#include "Systems/ThreadPool.h"
+
+#include <atomic>
 
 #endif //GAMEMANAGER_H
 
@@ -25,6 +28,13 @@ public:
 
     void Update(float deltaTime) override;
 
+    void IncreaseIterationSpeed();
+
+    void DecreaseIterationSpeed();
+
+
+    int GetGameSpeed();
+
 
 
 private:
@@ -35,14 +45,15 @@ private:
     //Clock for managing processing
     sf::Clock simulationClock;
 
+
     //Rate of iterations per second
-    int iterationsPerSecond;
+    std::atomic<int> iterationsPerSecond{0};
 
-    //last time an update was done (put at end of iteration)
-    float lastIterationTime;
+    std::atomic<bool> killSimulationThread{false};
 
-    //When iterations were started, if we go over budget in this second, skip iterations
-    float iterationStart;
+    std::atomic<bool> pauseThread;
 
-    int iterationCount=0;
+    void SimulationLoop(const std::atomic<bool> &killThread, const std::atomic<int>& iterationsPerSec, SettlerManager& manager, const std::atomic<bool> &pauseThread);
+
+    ThreadPool* simulationThread;
 };

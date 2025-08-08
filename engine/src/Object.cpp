@@ -1,4 +1,4 @@
-#include "Object.h"
+#include "../include/Objects/Object.h"
 
 Object::Object()
 {

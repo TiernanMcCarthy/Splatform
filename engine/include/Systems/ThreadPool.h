@@ -48,6 +48,12 @@ public:
 
     void Stop();
 
+    void Pause();
+
+    void Resume();
+
+    bool isPaused() const;
+
     bool IsBusy();
 
     int GetThreadCount();
@@ -56,17 +62,21 @@ private:
 
     void ThreadLoop();
 
-    bool terminateThread=false; //Manages whether the thread should stop looking for jobs
+    std::atomic<bool> terminateThread{false}; //Manages whether the thread should stop looking for jobs
 
     std::mutex queueMutex; //Prevents a data race for job queue
 
     std::condition_variable mutex_condition;
+
+    std::condition_variable pause_condition;
 
     std::vector<std::thread> threads;
 
     std::queue<std::function<void()>> jobs;
 
     std::atomic<unsigned int> activeJobs{0};
+
+    std::atomic<bool> pauseThreadPool{false};
     //unsigned int activeJobs=0;
 
 };

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Behaviour.h"
-#include "AABBCollider.h"
-#include "FunctionSubscriber.h"
+#include "../AABBCollider.h"
+#include "../Objects/Behaviour.h"
+#include "../Systems/FunctionSubscriber.h"
 class Button : public Behaviour
 {
 public:

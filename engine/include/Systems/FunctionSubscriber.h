@@ -3,9 +3,9 @@
 //
 #pragma once
 
-#include "Object.h"
-#include <iostream>
+#include "../Objects/Object.h"
 #include <functional>
+#include <iostream>
 #include <vector>
 //Argument Template, generic that can hold function arguments
 

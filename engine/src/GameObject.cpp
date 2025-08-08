@@ -1,6 +1,6 @@
-#include "GameObject.h"
-#include "Engine.h"
-#include "Behaviour.h"
+#include <Objects/GameObject.h>
+#include <Objects/Behaviour.h>
+#include <Engine.h>
 #include <iostream>
 
 GameObject::GameObject(std::string objectname)

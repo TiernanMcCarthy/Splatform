@@ -18,6 +18,8 @@ void ThreadPool::ThreadLoop()
 {
     while (true)
     {
+
+        {}
         std::function<void()> job;
         {
             std::unique_lock<std::mutex> lock(queueMutex);
@@ -26,16 +28,27 @@ void ThreadPool::ThreadLoop()
 
                 return !jobs.empty() || terminateThread;
             });
-            if (terminateThread)
+            if (terminateThread && jobs.empty())
             {
                 return;
             }
             job=jobs.front();
             jobs.pop();
         }
+
         ++activeJobs;
         job();
         --activeJobs;
+
+        // After completing job, check if we should pause before next one
+        std::unique_lock<std::mutex> pauseLock(queueMutex);
+        pause_condition.wait(pauseLock, [this] {
+            return !pauseThreadPool.load() || terminateThread.load();
+        });
+
+        if (terminateThread.load()) {
+            return;
+        }
     }
 }
 
@@ -55,9 +68,10 @@ bool ThreadPool::IsBusy() {
 void ThreadPool::Stop() {
     {
         std::unique_lock<std::mutex> lock(queueMutex);
-        terminateThread = true;
+        terminateThread.store(true);
     }
     mutex_condition.notify_all();
+    pause_condition.notify_all();
     for (std::thread& active_thread : threads) {
         active_thread.join();
     }
@@ -68,6 +82,23 @@ int ThreadPool::GetThreadCount()
 {
     return threads.size();
 }
+
+void ThreadPool::Pause()
+{
+    pauseThreadPool.store(true);
+}
+
+void ThreadPool::Resume()
+{
+    pauseThreadPool.store(false);
+    pause_condition.notify_all(); //wake up paused threads
+}
+
+bool ThreadPool::isPaused() const
+{
+    return pauseThreadPool.load();
+}
+
 
 ThreadPool::~ThreadPool()
 {

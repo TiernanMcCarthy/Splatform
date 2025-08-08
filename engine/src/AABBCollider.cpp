@@ -1,6 +1,6 @@
 #include "AABBCollider.h"
+#include "../include/Objects/GameObject.h"
 #include <iostream>
-#include "GameObject.h"
 
 AABBCollider::AABBCollider()
 {

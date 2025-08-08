@@ -1,4 +1,5 @@
-#include "TextBox.h"
+#include <UI/TextBox.h>
+#include <Objects/GameObject.h>
 
 #include "FontManager.h"
 
@@ -6,6 +7,12 @@
 {
 
 }
+
+void TextBox::SetColour(sf::Color colour)
+{
+    textBox->setFillColor(colour);
+}
+
 
 void TextBox::Start()
 {

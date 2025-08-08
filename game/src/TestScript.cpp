@@ -1,10 +1,10 @@
 #include "TestScript.h"
-#include <iostream>
-#include "GameObject.h"
+#include "../../engine/include/Objects/GameObject.h"
 #include "BoxRenderer.h"
 #include "Constants.h"
-#include <math.h>
 #include <SFML/System/Clock.hpp>
+#include <iostream>
+#include <math.h>
 
 static sf::Clock globalClock;
 
@@ -20,13 +20,13 @@ void TestScript::Start()
 
     gameObject->transform.SetPosition(sf::Vector2f(DISPLAYWIDTH/18, DISPLAYHEIGHT/10));
 
-    boxR = gameObject->AddBehaviour<BoxRenderer>();
+     boxR = gameObject->AddBehaviour<BoxRenderer>();
      //boxR->SetDimensions(gameObject->transform.localScale.x, gameObject->transform.localScale.y);
      activeColour=sf::Color::Green;
      inactiveColour=sf::Color::Red;
-    boxR->color = inactiveColour;
+     boxR->color = inactiveColour;
 
-    boxR->UpdateVisualComponents();
+     boxR->UpdateVisualComponents();
      boxR->drawLayer=DrawMode::UI;
 
 

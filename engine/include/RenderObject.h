@@ -1,5 +1,5 @@
 #pragma once
-#include "Behaviour.h"
+#include <Objects/Behaviour.h>
 #include <SFML/Graphics.hpp>
 
 namespace DrawMode

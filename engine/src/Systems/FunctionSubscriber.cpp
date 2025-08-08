@@ -1,8 +1,7 @@
 //
 // Created by tiernan on 7/3/25.
 //
-#include "FunctionSubscriber.h"
-
+#include "../../include/Systems/FunctionSubscriber.h"
 
 FunctionSubscriber::FunctionSubscriber()
 {
