@@ -1,6 +1,7 @@
 #pragma once
 #include "../Engine.h"
 #include "Object.h"
+#include <Objects/Behaviour.h>
 #include <SFML/System.hpp>
 #include <algorithm>
 #include <memory>
@@ -8,7 +9,6 @@
 #include <typeinfo>
 #include <unordered_map>
 #include <vector>
-class Behaviour;
 
 struct Transform
 {

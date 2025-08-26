@@ -11,11 +11,12 @@ TerrainTile & Settlement::GetHome()
     return *home;
 }
 
- Settlement::Settlement(TerrainTile *newHome,Team* newTeam)
+ Settlement::Settlement(TerrainTile *newHome,Team* newTeam, SettlerManager* parent)
 {
     home=newHome;
     team=newTeam;
 
+    settlementManager=parent;
 
     //Draw Home Tile as team Colour
     if (home!=nullptr)
@@ -59,69 +60,54 @@ bool CanSettleThisTile(TerrainTile* testTile)
 
 
 
-void Settlement::Reproduce(SettlerManager* manager)
+void Settlement::Reproduce()
 {
     sf::Vector2u settlementPos= home->GetPosition();
     Settlement* newSettlement;
 
-    //Above
-    TerrainTile* testTile= &home->GetLand(settlementPos- sf::Vector2u(0,-1));
-    if (CanSettleThisTile(testTile))
-    {
-        newSettlement = new Settlement(testTile,team);
-        manager->PushSettler(newSettlement);
-        reproductionValue=0;
-        return;
-    }
-    //Below
-    testTile= &home->GetLand(settlementPos- sf::Vector2u(0,1));
-    if (CanSettleThisTile(testTile))
-    {
-        newSettlement = new Settlement(testTile,team);
-        manager->PushSettler(newSettlement);
-        reproductionValue=0;
-        return;
-    }
+    TerrainTile* testTile;
 
-    //Left
-    testTile= &home->GetLand(settlementPos- sf::Vector2u(-1,0));
-    if (CanSettleThisTile(testTile))
+    if (CanSettleThisTile(testTile=&home->GetLand(settlementPos- sf::Vector2u(0,-1)))) //Above
     {
-        newSettlement = new Settlement(testTile,team);
-        manager->PushSettler(newSettlement);
-        reproductionValue=0;
-        return;
+        settlementManager->CreateSettler(testTile,team);
     }
-    //Right
-    testTile= &home->GetLand(settlementPos- sf::Vector2u(1,0));
-    if (CanSettleThisTile(testTile))
+    else if (CanSettleThisTile(testTile=&home->GetLand(settlementPos- sf::Vector2u(0,1)))) //Below
     {
-        newSettlement = new Settlement(testTile,team);
-        manager->PushSettler(newSettlement);
-        reproductionValue=0;
-        return;
+        settlementManager->CreateSettler(testTile,team);
     }
-
+    else if (CanSettleThisTile(testTile=&home->GetLand(settlementPos- sf::Vector2u(-1,0)))) //Left
+    {
+        settlementManager->CreateSettler(testTile,team);
+    }
+    else if (CanSettleThisTile(testTile=&home->GetLand(settlementPos- sf::Vector2u(1,0)))) //Right
+    {
+        settlementManager->CreateSettler(testTile,team);
+    }
 
 
     reproductionValue=0;
 }
 
 
-void Settlement::ManageReproduction(SettlerManager* manager)
+void Settlement::ManageReproduction()
 {
     reproductionValue+=team->GetReproductionRate();
 
     if (reproductionValue>1.1f)
     {
-        Reproduce(manager);
+        Reproduce();
     }
 }
 
-
-void Settlement::Simulate(SettlerManager* manager)
+void Settlement::ResetReproduction()
 {
-    ManageReproduction(manager);
+    reproductionValue=0;
+}
+
+
+void Settlement::Simulate()
+{
+    ManageReproduction();
 
 }
 

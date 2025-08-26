@@ -4,6 +4,7 @@
 #pragma once
 #ifndef SETTLEMENT_H
 #define SETTLEMENT_H
+#include "SettlerManager.h"
 
 #endif //SETTLEMENT_H
 
@@ -51,21 +52,29 @@ class Settlement
     public:
 
 
-    Settlement(TerrainTile* newHome,Team* newTeam);
+    Settlement(TerrainTile* newHome,Team* newTeam, SettlerManager* parent);
 
     ~Settlement();
 
     TerrainTile& GetHome();
 
-    void Simulate(SettlerManager* manager);
+    void Simulate();
 
     void Init();
 
+    void ResetReproduction();
+
+    bool IsAlive();
+
     private:
 
-    void ManageReproduction(SettlerManager* manager);
+    bool isAlive=false;
 
-    void Reproduce(SettlerManager* manager);
+    SettlerManager* settlementManager;
+
+    void ManageReproduction();
+
+    void Reproduce();
 
     TerrainTile* home;
 

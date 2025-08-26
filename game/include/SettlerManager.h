@@ -5,9 +5,12 @@
 #pragma once
 #include <vector>
 
+struct Team;
 class Settlement;
 class WorldMap;
 class ThreadPool;
+class TerrainTile;
+
 class SettlerManager
 {
 public:
@@ -21,6 +24,8 @@ public:
     void IterateSettlements();
 
     void PushSettler(Settlement* settler);
+
+    void CreateSettler(TerrainTile* target,Team* team);
 private:
 
     std::vector<Settlement*> settlements;
@@ -28,4 +33,6 @@ private:
     ThreadPool* threadPool;
 
     WorldMap* worldMap;
+
+    Settlement* currentIteration;
 };

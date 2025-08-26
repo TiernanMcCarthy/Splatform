@@ -48,7 +48,7 @@ void GameSpeedUI::Start()
 
     //speedUp->attachedButton->OnPress.Subscribe(std::bind(&GameManager::IncreaseIterationSpeed,managerBehaviour));
 
-    speedUp->ApplyImage("Assets/UI/Arrow.png");
+    speedUp->ApplyImage("assets/ui/Arrow.png");
 
     //Left
     //Spawn Buttons For Game Speed
@@ -68,7 +68,7 @@ void GameSpeedUI::Start()
 
     //speedUp->attachedButton->OnPress.Subscribe(std::bind(&GameManager::IncreaseIterationSpeed,managerBehaviour));
 
-    slowDown->ApplyImage("Assets/UI/Arrow.png");
+    slowDown->ApplyImage("assets/ui/Arrow.png");
 
 
 

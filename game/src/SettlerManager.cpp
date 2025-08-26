@@ -49,7 +49,7 @@ void SettlerManager::StartGame(int teams)
             return;
         }
 
-        Settlement* t = new Settlement(temp,testTeam);
+        Settlement* t = new Settlement(temp,testTeam,this);
 
         t->Init();
 
@@ -71,6 +71,14 @@ void SettlerManager::IterateSettlements()
 
     for (int i=0; i<settlements.size(); i++)
     {
-        settlements[i]->Simulate(this);
+        currentIteration = settlements[i];
+        settlements[i]->Simulate();
     }
+}
+
+
+void SettlerManager::CreateSettler(TerrainTile *target,Team* team)
+{
+    Settlement* newSettlement = new Settlement(target,team,this);
+    PushSettler(newSettlement);
 }
