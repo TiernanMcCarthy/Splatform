@@ -42,6 +42,7 @@ void GameManager::Start()
 
      iterationsPerSecond=50;
 
+    int commitTest=0;
 
      simulationThread=  new ThreadPool(1);
 
