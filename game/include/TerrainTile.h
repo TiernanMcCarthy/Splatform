@@ -41,6 +41,11 @@ public:
 
     sf::Vector2u GetPosition();
 
+    sf::Color GetOriginalColour()
+    {
+        return originalColour;
+    }
+
     TerrainTile& GetLand(sf::Vector2u pos);
 
 private:

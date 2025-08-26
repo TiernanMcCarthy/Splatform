@@ -3,6 +3,8 @@
 //
 
 #include "TerrainTile.h"
+
+#include "Settlement.h"
 #include "WorldMap.h"
 
  TerrainTile::TerrainTile(bool land, sf::Color colour,WorldMap* worldObject, int ind)
@@ -23,7 +25,7 @@ bool TerrainTile::IsLand()
 
 bool TerrainTile::IsSettled()
 {
-     if (owner!=nullptr)
+     if (owner->IsAlive())
      {
          return true;
      }

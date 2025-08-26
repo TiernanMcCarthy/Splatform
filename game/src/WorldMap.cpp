@@ -140,7 +140,7 @@ TerrainTile *WorldMap::GetTile(sf::Vector2u pos)
      int location= pos.x+ pos.y*dimensions.x;
 
 
-     if (pos.x>dimensions.x || pos.x<=0 || location>=size)
+     if (pos.x>dimensions.x || pos.x<0 || location>=size)
      {
          std::cout<<"Invalid Coordinate requested"<<std::endl;
          return nullptr;

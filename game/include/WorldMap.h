@@ -52,6 +52,11 @@ public:
 
     TerrainTile *GetRandomTileThreaded();
 
+    int GetTileCount() const
+    {
+        return world.size();
+    }
+
     int GetHabitableTileCount() const
     {
      return habitableTileCount;

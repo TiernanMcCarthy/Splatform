@@ -6,6 +6,14 @@
 #include "WorldMap.h"
 #include "SettlerManager.h"
 
+std::array<sf::Vector2i, 4> Settlement::directions = {
+    sf::Vector2i(0, -1),
+    sf::Vector2i(0,  1),
+    sf::Vector2i(1,  0),
+    sf::Vector2i(-1, 0)
+};
+
+
 TerrainTile & Settlement::GetHome()
 {
     return *home;
@@ -14,15 +22,12 @@ TerrainTile & Settlement::GetHome()
  Settlement::Settlement(TerrainTile *newHome,Team* newTeam, SettlerManager* parent)
 {
     home=newHome;
+    home->SetOwner(this);
     team=newTeam;
 
     settlementManager=parent;
 
-    //Draw Home Tile as team Colour
-    if (home!=nullptr)
-    {
-        home->DrawTile(team->GetTeamColour());
-    }
+    isAlive=false;
 
     reproductionValue=0;
 }
@@ -35,6 +40,7 @@ TerrainTile & Settlement::GetHome()
 void Settlement::Init()
 {
     home->SetOwner(this);
+    home->DrawTile(team->GetTeamColour());
 }
 
 
@@ -67,21 +73,14 @@ void Settlement::Reproduce()
 
     TerrainTile* testTile;
 
-    if (CanSettleThisTile(testTile=&home->GetLand(settlementPos- sf::Vector2u(0,-1)))) //Above
+    for (int i=0; i<Settlement::directions.size(); i++)
     {
-        settlementManager->CreateSettler(testTile,team);
-    }
-    else if (CanSettleThisTile(testTile=&home->GetLand(settlementPos- sf::Vector2u(0,1)))) //Below
-    {
-        settlementManager->CreateSettler(testTile,team);
-    }
-    else if (CanSettleThisTile(testTile=&home->GetLand(settlementPos- sf::Vector2u(-1,0)))) //Left
-    {
-        settlementManager->CreateSettler(testTile,team);
-    }
-    else if (CanSettleThisTile(testTile=&home->GetLand(settlementPos- sf::Vector2u(1,0)))) //Right
-    {
-        settlementManager->CreateSettler(testTile,team);
+        sf::Vector2u pos= sf::Vector2u(settlementPos.x-directions[i].x, settlementPos.y-directions[i].y);
+        if (CanSettleThisTile(testTile=&home->GetLand(pos)))
+        {
+            settlementManager->CreateSettler(testTile,team);
+            break;
+        }
     }
 
 
@@ -103,6 +102,35 @@ void Settlement::ResetReproduction()
 {
     reproductionValue=0;
 }
+
+bool Settlement::IsAlive() const
+{
+    return isAlive;
+}
+
+void Settlement::ResetSettlement()
+{
+
+}
+
+
+void Settlement::MakeActive(Team *newTeam)
+{
+    team=newTeam;
+
+    isAlive=true;
+
+    ResetReproduction();
+
+    Init();
+}
+
+void Settlement::Kill()
+{
+
+}
+
+
 
 
 void Settlement::Simulate()

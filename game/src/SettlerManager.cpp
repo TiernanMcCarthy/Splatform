@@ -12,7 +12,7 @@
 
 #include <atomic>
 #include <iostream>
-
+#include <random>
 
 void EpicFunction(std::atomic<bool>& testBool,std::atomic<bool>& testy)
 {
@@ -22,6 +22,7 @@ void EpicFunction(std::atomic<bool>& testBool,std::atomic<bool>& testy)
 
 SettlerManager::SettlerManager(WorldMap *map)
 {
+
     if (map == nullptr)
     {
         std::cout<<"World map is not initialised, please review"<<std::endl;
@@ -37,6 +38,20 @@ void SettlerManager::StartGame(int teams)
 
     std::cout<<"Starting game with teams: "<<teams<<std::endl;
 
+    Team* deadTeam = new Team(-1,1,1,sf::Color::Black);
+
+    for (int i=0;i<worldMap->GetTileCount(); i++)
+    {
+        TerrainTile* tempTile=worldMap->GetTile(worldMap->ConvertIndexToCoordinates(i));
+
+        if (tempTile->IsLand())
+        {
+            Settlement* newSettler = new Settlement(tempTile,deadTeam,this);
+            settlements.push_back(newSettler);
+            tempTile->DrawTile(tempTile->GetOriginalColour());
+            //CreateSettler(tempTile,deadTeam);
+        }
+    }
 
     for (int i=0; i<teams; i++)
     {
@@ -49,11 +64,7 @@ void SettlerManager::StartGame(int teams)
             return;
         }
 
-        Settlement* t = new Settlement(temp,testTeam,this);
-
-        t->Init();
-
-        PushSettler(t);
+        CreateSettler(temp,testTeam);
     }
 
 }
@@ -61,24 +72,34 @@ void SettlerManager::StartGame(int teams)
 void SettlerManager::PushSettler(Settlement *settler)
 {
     settlements.push_back(settler);
-    settler->Init();
+    //settler->Init();
 }
 
 
 void SettlerManager::IterateSettlements()
 {
-    //Run through settler list and complete their actions
+    // in IterateSettlements
+    static std::random_device rd;
+    static std::mt19937 g(rd()); // Mersenne Twister engine
 
+    std::shuffle(Settlement::directions.begin(), Settlement::directions.end(), g);
+
+    //Run through settler list and complete their actions
     for (int i=0; i<settlements.size(); i++)
     {
         currentIteration = settlements[i];
-        settlements[i]->Simulate();
+        if (currentIteration->IsAlive())
+        {
+            currentIteration->Simulate();
+        }
     }
 }
 
 
 void SettlerManager::CreateSettler(TerrainTile *target,Team* team)
 {
-    Settlement* newSettlement = new Settlement(target,team,this);
-    PushSettler(newSettlement);
+    //Activate associated Settler with Tile
+    Settlement* temp =&target->GetOwner();
+
+    temp->MakeActive(team);
 }

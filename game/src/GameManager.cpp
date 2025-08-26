@@ -40,36 +40,13 @@ void GameManager::Start()
 
      simulationClock=sf::Clock();
 
-     iterationsPerSecond=4;
+     iterationsPerSecond=50;
 
 
      simulationThread=  new ThreadPool(1);
 
      simulationThread->QueueJob(
          [this] {SimulationLoop(std::ref(killSimulationThread),std::ref(iterationsPerSecond), *settlerManager,std::ref(pauseThread));});
-
-   // threadPool->QueueJob([&tempWorld,start, end, &found, &index, t] {FindHabitableTile(std::ref(tempWorld),start,end,std::ref(found),std::ref(index),t);});
-    //SimulationLoop(&killSimulationThread,iterationsPerSecond,*settlerManager));
-
-     /*Tile Testing
-     TerrainTile* temp=worldMap->GetRandomTile();
-
-     TerrainTile* newTile;
-     temp->DrawTile(sf::Color::Black);
-
-     //Above
-     newTile=worldMap->GetTile(temp->GetPosition() + sf::Vector2u(0, -1));
-     newTile->DrawTile(sf::Color::Yellow);
-
-     //Left
-    newTile=worldMap->GetTile(temp->GetPosition() + sf::Vector2u(-1, 0));
-    newTile->DrawTile(sf::Color::Red);
-     //Right
-    newTile=worldMap->GetTile(temp->GetPosition() + sf::Vector2u(1, 0));
-    newTile->DrawTile(sf::Color::Magenta);
-     //Down
-    newTile=worldMap->GetTile(temp->GetPosition() + sf::Vector2u(0, 1));
-    newTile->DrawTile(sf::Color::Blue);*/
 
 
 }

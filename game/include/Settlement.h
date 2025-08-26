@@ -64,21 +64,34 @@ class Settlement
 
     void ResetReproduction();
 
-    bool IsAlive();
+    void MakeActive(Team* newTeam);
+
+    void Kill();
+
+    bool IsAlive() const;
+
+    static std::array<sf::Vector2i,4> directions;
 
     private:
 
+
+
+    //Attributes
+    float health;
+    float reproductionValue;
     bool isAlive=false;
 
+    //References
+
     SettlerManager* settlementManager;
+    TerrainTile* home;
+    Team* team;
+
 
     void ManageReproduction();
 
     void Reproduce();
 
-    TerrainTile* home;
 
-    Team* team;
-
-    float reproductionValue;
+    void ResetSettlement();
 };
