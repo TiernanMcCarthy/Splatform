@@ -64,6 +64,37 @@ bool CanSettleThisTile(TerrainTile* testTile)
     return true;
 }
 
+int Settlement::GetTeamID()
+{
+    return team->GetTeamID();
+}
+
+
+bool Settlement::CanAttackThisTile(TerrainTile* testTile)
+{
+
+    if (testTile==nullptr)
+    {
+        return false;
+    }
+
+    if (!testTile->IsLand())
+    {
+        return false;
+    }
+
+    if (testTile->IsSettled())
+    {
+        if (testTile->GetOwner().GetTeamID()!= team->GetTeamID())
+        {
+            return true;
+        }
+    }
+
+    return false;
+
+}
+
 
 
 void Settlement::Reproduce()
@@ -120,6 +151,8 @@ void Settlement::MakeActive(Team *newTeam)
 
     isAlive=true;
 
+    health=100;
+
     ResetReproduction();
 
     Init();
@@ -127,15 +160,50 @@ void Settlement::MakeActive(Team *newTeam)
 
 void Settlement::Kill()
 {
+    isAlive=false;
+    health=0;
+    home->DrawTile(sf::Color(0,0,0,255));
+}
 
+void Settlement::ReceiveDamage(float damage)
+{
+    health=health-damage;
+
+    if (health<=0)
+    {
+        Kill();
+    }
 }
 
 
+void Settlement::Attack(Settlement* target)
+{
+    target->ReceiveDamage(attack);
+}
+
+
+void Settlement::AttackState()
+{
+    sf::Vector2u settlementPos= home->GetPosition();
+    //Find a tile to attack;
+    TerrainTile* testTile;
+    for (int i=0; i<Settlement::directions.size(); i++)
+    {
+        sf::Vector2u pos= sf::Vector2u(settlementPos.x-directions[i].x, settlementPos.y-directions[i].y);
+        if (CanAttackThisTile(testTile=&home->GetLand(pos)))
+        {
+            Attack(&testTile->GetOwner());
+            break;
+        }
+    }
+
+}
 
 
 void Settlement::Simulate()
 {
     ManageReproduction();
+    AttackState();
 
 }
 

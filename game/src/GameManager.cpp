@@ -40,9 +40,7 @@ void GameManager::Start()
 
      simulationClock=sf::Clock();
 
-     iterationsPerSecond=50;
-
-    int commitTest=0;
+     iterationsPerSecond=4;
 
      simulationThread=  new ThreadPool(1);
 

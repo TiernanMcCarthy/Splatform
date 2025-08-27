@@ -45,6 +45,11 @@ public:
         return teamColour;
     }
 
+    unsigned int GetTeamID() const
+    {
+        return teamID;
+    }
+
 };
 
 class Settlement
@@ -68,16 +73,22 @@ class Settlement
 
     void Kill();
 
+    void ReceiveDamage(float damage);
+
     bool IsAlive() const;
 
     static std::array<sf::Vector2i,4> directions;
+
+    int GetTeamID();
+
 
     private:
 
 
 
     //Attributes
-    float health;
+    float health =100;
+    float attack =10;
     float reproductionValue;
     bool isAlive=false;
 
@@ -92,6 +103,11 @@ class Settlement
 
     void Reproduce();
 
-
     void ResetSettlement();
+
+    bool CanAttackThisTile(TerrainTile* testTile);
+
+    void Attack(Settlement* target);
+
+    void AttackState();
 };
