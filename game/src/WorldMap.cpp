@@ -102,6 +102,10 @@ void WorldMap::DrawMap()
 
      for (int i=0; i<elementsToDraw; i++)
      {
+         if (drawCommands[0].coords.x>mapImage.getSize().x || drawCommands[0].coords.y>mapImage.getSize().y || drawCommands[0].coords.x<0 || drawCommands[0].coords.y<0)
+         {
+             std::cout<<"Something went wrong when drawing"<<std::endl;
+         }
          mapImage.setPixel(drawCommands[0].coords,drawCommands[0].colour);
          drawCommands.erase(drawCommands.begin());
      }

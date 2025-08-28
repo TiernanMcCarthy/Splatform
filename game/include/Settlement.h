@@ -23,6 +23,8 @@ private:
 
     float reproductionRate;
 
+    int landCount=0;
+
     sf::Color teamColour;
 
 public:
@@ -48,6 +50,21 @@ public:
     unsigned int GetTeamID() const
     {
         return teamID;
+    }
+
+    int GetlandCount() const
+    {
+        return landCount;
+    }
+
+    void AddLand()
+    {
+        landCount++;
+    }
+
+    void RemoveLand()
+    {
+        landCount--;
     }
 
 };

@@ -6,6 +6,9 @@
 #include "WorldMap.h"
 #include "SettlerManager.h"
 
+#include <algorithm>
+#include <random>
+
 std::array<sf::Vector2i, 4> Settlement::directions = {
     sf::Vector2i(0, -1),
     sf::Vector2i(0,  1),
@@ -153,6 +156,8 @@ void Settlement::MakeActive(Team *newTeam)
 
     health=100;
 
+    team->AddLand();
+
     ResetReproduction();
 
     Init();
@@ -163,6 +168,8 @@ void Settlement::Kill()
     isAlive=false;
     health=0;
     home->DrawTile(sf::Color(0,0,0,255));
+    team->RemoveLand();
+    team=nullptr;
 }
 
 void Settlement::ReceiveDamage(float damage)
@@ -178,7 +185,10 @@ void Settlement::ReceiveDamage(float damage)
 
 void Settlement::Attack(Settlement* target)
 {
-    target->ReceiveDamage(attack);
+
+    //static std::random_device rd;
+   // static std::mt19937 g(rd()); // Mersenne Twister engine
+    target->ReceiveDamage(attack+team->GetlandCount()*0.0006f);
 }
 
 

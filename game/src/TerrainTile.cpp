@@ -7,7 +7,9 @@
 #include "Settlement.h"
 #include "WorldMap.h"
 
- TerrainTile::TerrainTile(bool land, sf::Color colour,WorldMap* worldObject, int ind)
+#include <iostream>
+
+TerrainTile::TerrainTile(bool land, sf::Color colour,WorldMap* worldObject, int ind)
 {
      isLand=land;
      originalColour=colour;
@@ -55,6 +57,10 @@ Settlement& TerrainTile::GetOwner()
 void TerrainTile::DrawTile(sf::Color colour)
  {
      currentColour=colour;
+     if (position.x*position.y>world->GetTileCount())
+     {
+         std::cout<<position.x<<" "<<position.y<<std::endl;
+     }
      world->AddDrawCommand(DrawCommand(position,currentColour));
 
  }
