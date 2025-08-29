@@ -9,6 +9,8 @@
 
 // Game Includes
 #include "GameManager.h"
+
+#include "Settlement.h"
 #include "SettlerManager.h"
 #include "TerrainTile.h"
 #include "WorldMap.h"
@@ -33,6 +35,8 @@ void GameManager::Start()
      worldMap = worldObject->AddBehaviour<WorldMap>();
      worldMap->LoadMap("assets/map.png");
 
+     Team::SetCapitalColour(sf::Color(255,192,0,255));
+
      //Create Settler Manager
      settlerManager = new SettlerManager(worldMap);
 
@@ -40,7 +44,7 @@ void GameManager::Start()
 
      simulationClock=sf::Clock();
 
-     iterationsPerSecond=4;
+     iterationsPerSecond=60;
 
      simulationThread=  new ThreadPool(1);
 

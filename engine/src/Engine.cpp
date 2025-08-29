@@ -14,6 +14,8 @@ Engine* Engine::GEngine = nullptr;
 
 Engine::Engine(bool startEngine)
 {
+    /* initialize random seed: */
+    srand (time(NULL));
     Engine::GEngine = this;
     gameObjects = std::vector<GameObject*>();
 

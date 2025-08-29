@@ -33,21 +33,19 @@ private:
 
     sf::Color teamColour;
 
-    TerrainTile* capitalTile;
+    Settlement* capitalTile;
+
+    static sf::Color capitalColour;
 
 public:
 
-    Team(unsigned int id,float damage=1,float reproRate=1,sf::Color colour=sf::Color::Black)
-    {
-        teamID = id;
-        attackDamage=damage;
-        reproductionRate=reproRate;
-        teamColour = colour;
-    }
+
+
+    Team(unsigned int id,float damage=1,float reproRate=1,sf::Color colour=sf::Color::Black);
 
     float GetReproductionRate() const
     {
-        return reproductionRate;
+        return reproductionRate* (rand()%10+1)/10.0f;
     }
 
     sf::Color GetTeamColour() const
@@ -104,6 +102,20 @@ public:
 
         return manpowerBonus;
 
+    }
+
+    void DrawCapital() const;
+
+    Settlement* GetCapitalTile()
+    {
+        return capitalTile;
+    }
+
+    void SetCapital(Settlement* tile);
+
+    static void SetCapitalColour(const sf::Color colour)
+    {
+        capitalColour= colour;
     }
 
 };

@@ -8,7 +8,7 @@
 
 #include <algorithm>
 #include <random>
-
+sf::Color Team::capitalColour;
 std::array<sf::Vector2i, 4> Settlement::directions = {
     sf::Vector2i(0, -1),
     sf::Vector2i(0,  1),
@@ -205,6 +205,31 @@ void Settlement::AttackState()
     }
 
 }
+
+void Team::SetCapital(Settlement* tile)
+{
+    capitalTile = tile;
+}
+
+Team::Team(unsigned int id,float damage,float reproRate,sf::Color colour)
+{
+    teamID = id;
+    attackDamage=damage;
+    reproductionRate=reproRate;
+    teamColour = colour;
+}
+
+
+void Team::DrawCapital() const
+{
+
+        if (capitalTile!=nullptr)
+        {
+            capitalTile->GetHome().DrawTile(capitalColour);
+        }
+
+}
+
 
 
 void Settlement::Simulate()
