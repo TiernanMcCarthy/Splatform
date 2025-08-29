@@ -64,6 +64,8 @@ void SettlerManager::StartGame(int teams)
             return;
         }
 
+        teamHolder.push_back(testTeam);
+
         CreateSettler(temp,testTeam);
     }
 
@@ -78,11 +80,21 @@ void SettlerManager::PushSettler(Settlement *settler)
 
 void SettlerManager::IterateSettlements()
 {
-    // in IterateSettlements
+
+    //Shuffle Attack and growth directions for randomisation
     static std::random_device rd;
     static std::mt19937 g(rd()); // Mersenne Twister engine
 
     std::shuffle(Settlement::directions.begin(), Settlement::directions.end(), g);
+
+
+    //Manage Team Manpower
+
+    for (int t=0; t<teamHolder.size(); t++)
+    {
+        teamHolder[t]->CalculateManpower();
+    }
+
 
     //Run through settler list and complete their actions
     for (int i=0; i<settlements.size(); i++)

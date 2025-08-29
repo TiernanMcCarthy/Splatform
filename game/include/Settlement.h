@@ -6,6 +6,8 @@
 #define SETTLEMENT_H
 #include "SettlerManager.h"
 
+#include <algorithm>
+
 #endif //SETTLEMENT_H
 
 #include <SFML/Graphics.hpp>
@@ -25,7 +27,13 @@ private:
 
     int landCount=0;
 
+    float manpower=0;
+
+    float maxManpower;
+
     sf::Color teamColour;
+
+    TerrainTile* capitalTile;
 
 public:
 
@@ -65,6 +73,37 @@ public:
     void RemoveLand()
     {
         landCount--;
+    }
+
+    void CalculateManpower()
+    {
+        maxManpower= landCount*10;
+
+        if (manpower<maxManpower)
+        {
+            manpower=std::clamp(manpower+landCount,0.0f,maxManpower);
+        }
+    }
+
+    float GetManpowerBonus()
+    {
+        float manpowerBonus=0;
+        if (manpower>0)
+        {
+            if (manpower<4)
+            {
+                manpowerBonus=manpower;
+            }
+            else
+            {
+                manpowerBonus=4;
+            }
+        }
+
+        manpower-=manpowerBonus;
+
+        return manpowerBonus;
+
     }
 
 };

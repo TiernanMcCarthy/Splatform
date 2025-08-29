@@ -28,6 +28,8 @@ public:
     void CreateSettler(TerrainTile* target,Team* team);
 private:
 
+    std::vector<Team*> teamHolder;
+
     std::vector<Settlement*> settlements;
 
     ThreadPool* threadPool;

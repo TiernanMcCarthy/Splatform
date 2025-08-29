@@ -185,10 +185,7 @@ void Settlement::ReceiveDamage(float damage)
 
 void Settlement::Attack(Settlement* target)
 {
-
-    //static std::random_device rd;
-   // static std::mt19937 g(rd()); // Mersenne Twister engine
-    target->ReceiveDamage(attack+team->GetlandCount()*0.0006f);
+    target->ReceiveDamage(attack+team->GetlandCount()*0.0006f+team->GetManpowerBonus());
 }
 
 
