@@ -7,8 +7,8 @@
 
 #include "RenderObject.h"
 #include "BoxRenderer.h"
-#include "AABBCollider.h"
 #include "EngineInputSystem.h"
+#include "Gizmos/GizmoManager.h"
 
 Engine* Engine::GEngine = nullptr;
 
@@ -79,6 +79,8 @@ void Engine::EngineLoop()
         startupList[i]->Execute();
     }
 
+    GizmoManager* GizmoManagement = new GizmoManager();
+
     //Main Game Loop
     while (renderWindow.isOpen())
     {
@@ -122,9 +124,6 @@ void Engine::EngineLoop()
         //Poll InputSystem
         engineInput->PollInputs();
 
-        sf::Vector2i mousePos = sf::Mouse::getPosition(renderWindow);
-
-        sf::Vector2f worldPos = renderWindow.mapPixelToCoords(mousePos);
 
         //Get Delta Time
         deltaTime = clock.restart().asSeconds();
@@ -158,6 +157,9 @@ void Engine::EngineLoop()
             drawStack[i]->Render(&renderWindow);
         }
         renderWindow.setView(GameLayer);
+
+        //Manage Gizmo Debug
+        GizmoManagement->StartDraw(&renderWindow);
         
         renderWindow.display();
 

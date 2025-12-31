@@ -1,0 +1,32 @@
+//
+// Created by tiernux on 27/12/2025.
+//
+
+#ifndef SPLATFORM_COLLIDERDEBUG_H
+#define SPLATFORM_COLLIDERDEBUG_H
+#include "Objects/Behaviour.h"
+
+#endif //SPLATFORM_COLLIDERDEBUG_H
+
+
+class BoxRenderer;
+class AABB;
+
+class ColliderDebug :public Behaviour
+{
+public:
+
+    void Start() override;
+    void Update(float deltaTime) override;
+
+    AABB* ourCollider;
+
+    BoxRenderer* renderer;
+
+    BoxRenderer* collisionDot;
+
+    float moveSpeed=250;
+
+
+
+};

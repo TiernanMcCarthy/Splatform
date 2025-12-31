@@ -1,5 +1,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
+
+#include "CollisionTests.h"
 #include "Engine.h"
 #include "FontManager.h"
 #include "StartupSequence.h"
@@ -27,7 +29,7 @@ int main()
     }
 
     std::cout << "Starting Engine \n" << std::endl;
-    ObjectSpawnList temp = ObjectSpawnList();
+    CollisionTests temp = CollisionTests();
     gameEngine.AddStartupSequence(&temp);
     gameEngine.Start();
 

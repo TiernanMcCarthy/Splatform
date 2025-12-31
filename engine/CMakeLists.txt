@@ -12,6 +12,11 @@ add_library(Engine SHARED
         include/Systems/ThreadPool.h
         src/Systems/Threadpool.cpp
         include/Systems/FastCommonExtensions.h
+        include/AABB.h
+        src/AABB.cpp
+        src/Collider.cpp
+        include/Gizmos/GizmoManager.h
+        src/Gizmos/GizmoManager.cpp
 )
 
 
