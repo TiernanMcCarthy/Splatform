@@ -17,10 +17,12 @@ add_executable(Splatform
         src/UI/ScreenspaceButton.cpp
         include/UI/GameSpeedUI.h
         src/UI/GameSpeedUI.cpp
-        include/CollisionTests.h
-        src/CollisionTests.cpp
-        include/ColliderDebug.h
-        src/ColliderDebug.cpp
+        include/CollisionTests/CollisionTests.h
+        src/CollisionTests/CollisionTests.cpp
+        include/CollisionTests/ColliderDebug.h
+        src/CollisionTests/ColliderDebug.cpp
+        include/CollisionTests/AABBTestClass.h
+        src/AABBTestClass.cpp
 )
 
 target_link_libraries(Splatform PRIVATE Engine)

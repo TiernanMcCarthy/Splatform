@@ -44,17 +44,17 @@ class GizmoManager
 {
     public:
 
-    static GizmoManager *GizmoManagement;
-
     GizmoManager();
 
     void StartDraw(sf::RenderWindow* drawTarget);
+
+    static sf::Color Colour;
 
     static void DrawLine(sf::Vector2f pointA, sf::Vector2f pointB,float lineThickness=10);
 
 private:
 
-    std::deque<GizmoDrawCommand*> drawCommands;
+    static std::deque<GizmoDrawCommand*> drawCommands;
 
 
 };

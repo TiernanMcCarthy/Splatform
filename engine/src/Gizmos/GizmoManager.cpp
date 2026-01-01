@@ -7,11 +7,12 @@
 #include <cmath>
 
 
-GizmoManager* GizmoManager::GizmoManagement = nullptr;
+std::deque<GizmoDrawCommand*> GizmoManager::drawCommands;
+sf::Color GizmoManager::Colour;
 
 GizmoManager::GizmoManager()
 {
-    GizmoManager::GizmoManagement = this;
+
 }
 
 GizmoLine::GizmoLine(sf::Vector2f a,sf::Vector2f b, float lineThickness)
@@ -28,7 +29,7 @@ void GizmoManager::StartDraw(sf::RenderWindow* drawTarget)
         printf(("DrawTarget for Gizmo is nullptr\n"));
     }
 
-    int elementsToDraw=drawCommands.size();
+    int elementsToDraw=GizmoManager::drawCommands.size();
     for (int i=0; i<elementsToDraw; i++)
     {
         drawCommands[i]->DrawGizmo(drawTarget);
@@ -40,7 +41,8 @@ void GizmoManager::StartDraw(sf::RenderWindow* drawTarget)
 void GizmoManager::DrawLine(sf::Vector2f pointA, sf::Vector2f pointB, float lineThickness)
 {
     GizmoLine* command= new GizmoLine(pointA, pointB,lineThickness);
-    GizmoManagement->drawCommands.push_back(command);
+    command->color=GizmoManager::Colour;
+    drawCommands.push_back(command);
 }
 
 void GizmoLine::DrawGizmo(sf::RenderWindow *render)
@@ -53,6 +55,8 @@ void GizmoLine::DrawGizmo(sf::RenderWindow *render)
 
     line.setPosition(pointA);
     line.setOrigin(sf::Vector2f(0.f, 0.5f));
+
+    line.setFillColor(color);
 
     float angle = std::atan2(dy, dx);
 

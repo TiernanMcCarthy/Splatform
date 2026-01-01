@@ -9,6 +9,7 @@
 #endif //SPLATFORM_COLLIDERDEBUG_H
 
 
+class AABBTestClass;
 class BoxRenderer;
 class AABB;
 
@@ -24,6 +25,10 @@ public:
     BoxRenderer* renderer;
 
     BoxRenderer* collisionDot;
+
+
+    //Test Boxes
+    AABBTestClass* boxVbox;
 
     float moveSpeed=250;
 

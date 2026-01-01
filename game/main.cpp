@@ -1,7 +1,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
-#include "CollisionTests.h"
+#include "include/CollisionTests/CollisionTests.h"
 #include "Engine.h"
 #include "FontManager.h"
 #include "StartupSequence.h"

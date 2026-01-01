@@ -1,12 +1,12 @@
 //
 // Created by tiernan on 12/25/25.
 //
-#include "CollisionTests.h"
+#include "CollisionTests/CollisionTests.h"
 
 #include "AABB.h"
 #include "Constants.h"
 #include "BoxRenderer.h"
-#include "ColliderDebug.h"
+#include "../../include/CollisionTests/ColliderDebug.h"
 #include "SceneCamera.h"
 #include "Objects/GameObject.h"
 

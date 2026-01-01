@@ -160,6 +160,9 @@ void Engine::EngineLoop()
 
         //Manage Gizmo Debug
         GizmoManagement->StartDraw(&renderWindow);
+
+        //Reset default Gizmo Colour to White
+        GizmoManager::Colour=sf::Color::White;
         
         renderWindow.display();
 

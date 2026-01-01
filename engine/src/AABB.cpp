@@ -80,24 +80,26 @@ HitResult AABB::IntersectPoint(sf::Vector2f point)
 
 ///Solves for t(Time) where intersection on a segment occurs with a box
 ///Will return null if there is no intersection, with time being the point of intersection
-HitResult AABB::IntersectSegment(sf::Vector2f pos, sf::Vector2f delta, int paddingX, int paddingY)
+HitResult AABB::IntersectSegment(sf::Vector2f pos, sf::Vector2f delta, float paddingX, float paddingY)
 {
     HitResult result;
 
+    result.debugHit=false;
+
     //Calculate linear time of intersection with box's near and far edges
-    float scaleX=1.0f/delta.x;
-    float scaleY=1.0f/delta.y;
+    float scaleX=1.0f/(delta.x+0.00000000001f);
+    float scaleY=1.0f/(delta.y+0.00000000001f);
 
     float signX=std::copysign(1.0f, scaleX);
     float signY=std::copysign(1.0f, scaleY);
 
     sf::Vector2f gameObjectPos=gameObject->transform.GetPosition(); //Get collider position relative to gameObject
 
-    float nearTimeX= (gameObjectPos.x-signX*(halfSize.x+paddingX)-gameObjectPos.x)*scaleX;
-    float nearTimeY= (gameObjectPos.y-signY*(halfSize.y+paddingY)-gameObjectPos.y)*scaleY;
+    float nearTimeX= (gameObjectPos.x-signX*(halfSize.x+paddingX)-pos.x)*scaleX;
+    float nearTimeY= (gameObjectPos.y-signY*(halfSize.y+paddingY)-pos.y)*scaleY;
 
-    float farTimeX= (gameObjectPos.x+signX*(halfSize.x+paddingX)-gameObjectPos.x)*scaleX;
-    float farTimeY= (gameObjectPos.y+signY*(halfSize.y+paddingY)-gameObjectPos.y)*scaleY;
+    float farTimeX= (gameObjectPos.x+signX*(halfSize.x+paddingX)-pos.x)*scaleX;
+    float farTimeY= (gameObjectPos.y+signY*(halfSize.y+paddingY)-pos.y)*scaleY;
 
     //Compare these times to see if a collision is possible
     if (nearTimeX>farTimeY || nearTimeY>farTimeX)
@@ -137,6 +139,55 @@ HitResult AABB::IntersectSegment(sf::Vector2f pos, sf::Vector2f delta, int paddi
 
     result.hitPosition.x=pos.x+delta.x*result.hitTime;
     result.hitPosition.y=pos.y+delta.y*result.hitTime;
+
+    result.debugHit=true;
+
+    return result;
+}
+
+HitResult AABB::IntersectAABB(AABB *target)
+{
+    HitResult result;
+
+    result.debugHit=false;
+
+    sf::Vector2f thisPos = gameObject->transform.GetPosition();
+    sf::Vector2f targetPos = target->gameObject->transform.GetPosition();
+
+    float dx= thisPos.x-targetPos.x;
+    float px=(target->halfSize.x+halfSize.x)- std::abs(dx);
+
+    if (px<=0)
+    {
+        return result;
+    }
+
+    float dy= thisPos.y-targetPos.y;
+    float py= (target->halfSize.y+halfSize.y)- std::abs(dy);
+
+    if (py<=0)
+    {
+        return result;
+    }
+
+    if (px<py)
+    {
+        float sx= std::copysign(1.0f, dx);
+        result.delta.x=py*sx;
+        result.normal.x=sx;
+        result.hitPosition.x= thisPos.x+(halfSize.x*sx);
+        result.hitPosition.y = targetPos.y;
+    }
+    else
+    {
+        float sy= std::copysign(1.0f, dy);
+        result.delta.y=py*sy;
+        result.normal.y=sy;
+        result.hitPosition.x= targetPos.x;
+        result.hitPosition.y= thisPos.y+(halfSize.y*sy);
+    }
+
+    result.debugHit=true;
 
     return result;
 }
