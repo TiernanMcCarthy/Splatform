@@ -19,7 +19,7 @@ void ColliderDebug::Start()
 
     gameObject->transform.localScale=sf::Vector2<float>(100,100);
 
-    gameObject->transform.SetPosition(DISPLAYWIDTH/2,DISPLAYHEIGHT/2);
+    gameObject->transform.SetPosition(DISPLAYWIDTH/1.4f,DISPLAYHEIGHT/2);
 
     ourCollider->halfSize=sf::Vector2f(50,50);
 
@@ -33,6 +33,8 @@ void ColliderDebug::Start()
 
     boxVbox = (new GameObject("BoxVBox"))->AddBehaviour<AABBTestClass>();
 
+    // Get a different random number each time the program runs
+    srand(time(0));
 }
 
 void ColliderDebug::Update(float deltaTime)
@@ -40,6 +42,30 @@ void ColliderDebug::Update(float deltaTime)
     sf::Vector2f point=EngineInputSystem::WorldSpaceMousePos();
 
 
+    float x=0;
+    float y=0;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
+    {
+        y-=moveSpeed*deltaTime;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))
+    {
+        y+=moveSpeed*deltaTime;
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
+    {
+        x-=moveSpeed*deltaTime;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
+    {
+        x+=moveSpeed*deltaTime;
+    }
+    sf::Vector2f pos=gameObject->transform.GetPosition() + sf::Vector2f(x,y);
+
+
+
+    gameObject->transform.SetPosition(pos);
 
     //AABB vs  Point
     HitResult result=ourCollider->IntersectPoint(point);
@@ -83,6 +109,11 @@ void ColliderDebug::Update(float deltaTime)
     {
         boxVbox->renderer->color=sf::Color::Green;
         boxVbox->renderer->UpdateVisualComponents();
+
+        sf::Vector2f newPos=gameObject->transform.GetPosition() + result.delta;
+
+        gameObject->transform.SetPosition(newPos);
+
     }
     else
     {
@@ -91,31 +122,6 @@ void ColliderDebug::Update(float deltaTime)
     }
 
 
-
-    float x=0;
-    float y=0;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
-    {
-        y-=moveSpeed*deltaTime;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))
-    {
-        y+=moveSpeed*deltaTime;
-    }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
-    {
-        x-=moveSpeed*deltaTime;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
-    {
-        x+=moveSpeed*deltaTime;
-    }
-    sf::Vector2f pos=gameObject->transform.GetPosition() + sf::Vector2f(x,y);
-
-
-
-    gameObject->transform.SetPosition(pos);
 
 
 

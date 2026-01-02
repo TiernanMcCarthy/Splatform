@@ -157,7 +157,7 @@ HitResult AABB::IntersectAABB(AABB *target)
     float dx= thisPos.x-targetPos.x;
     float px=(target->halfSize.x+halfSize.x)- std::abs(dx);
 
-    if (px<=0)
+    if (px<=0) //If PX is less than 0 then no collision can ever take place, return early
     {
         return result;
     }
@@ -165,20 +165,20 @@ HitResult AABB::IntersectAABB(AABB *target)
     float dy= thisPos.y-targetPos.y;
     float py= (target->halfSize.y+halfSize.y)- std::abs(dy);
 
-    if (py<=0)
+    if (py<=0)  //Same principle on Y Axis
     {
         return result;
     }
 
-    if (px<py)
+    if (px<py) //Resolve collision for X axis, calculating delta required to resolve collision
     {
         float sx= std::copysign(1.0f, dx);
-        result.delta.x=py*sx;
+        result.delta.x=px*sx;
         result.normal.x=sx;
         result.hitPosition.x= thisPos.x+(halfSize.x*sx);
         result.hitPosition.y = targetPos.y;
     }
-    else
+    else //Inverse for Y Axis
     {
         float sy= std::copysign(1.0f, dy);
         result.delta.y=py*sy;
@@ -190,4 +190,50 @@ HitResult AABB::IntersectAABB(AABB *target)
     result.debugHit=true;
 
     return result;
+}
+
+SweepResult AABB::SweepAABB(AABB *target, sf::Vector2f delta)
+{
+    SweepResult sweep;
+
+
+    sf::Vector2f thisPos = gameObject->transform.GetPosition();
+    sf::Vector2f targetPos = target->gameObject->transform.GetPosition();
+
+    if (delta.x==0 && delta.y==0) //If the sweep doesnt actually
+    {
+        sweep.pos.x=targetPos.x;
+        sweep.pos.y=targetPos.y;
+        *sweep.hit = IntersectAABB(target);
+        sweep.time=sweep.hit ? (sweep.time=0) : 1;
+        return sweep;
+    }
+
+    *sweep.hit= IntersectSegment(targetPos,delta,target->halfSize.x,target->halfSize.y);
+
+    if (sweep.hit!=nullptr)
+    {
+        sweep.time = std::clamp(sweep.hit->hitTime-1.19209e-07f,0.0f,1.0f);
+        sweep.pos.x=targetPos.x+delta.x*sweep.time;
+        sweep.pos.y=targetPos.y+delta.y*sweep.time;
+
+        sf::Vector2f direction = delta;
+
+        direction=direction.normalized();
+
+        sweep.hit->hitPosition.x= std::clamp(sweep.hit->hitPosition.x+direction.x*target->halfSize.x,
+            thisPos.x-halfSize.x,thisPos.x+halfSize.x);
+
+        sweep.hit->hitPosition.y= std::clamp(sweep.hit->hitPosition.y+direction.y*target->halfSize.y,
+            thisPos.y-halfSize.y,thisPos.y+halfSize.y);
+
+    }
+    else
+    {
+        sweep.pos.x=targetPos.x + delta.x;
+        sweep.pos.y=targetPos.y + delta.y;
+        sweep.time=1;
+    }
+
+    return sweep;
 }

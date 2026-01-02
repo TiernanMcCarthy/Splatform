@@ -13,7 +13,7 @@ void AABBTestClass::Start()
 
     gameObject->transform.localScale=sf::Vector2<float>(100,400);
 
-    gameObject->transform.SetPosition(DISPLAYWIDTH/1.8f,DISPLAYHEIGHT/2);
+    gameObject->transform.SetPosition(DISPLAYWIDTH/1.3f,DISPLAYHEIGHT/2);
 
     collider->halfSize=sf::Vector2f(50,200);
 

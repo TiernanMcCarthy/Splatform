@@ -24,4 +24,6 @@ class AABB : public Collider
 
     HitResult IntersectAABB(AABB *target);
 
+    SweepResult SweepAABB(AABB *target, sf::Vector2f delta);
+
 };
