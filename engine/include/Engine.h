@@ -11,7 +11,9 @@ class RenderObject;
 class GameObject;
 
 class StartupSequence;
-
+using EntityID = uint64_t;
+using BehaviourID = uint64_t;
+constexpr EntityID INVALID_ENTITY = 0;
 
 class Engine
 {
@@ -76,6 +78,12 @@ private:
     EngineInputSystem* engineInput;
 
     sf::RenderWindow renderWindow;
+
+
+	//Entity ID System
+	EntityID entityIDCount=1;
+	BehaviourID behaviourIDCount=1;
+
 
 protected:
 };

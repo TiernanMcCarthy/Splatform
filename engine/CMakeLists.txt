@@ -17,6 +17,8 @@ add_library(Engine SHARED
         src/Collider.cpp
         include/Gizmos/GizmoManager.h
         src/Gizmos/GizmoManager.cpp
+        Scenes/include/Scene.h
+        Serialisation/ID/IDManager.h
 )
 
 

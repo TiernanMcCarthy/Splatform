@@ -8,4 +8,11 @@ HitResult::HitResult() {
     hitTime=-1;
     hitPosition=sf::Vector2f();
     col=nullptr;
+    debugHit=false;
+}
+
+
+SweepResult::SweepResult()
+{
+    
 }
