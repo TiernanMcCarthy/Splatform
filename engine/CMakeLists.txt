@@ -18,7 +18,8 @@ add_library(Engine SHARED
         include/Gizmos/GizmoManager.h
         src/Gizmos/GizmoManager.cpp
         Scenes/include/Scene.h
-        Serialisation/ID/IDManager.h
+        include/Serialization/Serializer.h
+        src/Serialization/Serializer.cpp
 )
 
 
