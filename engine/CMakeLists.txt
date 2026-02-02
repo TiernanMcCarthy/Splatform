@@ -4,6 +4,7 @@ file(GLOB_RECURSE ENGINE_HEADERS include/*.h)
 add_library(Engine SHARED
         ${ENGINE_SOURCES}
         ${ENGINE_HEADERS}
+        include/Objects/EntityID.h
         include/StartupSequence.h
         src/StartupSequence.cpp
         src/UI/Button.cpp
@@ -17,9 +18,13 @@ add_library(Engine SHARED
         src/Collider.cpp
         include/Gizmos/GizmoManager.h
         src/Gizmos/GizmoManager.cpp
-        Scenes/include/Scene.h
         include/Serialization/Serializer.h
         src/Serialization/Serializer.cpp
+        include/Scenes/SceneManager.h
+        include/Scenes/Scene.h
+        src/Scenes/SceneManager.cpp
+        src/Scenes/Scene.cpp
+
 )
 
 

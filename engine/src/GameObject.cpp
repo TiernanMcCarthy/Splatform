@@ -1,6 +1,7 @@
 #include <Objects/GameObject.h>
 #include <Objects/Behaviour.h>
 #include <Engine.h>
+#include <Scenes/SceneManager.h>
 #include <iostream>
 
 GameObject::GameObject(std::string objectname)
@@ -8,7 +9,7 @@ GameObject::GameObject(std::string objectname)
 	transform = Transform();
 	name = objectname;
 	behaviours = std::vector<Behaviour*>();
-	Engine::GEngine->AddGameObject(this);
+    SceneManagement::AddNewObject(this);
 }
 
 GameObject::~GameObject()
@@ -26,7 +27,7 @@ GameObject::~GameObject()
 }
 void GameObject::OnDestroy()
 {
-	Engine::GEngine->RemoveObjectFromList(this);
+    SceneManagement::RemoveObject(this);
 }
 
 

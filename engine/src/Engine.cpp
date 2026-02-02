@@ -9,6 +9,8 @@
 #include "BoxRenderer.h"
 #include "EngineInputSystem.h"
 #include "Gizmos/GizmoManager.h"
+#include "Scenes/Scene.h"
+#include "Scenes/SceneManager.h"
 
 Engine* Engine::GEngine = nullptr;
 
@@ -17,13 +19,15 @@ Engine::Engine(bool startEngine)
     /* initialize random seed: */
     srand (time(NULL));
     Engine::GEngine = this;
-    gameObjects = std::vector<GameObject*>();
+    //gameObjects = std::vector<GameObject*>();
 
     //Create Game Window
     renderWindow = sf::RenderWindow(sf::VideoMode({ DISPLAYWIDTH, DISPLAYHEIGHT }), WINDOW_NAME,sf::State::Windowed);
 
     //Create Input System
     engineInput = new EngineInputSystem();
+
+    sceneManager= SceneManagement();
 
 
     if (startEngine)
@@ -35,6 +39,11 @@ Engine::Engine(bool startEngine)
 void Engine::Start()
 {
     isRunning = true;
+
+    Scene testScene= Scene();
+
+    testScene.SaveScene("Ffff");
+
     EngineLoop();
 }
 
@@ -128,11 +137,8 @@ void Engine::EngineLoop()
         //Get Delta Time
         deltaTime = clock.restart().asSeconds();
 
-        for (int i = 0; i < gameObjects.size(); i++)
-        {
-            //Update all GameObjects
-            gameObjects[i]->Update(deltaTime);
-        }
+        //Update Objects
+        sceneManager.Update(deltaTime);
 
 
         //Clear Screen and Draw New Scene
@@ -167,23 +173,13 @@ void Engine::EngineLoop()
         renderWindow.display();
 
         //Clear Destruction Stack for Deleted Objects
-        ClearDestructionStack();
+        SceneManagement::ClearDestructionStack();
     }
 
     std::cout << "Closing Engine \n" << std::endl;
 }
 
-void Engine::ClearDestructionStack()
-{
-    Object* targetPointer;
-    for (int i = 0; i < destructionStack.size(); i++)
-    {
-        targetPointer = destructionStack[i];
-        targetPointer->OnDestroy();
-        delete targetPointer;
-    }
-    destructionStack.clear();
-}
+
 
 /// <summary>
 /// Sorts Draw Stack to draw objects by depth priority
@@ -205,13 +201,6 @@ void Engine::SortDrawStack()
     }
 }
 
-void Engine::RemoveObjectFromList(GameObject* g)
-{
-    if (g)
-    {
-        gameObjects.erase(std::remove(gameObjects.begin(), gameObjects.end(), g), gameObjects.end());
-    }
-}
 
 void Engine::RegisterDrawObject(RenderObject* object)
 {
@@ -230,20 +219,8 @@ void Engine::RemoveDrawObject(RenderObject* object)
 }
 
 
-void Engine::AddGameObject(GameObject* newObject)
-{
-    gameObjects.push_back(newObject);
-    gameObjects[gameObjects.size() - 1]->Start();
-}
 
-void Engine::Destroy(Object *target)
-{
-    //Destroy target if it's not a null pointer
-    if (target)
-    {
-        destructionStack.push_back(target);
-    }
-}
+
 
 float Engine::DeltaTime()
 {

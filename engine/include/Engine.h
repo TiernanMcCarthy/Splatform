@@ -4,6 +4,7 @@
 #include "Objects/Object.h"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Window.hpp"
+#include "Scenes/SceneManager.h"
 #include "StartupSequence.h"
 #include "vector"
 class RenderObject;
@@ -11,9 +12,7 @@ class RenderObject;
 class GameObject;
 
 class StartupSequence;
-using EntityID = uint64_t;
 using BehaviourID = uint64_t;
-constexpr EntityID INVALID_ENTITY = 0;
 
 class Engine
 {
@@ -23,19 +22,11 @@ public:
 
 	Engine(bool startEngine = false);
 
-	/// <summary>
-	/// Destroys a GameObject and removes it from the gameobject List
-	/// </summary>
-	void Destroy(Object* target);
+
 
 	void Start();
 
-	void AddGameObject(GameObject* newObject);
-
-
 	float DeltaTime();
-
-	void RemoveObjectFromList(GameObject* g);
 
 	void RegisterDrawObject(RenderObject* object);
 
@@ -47,11 +38,8 @@ public:
 
 private:
 
-	//holds all gameobjects in the Engine Scene
-	std::vector<GameObject*> gameObjects;
 
-	//holds all objects that are being destroyed this frame, we need to clear them from the appropriate areas
-	std::vector<Object*> destructionStack;
+
 
 	//Draw stack that contains all Behaviours that are involved in rendering
 	std::vector<RenderObject*> drawStack;
@@ -67,8 +55,6 @@ private:
 
 	void EngineLoop();
 
-	void ClearDestructionStack();
-
 	void SortDrawStack();
 
 	bool isRunning = false;
@@ -79,10 +65,8 @@ private:
 
     sf::RenderWindow renderWindow;
 
+    SceneManagement sceneManager;
 
-	//Entity ID System
-	EntityID entityIDCount=1;
-	BehaviourID behaviourIDCount=1;
 
 
 protected:

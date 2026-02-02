@@ -19,11 +19,11 @@ bool BoxRenderer::ApplyImage(std::string path)
 
 void BoxRenderer::ApplyImage(sf::Image& image)
 {
-    if (&image==nullptr)
-    {
-        std::cout<<"Failed to load image"<<std::endl;
-        return;
-    }
+   // if (&image==nullptr)
+   // {
+   //     std::cout<<"Failed to load image"<<std::endl;
+    //    return;
+  //  }
 
     renderTexture= new sf::Texture(image);
 

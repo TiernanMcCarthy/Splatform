@@ -1,7 +1,8 @@
 #pragma once
 #include <cstdint>
 #include <unordered_map>
-
+#include "EntityID.h"
+#include "Serialization/Serializer.h"
 
 using EntityID = uint64_t;
 class Serializer;
@@ -11,8 +12,6 @@ class Object
 public:
 
 	EntityID ObjectID;
-
-	static std::unordered_map<EntityID, Object*> s_registry;
 
 	Object();
 
