@@ -136,9 +136,17 @@ public:
 
 	Transform transform;
 
-	GameObject(std::string objectname="GameObject");
+	GameObject(std::string objectname="GameObject",bool useStart=true);
 
 	~GameObject();
+
+    virtual void StartBehaviours()
+    {
+        for (auto b : behaviours)
+        {
+            b->Start();
+        }
+    }
 
 	virtual void Update(float deltaTime);
 
@@ -152,14 +160,19 @@ public:
 
 	void OnDestroy() override;
 
+    std::vector<Behaviour*> GetBehaviours();
+
 	template<typename T, typename... Args>
-	T* AddBehaviour(Args&&... args) {
+	T* AddBehaviour(Args&&... args,bool useStart=true) {
 		static_assert(std::is_base_of<Behaviour, T>::value, "T must inherit Behaviour");
 
 		T* behaviour = new T(std::forward<Args>(args)...);
 		behaviour->SetGameObject(this);
 		behaviours.push_back(behaviour);
-		behaviour->Start();
+	    if (useStart)
+	    {
+	        behaviour->Start();
+	    }
 
 		return behaviour; 
 	}
@@ -175,6 +188,11 @@ public:
 	}
 
 	void RemoveBehaviour(Behaviour* b);
+
+    //Serialisation
+    // Definitions needed for Macro expansion or manual implementation
+    std::string GetTypeName() const override;
+    void Serialize(Serializer& s) override;
 private:
 
 	std::vector<Behaviour*> behaviours;

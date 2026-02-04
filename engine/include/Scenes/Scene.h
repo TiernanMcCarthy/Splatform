@@ -21,7 +21,7 @@ public:
     Scene(const std::string &sceneName ="DefaultScene");
 
     //Save already serialised data to a file, return false if failed.
-    bool SaveScene(std::string data) const;
+    bool SaveScene(std::unordered_map<std::string,std::string> &data) const;
 
 
 

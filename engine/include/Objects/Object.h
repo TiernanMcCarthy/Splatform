@@ -1,10 +1,11 @@
 #pragma once
 #include <cstdint>
 #include <unordered_map>
+#include <string>
 #include "EntityID.h"
 #include "Serialization/Serializer.h"
+#include <SFML/Graphics.hpp>
 
-using EntityID = uint64_t;
 class Serializer;
 
 class Object
@@ -20,6 +21,15 @@ public:
 	//Custom Destruction Logic for Object
 	virtual void OnDestroy();
 
-	void Serialize(Serializer& serializer);
+
+    void Register();
+
+    void ForceID(EntityID id);
+
+    static EntityID GenerateEntityID();
+    static Object* Find(EntityID id);
+
+    virtual std::string GetTypeName() const { return "Object"; }
+    virtual void Serialize(Serializer& s);
 
 };

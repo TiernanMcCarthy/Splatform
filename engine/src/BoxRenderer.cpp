@@ -1,6 +1,9 @@
 #include "BoxRenderer.h"
 #include "../include/Objects/GameObject.h"
 #include <iostream>
+REGISTER_BEHAVIOUR(BoxRenderer);
+
+
 bool BoxRenderer::ApplyImage(std::string path)
 {
 

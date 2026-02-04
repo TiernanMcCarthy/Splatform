@@ -34,6 +34,11 @@ public:
 
 	void AddStartupSequence(StartupSequence *param);
 
+    void ClearDrawObjects()
+    {
+        drawStack.clear();
+    }
+
     sf::RenderWindow &GetRenderWindow();
 
 private:

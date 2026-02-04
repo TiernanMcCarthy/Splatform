@@ -40,10 +40,6 @@ void Engine::Start()
 {
     isRunning = true;
 
-    Scene testScene= Scene();
-
-    testScene.SaveScene("Ffff");
-
     EngineLoop();
 }
 
@@ -87,6 +83,11 @@ void Engine::EngineLoop()
     {
         startupList[i]->Execute();
     }
+
+    SceneManagement::currentScene= new Scene("MyBeautifulTest");
+    SceneManagement::SaveCurrentScene();
+
+
 
     GizmoManager* GizmoManagement = new GizmoManager();
 
@@ -171,6 +172,16 @@ void Engine::EngineLoop()
         GizmoManager::Colour=sf::Color::White;
         
         renderWindow.display();
+
+        if (EngineInputSystem::InputSystem->eKey->wasReleasedThisFrame)
+        {
+            SceneManagement::LoadScene("assets/scenes/MyBeautifulTest.splat");
+
+            //for (int i=0; i<startupList.size(); i++)
+           // {
+            //    startupList[i]->Execute();
+           // }
+        }
 
         //Clear Destruction Stack for Deleted Objects
         SceneManagement::ClearDestructionStack();

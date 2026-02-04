@@ -1,6 +1,8 @@
 #pragma once
 #include "Object.h"
-#include <SFML/Graphics.hpp>
+#include <functional>
+#include <vector>
+
 class GameObject;
 /// <summary>
 /// Version of a Component Or Adjacent to Unity Monobehaviour
@@ -25,4 +27,30 @@ public:
     void SetGameObject(GameObject* parent) {
         gameObject = parent;
     }
+
+    virtual std::string GetTypeName() const override {
+        // Returns compiler specific name (will vary from compiler)
+        return typeid(*this).name();
+    }
 };
+
+
+using Creator = std::function<Behaviour*()>;
+
+class BehaviourFactory {
+public:
+    static std::unordered_map<std::string, Creator>& Registry();
+    static void Register(std::string name, Creator c);
+    static Behaviour* Create(std::string name);
+};
+
+// Helper to bridge the static call
+struct BehaviourRegistrar {
+    BehaviourRegistrar(const std::string& name, Creator c) {
+        BehaviourFactory::Registry()[name] = c;
+    }
+};
+
+#define REGISTER_BEHAVIOUR(ClassName) \
+static BehaviourRegistrar ClassName##_registrar_clean(#ClassName, []() { return new ClassName(); }); \
+static BehaviourRegistrar ClassName##_registrar_mangled(typeid(ClassName).name(), []() { return new ClassName(); });

@@ -17,8 +17,8 @@ void RenderObject::Start()
 
 void RenderObject::OnDestroy()
 {
+    Engine::GEngine->RemoveDrawObject(this);
 	Behaviour::OnDestroy();
-	Engine::GEngine->RemoveDrawObject(this);
 }
 
 void RenderObject::SetDimensions(float x, float y)

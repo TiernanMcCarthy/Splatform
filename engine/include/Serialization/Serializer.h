@@ -2,11 +2,12 @@
 // Created by tiernux on 09/01/2026.
 //
 #pragma once
+#include "Objects/EntityID.h"
+#include "SFML/Graphics/Color.hpp"
+#include "SFML/System/Vector2.hpp"
+#include <sstream>
 #include <string>
 #include <unordered_map>
-#include <sstream>
-#include "Objects/EntityID.h"
-
 
 class Object;
 
@@ -34,6 +35,33 @@ public:
         } else if (database.count(key)) {
             std::stringstream ss(database[key]);
             ss >> value;
+        }
+    }
+
+    // Inside the Serializer class
+    void Property(const std::string& name, sf::Color& value) {
+        std::string key = currentContext.empty() ? name : currentContext + "." + name;
+        if (mode == Mode::Saving) {
+            // Store as "R G B A" string
+            database[key] = std::to_string(value.r) + " " +
+                            std::to_string(value.g) + " " +
+                            std::to_string(value.b) + " " +
+                            std::to_string(value.a);
+        } else if (database.count(key)) {
+            std::stringstream ss(database[key]);
+            int r, g, b, a;
+            ss >> r >> g >> b >> a;
+            value = sf::Color(r, g, b, a);
+        }
+    }
+
+    void Property(const std::string& name, sf::Vector2f& value) {
+        std::string key = currentContext.empty() ? name : currentContext + "." + name;
+        if (mode == Mode::Saving) {
+            database[key] = std::to_string(value.x) + " " + std::to_string(value.y);
+        } else if (database.count(key)) {
+            std::stringstream ss(database[key]);
+            ss >> value.x >> value.y;
         }
     }
 
