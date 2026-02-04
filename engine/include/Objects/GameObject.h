@@ -18,6 +18,9 @@ public:
 	sf::Vector2f localScale;
 
 	Transform* parent = nullptr;
+    GameObject* gameObject=nullptr;
+
+    EntityID parentID;
 
 	Transform()
 	{
@@ -144,7 +147,10 @@ public:
     {
         for (auto b : behaviours)
         {
-            b->Start();
+            if (b)
+            {
+                b->Start();
+            }
         }
     }
 
@@ -193,11 +199,15 @@ public:
     // Definitions needed for Macro expansion or manual implementation
     std::string GetTypeName() const override;
     void Serialize(Serializer& s) override;
+
+
 private:
 
 	std::vector<Behaviour*> behaviours;
 
 	void SetBehaviourParent(Behaviour* b);
+
+    void BehaviourSetup(Behaviour* b);
 
 	
 };

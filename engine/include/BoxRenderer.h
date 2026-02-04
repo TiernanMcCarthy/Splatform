@@ -26,13 +26,11 @@ public:
 	BoxRenderer(sf::Vector2<float> dimensions = sf::Vector2<float>(100,100));
 
     REFLECT_BEGIN(BoxRenderer, Behaviour)
-     // Now these work directly!
-     s.Property("color", color);
-
-    // If you want to save the size of the shape
-    sf::Vector2f size = box.getSize();
-    s.Property("size", size);
-    if (s.mode == Mode::Loading) box.setSize(size);
+         s.Property("color", color);
+        // Save box size
+        sf::Vector2f size = box.getSize();
+        s.Property("size", size);
+        if (s.mode == Mode::Loading) box.setSize(size);
     REFLECT_END()
 
 };

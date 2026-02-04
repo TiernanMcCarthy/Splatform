@@ -36,6 +36,14 @@ class Collider : public Behaviour
 
 class Collider: public Behaviour
 {
+    public:
+
+
+
+    REFLECT_BEGIN(Collider,Behaviour)
+
+
+    REFLECT_END()
 
 };
 

@@ -26,6 +26,10 @@ public:
 	SceneCamera();
 
     void PrintTest();
+
+    REFLECT_BEGIN(SceneCamera,Behaviour)
+
+    REFLECT_END()
 private:
 	float zoomLevel;
 	float zoomSpeed;

@@ -3,12 +3,13 @@
 //
 #include "CollisionTests/CollisionTests.h"
 
-#include "AABB.h"
-#include "Constants.h"
-#include "BoxRenderer.h"
 #include "../../include/CollisionTests/ColliderDebug.h"
-#include "SceneCamera.h"
+#include "AABB.h"
+#include "BoxRenderer.h"
+#include "Constants.h"
 #include "Objects/GameObject.h"
+#include "SceneCamera.h"
+#include "SceneLoadDummy.h"
 
 CollisionTests::CollisionTests() {
 
@@ -17,9 +18,10 @@ CollisionTests::CollisionTests() {
 void CollisionTests::Execute()
 {
 
-    GameObject* testAABB=new GameObject("AABB");
-    testAABB->AddBehaviour<ColliderDebug>();
 
+    GameObject* testAABB=new GameObject("TestDebug");
+    testAABB->AddBehaviour<ColliderDebug>();
+    /*
     //Generate Camera
     GameObject *cameraTemp= new GameObject("CameraTest");
 
@@ -32,7 +34,7 @@ void CollisionTests::Execute()
 
     camera->renderTarget = &Engine::GEngine->GetRenderWindow();
 
-    camera->cameraView = camera->renderTarget->getView();
+    camera->cameraView = camera->renderTarget->getView();*/
 
 
 

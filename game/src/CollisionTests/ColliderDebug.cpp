@@ -11,7 +11,7 @@
 #include "CollisionTests/AABBTestClass.h"
 #include "Gizmos/GizmoManager.h"
 
-
+REGISTER_BEHAVIOUR(ColliderDebug);
 void ColliderDebug::Start()
 {
     //Create and position this GameObject
@@ -60,6 +60,12 @@ void ColliderDebug::Update(float deltaTime)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
     {
         x+=moveSpeed*deltaTime;
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::G))
+    {
+        moveSpeed+=50;
+        std::cout<<moveSpeed<<std::endl;
     }
     sf::Vector2f pos=gameObject->transform.GetPosition() + sf::Vector2f(x,y);
 
@@ -127,6 +133,11 @@ void ColliderDebug::Update(float deltaTime)
 
 
     renderer->UpdateVisualComponents();
+}
+
+void ColliderDebug::OnDestroy()
+{
+    std::cout<<"ColliderDebug::OnDestroy"<<std::endl;
 }
 
 

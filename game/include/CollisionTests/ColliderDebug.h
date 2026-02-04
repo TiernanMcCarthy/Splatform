@@ -19,6 +19,7 @@ public:
 
     void Start() override;
     void Update(float deltaTime) override;
+    void OnDestroy() override;
 
     AABB* ourCollider;
 
@@ -33,5 +34,8 @@ public:
     float moveSpeed=250;
 
 
+    REFLECT_BEGIN(ColliderDebug, Behaviour)
+    REFLECT_VAR(moveSpeed)
+    REFLECT_END()
 
 };

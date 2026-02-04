@@ -54,19 +54,7 @@ void Engine::EngineLoop()
     //Clock for calculating Delta Time
     sf::Clock clock;
 
-    //Create Background
-    BoxRenderer* background = (new GameObject("Background"))->AddBehaviour<BoxRenderer>();
 
-    //Setup Background
-    float pixelCount = (DISPLAYWIDTH * DISPLAYHEIGHT)/1.5f;
-
-    float pixelRatio = (pixelCount / (256 * 224));
-
-    background->gameObject->transform.localScale = sf::Vector2f(256*pixelRatio, 224*pixelRatio);
-
-    background->gameObject->transform.SetPosition(DISPLAYWIDTH / 2, DISPLAYHEIGHT / 2);
-
-    background->ApplyImage("assets/flatImage.png");
 
 
     //Manage Window Settings
@@ -84,6 +72,8 @@ void Engine::EngineLoop()
         startupList[i]->Execute();
     }
 
+    SceneManagement::SceneStartup();
+
     SceneManagement::currentScene= new Scene("MyBeautifulTest");
     SceneManagement::SaveCurrentScene();
 
@@ -96,6 +86,8 @@ void Engine::EngineLoop()
     {
         //clean last frame's inputs
         engineInput->CleanInputs();
+
+        SceneManagement::ExecuteStart();
 
         //Handle Events
         while (const std::optional event = renderWindow.pollEvent())
@@ -175,12 +167,11 @@ void Engine::EngineLoop()
 
         if (EngineInputSystem::InputSystem->eKey->wasReleasedThisFrame)
         {
+            SceneManagement::SaveCurrentScene();
+        }
+        else if (EngineInputSystem::InputSystem->MouseTwo->wasReleasedThisFrame)
+        {
             SceneManagement::LoadScene("assets/scenes/MyBeautifulTest.splat");
-
-            //for (int i=0; i<startupList.size(); i++)
-           // {
-            //    startupList[i]->Execute();
-           // }
         }
 
         //Clear Destruction Stack for Deleted Objects

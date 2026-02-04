@@ -6,6 +6,8 @@
 #include "Constants.h"
 #include "AABB.h"
 
+REGISTER_BEHAVIOUR(AABBTestClass)
+
 void AABBTestClass::Start()
 {
     //Create and position this GameObject

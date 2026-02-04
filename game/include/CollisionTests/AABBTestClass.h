@@ -23,4 +23,9 @@ class AABBTestClass : public Behaviour
     AABB* collider;
 
     BoxRenderer* renderer;
+
+    REFLECT_BEGIN(AABBTestClass,Behaviour)
+
+
+    REFLECT_END()
 };

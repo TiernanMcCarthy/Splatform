@@ -24,29 +24,31 @@ public:
 
     Serializer(Mode m);
 
-    // Template for prebuilt types
-    template<typename T>
+    template<typename T> //Generic predefined types
     void Property(const std::string& name, T& value) {
         std::string key = currentContext.empty() ? name : currentContext + "." + name;
+
         if (mode == Mode::Saving) {
             std::stringstream ss;
             ss << value;
             database[key] = ss.str();
-        } else if (database.count(key)) {
+        }
+        else if (database.count(key)) {
             std::stringstream ss(database[key]);
             ss >> value;
         }
     }
 
-    // Inside the Serializer class
+
+    //Overides for specific objects
+
+    //SF::Color
     void Property(const std::string& name, sf::Color& value) {
         std::string key = currentContext.empty() ? name : currentContext + "." + name;
         if (mode == Mode::Saving) {
-            // Store as "R G B A" string
-            database[key] = std::to_string(value.r) + " " +
-                            std::to_string(value.g) + " " +
-                            std::to_string(value.b) + " " +
-                            std::to_string(value.a);
+            std::stringstream ss;
+            ss << (int)value.r << " " << (int)value.g << " " << (int)value.b << " " << (int)value.a;
+            database[key] = ss.str();
         } else if (database.count(key)) {
             std::stringstream ss(database[key]);
             int r, g, b, a;
@@ -55,6 +57,8 @@ public:
         }
     }
 
+
+    // Handle sf::Vector2f
     void Property(const std::string& name, sf::Vector2f& value) {
         std::string key = currentContext.empty() ? name : currentContext + "." + name;
         if (mode == Mode::Saving) {
@@ -71,7 +75,7 @@ public:
     void Property(const std::string& name, Object*& ptr);
 };
 
-// --- MACROS --- Used to define objects
+// --- MACROS for Reflection on classes
 #define REFLECT_BEGIN(ClassName, ParentClass) \
 std::string GetTypeName() const override { return #ClassName; } \
 void Serialize(Serializer& s) override { \

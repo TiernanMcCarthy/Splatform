@@ -5,11 +5,13 @@
 
 #ifndef SPLATFORM_SCENEMANAGER_H
 #define SPLATFORM_SCENEMANAGER_H
+#include "Objects/EntityID.h"
 #include <string>
 #include <unordered_map>
-#include "Objects/EntityID.h"
 
 #include <vector>
+
+class Behaviour;
 class Scene;
 class Object;
 class GameObject;
@@ -44,16 +46,25 @@ class SceneManagement
 
     static void ClearDestructionStack();
 
+    static void AddBehaviourForStart(Behaviour* behaviour);
+
+    static void ExecuteStart();
+
     /// <summary>
     /// Destroys a GameObject and removes it from the GameObject List
     /// </summary>
     static void Destroy(Object* target);
 
 
+    static void SceneStartup();
 
 private:
     //holds all objects that are being destroyed this frame, we need to clear them from the appropriate areas
     static std::vector<Object*> destructionStack;
+
+    static std::vector<GameObject*> startBuffer;
+
+
 
 
 

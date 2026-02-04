@@ -3,7 +3,7 @@
 #include "EngineInputSystem.h"
 #include "math.h"
 #include <iostream>
-
+REGISTER_BEHAVIOUR(SceneCamera)
 SceneCamera::SceneCamera()
 {
 	zoomSpeed = 1.1f;

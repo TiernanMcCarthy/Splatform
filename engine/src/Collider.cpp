@@ -3,6 +3,7 @@
 //
 #include "Collider.h"
 
+REGISTER_BEHAVIOUR(Collider)
 
 HitResult::HitResult() {
     hitTime=-1;

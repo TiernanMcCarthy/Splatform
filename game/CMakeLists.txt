@@ -23,6 +23,8 @@ add_executable(Splatform
         src/CollisionTests/ColliderDebug.cpp
         include/CollisionTests/AABBTestClass.h
         src/AABBTestClass.cpp
+        include/SceneLoadDummy.h
+        src/SceneLoadDummy.cpp
 )
 
 target_link_libraries(Splatform PRIVATE Engine)

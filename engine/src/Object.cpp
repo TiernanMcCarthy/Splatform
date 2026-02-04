@@ -8,18 +8,25 @@ Object::Object()
     Register();
 }
 
-//Assign the object to the object register
+
+// Assign the object to the object register
 void Object::Register()
 {
     SceneManagement::objectRegister[ObjectID]=this;
 }
 
-void Object::ForceID(EntityID id)
-{
-    SceneManagement::RemoveObjectFromRegister(ObjectID); // Remove old random ID
-    ObjectID = id;
+void Object::ForceID(EntityID id) {
+    // 1. Unregister the random ID created by the constructor
+    SceneManagement::RemoveObjectFromRegister(this->ObjectID);
+
+    // 2. Set the ID from the file
+    this->ObjectID = id;
+
+    // 3. Re-register with the correct ID
     SceneManagement::objectRegister[ObjectID] = this;    // Register new loaded ID
 }
+
+
 
 EntityID Object::GenerateEntityID() {
     static std::random_device rd;

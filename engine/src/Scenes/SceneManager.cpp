@@ -3,6 +3,8 @@
 //
 #include <Scenes/SceneManager.h>
 
+#include "BoxRenderer.h"
+#include "Constants.h"
 #include "Objects/GameObject.h"
 
 #include <Scenes/Scene.h>
@@ -14,6 +16,9 @@ std::unordered_map<EntityID, Object *> SceneManagement::objectRegister;
 std::vector<GameObject *> SceneManagement::gameObjects;
 
 std::vector<Object *> SceneManagement::destructionStack;
+
+std::vector<GameObject*> SceneManagement::startBuffer;
+
 
 Scene*SceneManagement::currentScene;
 
@@ -29,6 +34,8 @@ void SceneManagement::RemoveObjectFromRegister(EntityID id)
 
 void SceneManagement::Update(float deltaTime)
 {
+
+
     for (int i = 0; i < gameObjects.size(); i++)
     {
         //Update all GameObjects
@@ -38,6 +45,7 @@ void SceneManagement::Update(float deltaTime)
 
 void SceneManagement::AddNewObject(GameObject *newObject,bool useStart)
 {
+    //startBuffer.push_back(newObject);
     gameObjects.push_back(newObject);
     if (useStart)
     {
@@ -74,16 +82,33 @@ void SceneManagement::Destroy(Object *target)
         destructionStack.push_back(target);
     }
 }
-
-bool SceneManagement::SaveCurrentScene()
+void SceneManagement::AddBehaviourForStart(Behaviour *behaviour)
 {
-    // 1. Gather all data into the Serializer's database
+    //behaviourStartBuffer.push_back(behaviour);
+}
+
+void SceneManagement::ExecuteStart()
+{
+
+    for (int i=0; i < startBuffer.size(); i++)
+    {
+        startBuffer[i]->Start();
+    }
+
+
+    startBuffer.clear();
+}
+
+bool SceneManagement::SaveCurrentScene() {
     Serializer saver(Mode::Saving);
+
+    // Use a clear, consistent key name
     int count = (int)gameObjects.size();
     saver.Property("Scene_RootCount", count);
 
     for (int i = 0; i < count; i++) {
-        saver.Property("Root" + std::to_string(i) + "_ObjectID", gameObjects[i]->ObjectID);
+        // ENSURE THIS MATCHES THE LOAD EXACTLY
+        saver.Property("Root" + std::to_string(i) + "_ID", gameObjects[i]->ObjectID);
     }
 
     for (auto go : gameObjects) {
@@ -91,85 +116,68 @@ bool SceneManagement::SaveCurrentScene()
     }
 
     currentScene->SaveScene(saver.database);
-
     return true;
-
 }
 
+bool SceneManagement::LoadScene(std::string sceneName, bool additive) {
 
-bool SceneManagement::LoadScene(std::string sceneName, bool additive)
-{
-    // 1. Cleanup current scene
-    for (auto go : gameObjects) Destroy(go);
+    // Wipe and clear all objects
+    for (auto go : gameObjects) delete go;
     gameObjects.clear();
-    SceneManagement::objectRegister.clear();
-
+    objectRegister.clear();
+    ClearDestructionStack();
     Engine::GEngine->ClearDrawObjects();
+    destructionStack.clear();
 
-    // 2. Read the flat file into a temporary map
+
+
+    // 2. LOAD FILE
     std::unordered_map<std::string, std::string> db;
-    std::ifstream file(sceneName);
-    if (!file.is_open()) return false;
+    // ... (Your ifstream loading code) ...
+    db=currentScene->LoadScene();
 
-    std::string line;
-    while (std::getline(file, line)) {
-        size_t delimiter = line.find('=');
-        if (delimiter != std::string::npos) {
-            std::string key = line.substr(0, delimiter);
-            std::string val = line.substr(delimiter + 1);
-            db[key] = val;
-        }
-    }
-
-    // 3. Use the Serializer to reconstruct objects
     Serializer loader(Mode::Loading);
     loader.database = db;
 
+    // 3. RECONSTRUCT
     int rootCount = 0;
     loader.Property("Scene_RootCount", rootCount);
 
-    // Instantiate the GameObjects first so IDs exist in the registry for linking
     for (int i = 0; i < rootCount; i++) {
         EntityID id;
-        loader.Property("Root" + std::to_string(i) + "_ObjectID", id);
-        GameObject* go = new GameObject("SerialObject",false);
+        loader.Property("Root" + std::to_string(i) + "_ID", id);
+
+        // Constructor adds to gameObjects list automatically
+        GameObject* go = new GameObject("SerialObject", false);
         go->ForceID(id);
     }
 
-    // Run the actual serialization (restores names and behaviours)
-    for (auto go : gameObjects) {
-        go->Serialize(loader);
-
-        std::cout << go->name << std::endl;
+    // 4. DATA INJECTION
+    for (int i = 0; i < gameObjects.size(); i++) {
+        gameObjects[i]->Serialize(loader);
     }
 
-    //Call start on all serialised objects
-    for (int i = 0; i < gameObjects.size(); i++)
-    {
-        gameObjects[i]->Start();
-    }
-
-    std::cout << "\n--- [REGISTER DEBUG] ---" << std::endl;
-    std::cout << "Total Objects in Register: " << objectRegister.size() << std::endl;
-
-    for (auto const& [id, obj] : objectRegister) {
-        if (obj) {
-            std::cout << " > ID: " << id
-                      << " | Type: " << obj->GetTypeName()
-                      << " | Memory Address: " << obj << std::endl;
-        } else {
-            std::cout << " > ID: " << id << " | [NULL POINTER ERROR]" << std::endl;
-        }
-    }
-
-    std::cout << "--- [GAME OBJECT LIST] ---" << std::endl;
-    for (auto go : gameObjects) {
-        std::cout << " > GO: " << go->name << " (ID: " << go->ObjectID << ")" << std::endl;
-        for (auto b : go->GetBehaviours()) {
-            std::cout << "    - Bev: " << b->GetTypeName() << " (ID: " << b->ObjectID << ")" << std::endl;
-        }
-    }
-    std::cout << "------------------------\n" << std::endl;
+    SceneStartup();
 
     return true;
+}
+
+void SceneManagement::SceneStartup()
+{
+
+    //Create Background
+    BoxRenderer* background = (new GameObject("Background"))->AddBehaviour<BoxRenderer>();
+
+    //Setup Background
+    float pixelCount = (DISPLAYWIDTH * DISPLAYHEIGHT)/1.5f;
+
+    float pixelRatio = (pixelCount / (256 * 224));
+
+    background->gameObject->transform.localScale = sf::Vector2f(256*pixelRatio, 224*pixelRatio);
+
+    background->gameObject->transform.SetPosition(DISPLAYWIDTH / 2, DISPLAYHEIGHT / 2);
+
+    background->ApplyImage("assets/flatImage.png");
+
+    background->depth=0;
 }

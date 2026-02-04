@@ -26,4 +26,8 @@ class AABB : public Collider
 
     SweepResult SweepAABB(AABB *target, sf::Vector2f delta);
 
+    REFLECT_BEGIN(AABB,Collider)
+
+    REFLECT_END()
+
 };

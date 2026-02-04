@@ -8,7 +8,7 @@
 
 #include "Objects/GameObject.h"
 
-
+REGISTER_BEHAVIOUR(AABB);
 AABB::AABB()
 {
     halfSize=sf::Vector2f(0,0);
