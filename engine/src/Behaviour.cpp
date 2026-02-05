@@ -13,6 +13,15 @@ void Behaviour::Start()
 {
 }
 
+void Behaviour::CanUpdate(float deltaTime)
+{
+    if (isActive)
+    {
+        Update(deltaTime);
+    }
+}
+
+
 void Behaviour::Update(float deltaTime)
 {
 }

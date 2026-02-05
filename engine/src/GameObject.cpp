@@ -39,11 +39,15 @@ void GameObject::OnDestroy()
 
 void GameObject::Update(float deltaTime)
 {
-	//iterate through all attached behaviours
-	for (int i = 0; i < behaviours.size(); i++)
-	{
-		behaviours[i]->Update(deltaTime);
-	}
+    if (isActive)
+    {
+        //iterate through all attached behaviours
+        for (int i = 0; i < behaviours.size(); i++)
+        {
+            behaviours[i]->CheckActiveState();
+            behaviours[i]->CanUpdate(deltaTime);
+        }
+    }
 }
 
 void GameObject::FixedUpdate(float deltaTime)

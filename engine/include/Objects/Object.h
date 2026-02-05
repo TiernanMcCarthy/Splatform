@@ -14,6 +14,8 @@ public:
 
 	EntityID ObjectID;
 
+    bool isActive = true;
+
 	Object();
 
 	virtual ~Object() = default;
@@ -21,7 +23,14 @@ public:
 	//Custom Destruction Logic for Object
 	virtual void OnDestroy();
 
+    virtual void Awake();
 
+    virtual void OnEnable();
+
+    virtual void OnDisable();
+
+
+    void CheckActiveState();
     void Register();
 
     void ForceID(EntityID id);
@@ -31,5 +40,8 @@ public:
 
     virtual std::string GetTypeName() const { return "Object"; }
     virtual void Serialize(Serializer& s);
+
+private:
+    bool lastActiveState=true;
 
 };

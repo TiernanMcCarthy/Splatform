@@ -133,7 +133,7 @@ class GameObject : public Object
 
 public:
 
-	bool isActive = true;
+
 
 	std::string name;
 

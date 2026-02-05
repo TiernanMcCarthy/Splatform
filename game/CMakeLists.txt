@@ -37,7 +37,7 @@ if(WIN32)
     add_custom_command(TARGET Splatform POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
             ${CMAKE_BINARY_DIR}/engine/libEngine.dll
-            $<TARGET_FILE_DIR:Platformer>
+            $<TARGET_FILE_DIR:Splatform>
     )
     add_custom_command(TARGET Splatform POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E echo "Copying bin files from ${PROJECT_SOURCE_DIR}/bin to $<TARGET_FILE_DIR:Splatform>"

@@ -19,7 +19,6 @@ std::vector<Object *> SceneManagement::destructionStack;
 
 std::vector<GameObject*> SceneManagement::startBuffer;
 
-
 Scene*SceneManagement::currentScene;
 
 SceneManagement::SceneManagement()
@@ -39,6 +38,7 @@ void SceneManagement::Update(float deltaTime)
     for (int i = 0; i < gameObjects.size(); i++)
     {
         //Update all GameObjects
+        gameObjects[i]->CheckActiveState();
         gameObjects[i]->Update(deltaTime);
     }
 }

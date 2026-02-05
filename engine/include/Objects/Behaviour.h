@@ -10,7 +10,6 @@ class GameObject;
 class Behaviour :public Object{
 public:
 
-    bool isEnabled = true;
     GameObject* gameObject = nullptr;
 
     virtual ~Behaviour() = default;
@@ -20,8 +19,7 @@ public:
     // Called after being added to a gameobject
     virtual void Start();
 
-    //Main Update of a behaviour, once per frame
-    virtual void Update(float deltaTime);
+    void CanUpdate(float deltaTime);
 
     // Set the parent GameObject pointer
     void SetGameObject(GameObject* parent) {
@@ -32,6 +30,10 @@ public:
         // Returns compiler specific name (will vary from compiler)
         return typeid(*this).name();
     }
+
+private:
+    //Main Update of a behaviour, once per frame
+    virtual void Update(float deltaTime);
 };
 
 

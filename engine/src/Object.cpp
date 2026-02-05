@@ -15,6 +15,37 @@ void Object::Register()
     SceneManagement::objectRegister[ObjectID]=this;
 }
 
+void Object::Awake()
+{
+
+}
+
+void Object::OnEnable()
+{
+    
+}
+
+
+void Object::OnDisable()
+{
+
+}
+
+
+void Object::CheckActiveState()
+{
+    if (lastActiveState==false && isActive)
+    {
+        Awake();
+    }
+    else if (lastActiveState==true && !isActive)
+    {
+        OnDisable();
+    }
+
+    lastActiveState=isActive;
+}
+
 void Object::ForceID(EntityID id) {
     // 1. Unregister the random ID created by the constructor
     SceneManagement::RemoveObjectFromRegister(this->ObjectID);
