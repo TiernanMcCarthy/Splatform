@@ -156,6 +156,11 @@ void GameObject::Serialize(Serializer& s) {
             s.Property("B_Type_" + idx, type);
             s.Property("B_ObjectID_" + idx, bID);
 
+            //Transform Properties
+            s.Property("Position",transform.localPosition);
+            s.Property("Rotation",transform.localRotation);
+            s.Property("Scale",transform.localScale);
+
             if (type.empty()) continue;
 
             // Factory creates new instance -> Generates RANDOM ID

@@ -43,6 +43,20 @@ void Engine::Start()
     EngineLoop();
 }
 
+PlayMode Engine::GetPlayMode()
+{
+    return enginePlayMode;
+}
+
+void Engine::EnterPlayMode()
+{
+
+}
+
+void Engine::ExitPlayMode()
+{
+
+}
 
 void Engine::EngineLoop()
 {
@@ -132,7 +146,10 @@ void Engine::EngineLoop()
         deltaTime = clock.restart().asSeconds();
 
         //Update Objects
-        sceneManager.Update(deltaTime);
+        if (enginePlayMode==PlayMode::Game)
+        {
+            sceneManager.Update(deltaTime);
+        }
 
 
         //Clear Screen and Draw New Scene

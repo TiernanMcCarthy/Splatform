@@ -14,6 +14,13 @@ class GameObject;
 class StartupSequence;
 using BehaviourID = uint64_t;
 
+//Used to decipher what mode the engine is in to determine behaviour
+enum PlayMode
+{
+    Editor,
+    Game
+};
+
 class Engine
 {
 public:
@@ -21,8 +28,6 @@ public:
 	static Engine *GEngine;
 
 	Engine(bool startEngine = false);
-
-
 
 	void Start();
 
@@ -41,9 +46,15 @@ public:
 
     sf::RenderWindow &GetRenderWindow();
 
+    void EnterPlayMode();
+
+    void ExitPlayMode();
+
+    PlayMode GetPlayMode();
+
 private:
 
-
+    PlayMode enginePlayMode= PlayMode::Game;
 
 
 	//Draw stack that contains all Behaviours that are involved in rendering
