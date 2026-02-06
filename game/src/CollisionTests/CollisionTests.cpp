@@ -21,20 +21,14 @@ void CollisionTests::Execute()
 
     GameObject* testAABB=new GameObject("TestDebug");
     testAABB->AddBehaviour<ColliderDebug>();
-    /*
+
+
     //Generate Camera
     GameObject *cameraTemp= new GameObject("CameraTest");
 
     SceneCamera* camera = cameraTemp->AddBehaviour<SceneCamera>();
 
-    camera->minBounds = sf::Vector2f(0, 0);
-    camera->maxBounds = sf::Vector2f(DISPLAYWIDTH*1.1f, DISPLAYHEIGHT*1.1f);
-    camera->minBounds = sf::Vector2f(0, 0);
 
-
-    camera->renderTarget = &Engine::GEngine->GetRenderWindow();
-
-    camera->cameraView = camera->renderTarget->getView();*/
 
 
 

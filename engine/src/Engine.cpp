@@ -65,17 +65,18 @@ void Engine::EngineLoop()
     sf::View GameLayer= renderWindow.getView();
 
 
+    //SceneManagement::SceneStartup();
     //Manage Startup Sequences, used for spawning objects, scene loading and scene management could
     //Come next
+    /*
     for (int i=0; i<startupList.size(); i++)
     {
         startupList[i]->Execute();
-    }
+    }*/
 
-    SceneManagement::SceneStartup();
 
     SceneManagement::currentScene= new Scene("MyBeautifulTest");
-    SceneManagement::SaveCurrentScene();
+    //SceneManagement::SaveCurrentScene();
 
 
 

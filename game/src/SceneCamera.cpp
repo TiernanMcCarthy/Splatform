@@ -1,4 +1,6 @@
 #include "SceneCamera.h"
+
+#include "Constants.h"
 #include "Engine.h"
 #include "EngineInputSystem.h"
 #include "math.h"
@@ -71,6 +73,18 @@ void SceneCamera::ManageCamera(float deltaTime)
 void SceneCamera::Update(float deltaTime)
 {
 	ManageCamera(deltaTime);
+}
+
+void SceneCamera::Start()
+{
+    minBounds = sf::Vector2f(0, 0);
+    maxBounds = sf::Vector2f(DISPLAYWIDTH*1.1f, DISPLAYHEIGHT*1.1f);
+    minBounds = sf::Vector2f(0, 0);
+
+
+    renderTarget = &Engine::GEngine->GetRenderWindow();
+
+    cameraView = renderTarget->getView();
 }
 
 void SceneCamera::PrintTest()

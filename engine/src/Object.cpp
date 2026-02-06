@@ -36,7 +36,7 @@ void Object::CheckActiveState()
 {
     if (lastActiveState==false && isActive)
     {
-        Awake();
+        OnEnable();
     }
     else if (lastActiveState==true && !isActive)
     {

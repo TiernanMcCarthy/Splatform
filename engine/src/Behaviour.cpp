@@ -17,7 +17,15 @@ void Behaviour::CanUpdate(float deltaTime)
 {
     if (isActive)
     {
-        Update(deltaTime);
+        if (!hasStarted)
+        {
+            Start();
+            hasStarted = true;
+        }
+        else
+        {
+            Update(deltaTime);
+        }
     }
 }
 

@@ -23,6 +23,8 @@ public:
 
 	void Update(float deltaTime) override;
 
+    void Start() override;
+
 	SceneCamera();
 
     void PrintTest();

@@ -35,12 +35,14 @@ void GameObject::OnDestroy()
 }
 
 
-
-
 void GameObject::Update(float deltaTime)
 {
+
     if (isActive)
     {
+        //Check if any behaviours need to be started for their first execution
+        //BehaviourStartSequence();
+
         //iterate through all attached behaviours
         for (int i = 0; i < behaviours.size(); i++)
         {

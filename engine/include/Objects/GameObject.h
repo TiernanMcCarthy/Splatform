@@ -177,7 +177,7 @@ public:
 		behaviours.push_back(behaviour);
 	    if (useStart)
 	    {
-	        behaviour->Start();
+	        behaviour->Awake();
 	    }
 
 		return behaviour; 

@@ -25,9 +25,13 @@ void ColliderDebug::Start()
 
     renderer=gameObject->AddBehaviour<BoxRenderer>();
 
+    renderer->color=sf::Color::Cyan;
+    renderer->depth=1;
+
     collisionDot= (new GameObject("CollisionDot"))->AddBehaviour<BoxRenderer>();;
 
     collisionDot->color=sf::Color::Yellow;
+    collisionDot->depth=1;
 
     collisionDot->gameObject->transform.localScale=sf::Vector2<float>(15,15);
 
@@ -78,6 +82,7 @@ void ColliderDebug::Update(float deltaTime)
     if (result.debugHit)
     {
         renderer->color=sf::Color::Red; //gameObject->transform.GetPosition()+result.delta
+        renderer->depth=1;
         collisionDot->gameObject->transform.SetPosition(result.hitPosition);
     }
     else

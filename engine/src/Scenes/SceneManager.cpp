@@ -130,6 +130,7 @@ bool SceneManagement::LoadScene(std::string sceneName, bool additive) {
     destructionStack.clear();
 
 
+    //SceneStartup();
 
     // 2. LOAD FILE
     std::unordered_map<std::string, std::string> db;
@@ -156,9 +157,6 @@ bool SceneManagement::LoadScene(std::string sceneName, bool additive) {
     for (int i = 0; i < gameObjects.size(); i++) {
         gameObjects[i]->Serialize(loader);
     }
-
-    SceneStartup();
-
     return true;
 }
 
@@ -167,6 +165,8 @@ void SceneManagement::SceneStartup()
 
     //Create Background
     BoxRenderer* background = (new GameObject("Background"))->AddBehaviour<BoxRenderer>();
+
+    background->depth=-1;
 
     //Setup Background
     float pixelCount = (DISPLAYWIDTH * DISPLAYHEIGHT)/1.5f;
@@ -179,5 +179,4 @@ void SceneManagement::SceneStartup()
 
     background->ApplyImage("assets/flatImage.png");
 
-    background->depth=0;
 }

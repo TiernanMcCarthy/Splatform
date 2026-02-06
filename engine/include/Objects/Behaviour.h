@@ -16,7 +16,7 @@ public:
 
     void OnDestroy() override;
 
-    // Called after being added to a gameobject
+    // Called before the first frame update
     virtual void Start();
 
     void CanUpdate(float deltaTime);
@@ -34,6 +34,8 @@ public:
 private:
     //Main Update of a behaviour, once per frame
     virtual void Update(float deltaTime);
+
+    bool hasStarted=false;
 };
 
 
