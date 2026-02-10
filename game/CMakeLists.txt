@@ -1,5 +1,6 @@
-add_executable(Splatform
-        main.cpp
+
+#Game exists as a library now which is called by the Editor and the Splatform Executable in builds
+add_library(GameLib SHARED
         src/ObjectSpawnList.cpp
         src/SceneCamera.cpp
         src/TestScript.cpp
@@ -27,31 +28,49 @@ add_executable(Splatform
         src/SceneLoadDummy.cpp
 )
 
-target_link_libraries(Splatform PRIVATE Engine)
+# Link GameLib to Engine
+target_link_libraries(GameLib PUBLIC Engine)
 
-target_include_directories(Splatform PRIVATE
+# Expose headers for Editor
+target_include_directories(GameLib PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${PROJECT_SOURCE_DIR}/engine/include
-        ${PROJECT_SOURCE_DIR}/game/include
 )
+
+#Standalone executable for game build
+add_executable(Splatform main.cpp)
+
+# Link the executable to the Game Logic
+target_link_libraries(Splatform PRIVATE GameLib)
+
+#copy assets and dlls to correct folders, different requirements on Windows
 if(WIN32)
+    #engine DLL
     add_custom_command(TARGET Splatform POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            ${CMAKE_BINARY_DIR}/engine/libEngine.dll
+            $<TARGET_FILE:Engine>
             $<TARGET_FILE_DIR:Splatform>
     )
+    #Game dll
     add_custom_command(TARGET Splatform POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E echo "Copying bin files from ${PROJECT_SOURCE_DIR}/bin to $<TARGET_FILE_DIR:Splatform>"
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            $<TARGET_FILE:GameLib>
+            $<TARGET_FILE_DIR:Splatform>
+    )
+
+    # Copy Binaries
+    add_custom_command(TARGET Splatform POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E echo "Copying bin files..."
             COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${PROJECT_SOURCE_DIR}/bin
             $<TARGET_FILE_DIR:Splatform>
     )
 endif(WIN32)
 
+# Copy Assets
 add_custom_command(TARGET Splatform POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E echo "Copying assets from ${PROJECT_SOURCE_DIR}/assets to $<TARGET_FILE_DIR:Splatform>/assets"
+        COMMAND ${CMAKE_COMMAND} -E echo "Copying assets..."
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${PROJECT_SOURCE_DIR}/assets
         $<TARGET_FILE_DIR:Splatform>/assets
 )
-message("ENGINE INCLUDE PATH: ${PROJECT_SOURCE_DIR}/engine/include")
-message("Assets INCLUDE PATH: ${PROJECT_SOURCE_DIR}/assets")

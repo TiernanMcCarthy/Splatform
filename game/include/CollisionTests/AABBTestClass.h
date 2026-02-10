@@ -4,6 +4,7 @@
 
 #ifndef SPLATFORM_AABBTESTCLASS_H
 #define SPLATFORM_AABBTESTCLASS_H
+#include "Systems/Core.h"
 #include "CollisionTests.h"
 #include "Objects/GameObject.h"
 
