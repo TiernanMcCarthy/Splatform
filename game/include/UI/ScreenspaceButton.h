@@ -31,6 +31,8 @@ public:
 
     void Start() override;
 
+    void Awake() override;
+
     Button* attachedButton=nullptr;
 
 

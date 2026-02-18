@@ -26,6 +26,11 @@ add_library(GameLib SHARED
         src/AABBTestClass.cpp
         include/SceneLoadDummy.h
         src/SceneLoadDummy.cpp
+        include/CollisionTests/LoadSaveTest.h
+        include/CollisionTests/LoadUI.h
+        src/CollisionTests/LoadUI.cpp
+        include/TestPlayer/TestPlayer.h
+        src/TestPlayer/TestPlayer.cpp
 )
 
 # Link GameLib to Engine

@@ -1,11 +1,12 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
-#include "include/CollisionTests/CollisionTests.h"
+#include "CollisionTests/LoadSaveTest.h"
 #include "Engine.h"
 #include "FontManager.h"
-#include "StartupSequence.h"
 #include "ObjectSpawnList.h"
+#include "StartupSequence.h"
+#include "include/CollisionTests/CollisionTests.h"
 
 int main()
 {
@@ -29,8 +30,13 @@ int main()
     }
 
     std::cout << "Starting Engine \n" << std::endl;
-    CollisionTests temp = CollisionTests();
+
+    ///These are some incredibly temporary start up scripts, will be replaced when the editor has been made
+    LoadSaveTEST temp = LoadSaveTEST();
     gameEngine.AddStartupSequence(&temp);
+
+    //CollisionTests temp2 = CollisionTests();
+    //gameEngine.AddStartupSequence(&temp2);
     gameEngine.Start();
 
 

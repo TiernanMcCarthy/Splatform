@@ -17,7 +17,7 @@ void ColliderDebug::Start()
     //Create and position this GameObject
     ourCollider=gameObject->AddBehaviour<AABB>();
 
-    //gameObject->transform.localScale=sf::Vector2<float>(100,100);
+    gameObject->transform.localScale=sf::Vector2<float>(100,100);
 
    // gameObject->transform.SetPosition(DISPLAYWIDTH/1.4f,DISPLAYHEIGHT/2);
 

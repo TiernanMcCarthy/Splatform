@@ -18,7 +18,7 @@ ScreenSpaceButton::ScreenSpaceButton()
 
 }
 
-void ScreenSpaceButton::Start()
+void ScreenSpaceButton::Awake()
 {
     //Setup Basic Dimensions
     gameObject->transform.localScale= sf::Vector2f(100,100);
@@ -35,6 +35,12 @@ void ScreenSpaceButton::Start()
     textBox->text="";
     textBox->drawLayer=DrawMode::UI;
     textBox->depth=2;
+}
+
+
+void ScreenSpaceButton::Start()
+{
+
 }
 
 void ScreenSpaceButton::Update(float deltaTime)

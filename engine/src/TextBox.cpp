@@ -13,14 +13,23 @@ void TextBox::SetColour(sf::Color colour)
     textBox->setFillColor(colour);
 }
 
-
-void TextBox::Start()
-{
+void TextBox::Awake()
+ {
      RenderObject::Start();
-    textBox= new sf::Text(*FontManager::defaultFont);
+     textBox= new sf::Text(*FontManager::defaultFont);
      textBox->setFillColor(sf::Color::Black);
      offsetPos = sf::Vector2f();
      fontSize=textBox->getCharacterSize();
+ }
+
+
+void TextBox::Start()
+{
+    // RenderObject::Start();
+    //textBox= new sf::Text(*FontManager::defaultFont);
+    // textBox->setFillColor(sf::Color::Black);
+    // offsetPos = sf::Vector2f();
+    // fontSize=textBox->getCharacterSize();
 }
 
 void TextBox::Update(float deltaTime)

@@ -20,8 +20,6 @@ class SceneLoadDummy : public Behaviour
     void Update(float deltaTime) override;
 
 
-    // inside SceneLoadDummy.h
-    // TEMPORARILY REPLACE REFLECT_VAR(testValue) WITH THIS:
     void Serialize(Serializer& s) override {
         std::string oldCtx = s.currentContext;
         s.currentContext = "SceneLoadDummy" + std::to_string(ObjectID);

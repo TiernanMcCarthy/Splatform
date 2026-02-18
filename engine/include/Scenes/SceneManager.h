@@ -36,7 +36,7 @@ class SceneManagement
     static bool SaveCurrentScene();
 
     // Load a scene from a string, additive not implemented, just thinking ahead. Return false if scene cannot be found
-    static bool LoadScene(std::string sceneName, bool additive=false);
+    static void LoadScene(std::string sceneName, bool additive=false);
 
     static void AddNewObject(GameObject* newObject,bool useStart=true);
 
@@ -63,6 +63,11 @@ private:
     static std::vector<Object*> destructionStack;
 
     static std::vector<GameObject*> startBuffer;
+
+    static std::string pendingSceneName;
+    static bool loadScene;
+
+    void DeferredLoadScene();
 
 
 

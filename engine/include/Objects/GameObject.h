@@ -139,6 +139,9 @@ public:
 
 	Transform transform;
 
+    // slow, implement laymasks later, but for now, this will do
+    std::string layer="default";
+
 	GameObject(std::string objectname="GameObject",bool useStart=true);
 
 	~GameObject();

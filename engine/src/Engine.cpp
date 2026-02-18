@@ -82,11 +82,11 @@ void Engine::EngineLoop()
     //SceneManagement::SceneStartup();
     //Manage Startup Sequences, used for spawning objects, scene loading and scene management could
     //Come next
-    /*
+
     for (int i=0; i<startupList.size(); i++)
     {
         startupList[i]->Execute();
-    }*/
+    }
 
 
     SceneManagement::currentScene= new Scene("MyBeautifulTest");
@@ -189,7 +189,7 @@ void Engine::EngineLoop()
         }
         else if (EngineInputSystem::InputSystem->MouseTwo->wasReleasedThisFrame)
         {
-            SceneManagement::LoadScene("assets/scenes/MyBeautifulTest.splat");
+            SceneManagement::LoadScene("MyBeautifulTest");
         }
 
         //Clear Destruction Stack for Deleted Objects

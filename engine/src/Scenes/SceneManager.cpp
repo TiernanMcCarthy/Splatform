@@ -21,9 +21,13 @@ std::vector<GameObject*> SceneManagement::startBuffer;
 
 Scene*SceneManagement::currentScene;
 
+bool SceneManagement::loadScene = false;
+
 SceneManagement::SceneManagement()
 {
     currentScene= new Scene();
+
+    loadScene = false;
 }
 
 void SceneManagement::RemoveObjectFromRegister(EntityID id)
@@ -40,6 +44,11 @@ void SceneManagement::Update(float deltaTime)
         //Update all GameObjects
         gameObjects[i]->CheckActiveState();
         gameObjects[i]->Update(deltaTime);
+    }
+
+    if (loadScene)
+    {
+        DeferredLoadScene();
     }
 }
 
@@ -119,8 +128,9 @@ bool SceneManagement::SaveCurrentScene() {
     return true;
 }
 
-bool SceneManagement::LoadScene(std::string sceneName, bool additive) {
 
+void SceneManagement::DeferredLoadScene()
+{
     // Wipe and clear all objects
     for (auto go : gameObjects) delete go;
     gameObjects.clear();
@@ -157,8 +167,22 @@ bool SceneManagement::LoadScene(std::string sceneName, bool additive) {
     for (int i = 0; i < gameObjects.size(); i++) {
         gameObjects[i]->Serialize(loader);
     }
-    return true;
+
+    loadScene=false;
 }
+
+
+
+void SceneManagement::LoadScene(std::string sceneName, bool additive)
+{
+    //delete currentScene;
+    currentScene= new Scene(sceneName);
+
+    loadScene=true;
+
+}
+
+
 
 void SceneManagement::SceneStartup()
 {

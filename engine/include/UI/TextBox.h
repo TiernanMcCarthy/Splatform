@@ -10,6 +10,7 @@ class TextBox : public  RenderObject
 public:
     std::string text;
 
+    void Awake() override;
     void Update(float deltaTime) override;
     void Start() override;
     void Render(sf::RenderWindow *target) override;
