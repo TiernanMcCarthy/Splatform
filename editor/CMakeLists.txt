@@ -8,8 +8,14 @@ add_executable(Editor
         main.cpp
         include/Editor.h
         src/Editor.cpp
+        include/TempEditor/SimpleMapEditor.h
+        src/TempEditor/SimpleMapEditor.cpp
+        include/TempEditor/EditorStartup.h
+        src/TempEditor/EditorStartup.cpp
 
 )
+
+target_include_directories(Editor PRIVATE "${CMAKE_BINARY_DIR}/generated")
 
 target_include_directories(Editor PRIVATE include)
 

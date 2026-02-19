@@ -21,12 +21,20 @@ void EngineInputSystem::PollInputs()
             {
                 eKey->isPerformed = true;
             }
+            else if (keyPressed->scancode==sf::Keyboard::Scan::P)
+            {
+                pKey->isPerformed = true;
+            }
         }
         if(const auto* keyReleased = inputEvents[i].getIf<sf::Event::KeyReleased>())
         {
             if (keyReleased->scancode==sf::Keyboard::Scan::E)
             {
                 eKey->isPerformed = false;
+            }
+            else if (keyReleased->scancode==sf::Keyboard::Scan::P)
+            {
+                pKey->isPerformed = false;
             }
         }
         else if (const auto* mousePressed=inputEvents[i].getIf<sf::Event::MouseButtonPressed>())
@@ -77,6 +85,8 @@ EngineInputSystem::EngineInputSystem()
     BindInputProcessing(MouseTwo= new GenericInputContainer());
 
     BindInputProcessing(eKey= new GenericInputContainer());
+
+    BindInputProcessing(pKey= new GenericInputContainer());
 
 
 }

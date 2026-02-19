@@ -31,6 +31,8 @@ add_library(GameLib SHARED
         src/CollisionTests/LoadUI.cpp
         include/TestPlayer/TestPlayer.h
         src/TestPlayer/TestPlayer.cpp
+        include/TestPlayer/PlayerSpawn.h
+        src/TestPlayer/PlayerSpawn.cpp
 )
 
 # Link GameLib to Engine
@@ -71,6 +73,8 @@ if(WIN32)
             $<TARGET_FILE_DIR:Splatform>
     )
 endif(WIN32)
+
+target_include_directories(GameLib PUBLIC "${CMAKE_BINARY_DIR}/generated")
 
 # Copy Assets
 add_custom_command(TARGET Splatform POST_BUILD

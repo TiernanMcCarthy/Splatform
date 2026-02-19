@@ -14,8 +14,14 @@
 REGISTER_BEHAVIOUR(ColliderDebug);
 void ColliderDebug::Start()
 {
+    //gameObject->transform.localScale=sf::Vector2<float>(100,100);
+
     //Create and position this GameObject
     ourCollider=gameObject->AddBehaviour<AABB>();
+
+
+
+
 
     gameObject->transform.localScale=sf::Vector2<float>(100,100);
 
@@ -25,7 +31,9 @@ void ColliderDebug::Start()
 
     renderer=gameObject->AddBehaviour<BoxRenderer>();
 
-    renderer->color=sf::Color::Cyan;
+   // renderer->color=sf::Color::Cyan;
+
+    renderer->ApplyImage("assets/flatimage.png");
     renderer->depth=1;
 
     collisionDot= (new GameObject("CollisionDot"))->AddBehaviour<BoxRenderer>();;
@@ -43,6 +51,7 @@ void ColliderDebug::Start()
 
 void ColliderDebug::Update(float deltaTime)
 {
+
     sf::Vector2f point=EngineInputSystem::WorldSpaceMousePos();
 
 
@@ -76,6 +85,8 @@ void ColliderDebug::Update(float deltaTime)
 
 
     gameObject->transform.SetPosition(pos);
+
+    /*
 
     //AABB vs  Point
     HitResult result=ourCollider->IntersectPoint(point);
@@ -137,7 +148,7 @@ void ColliderDebug::Update(float deltaTime)
 
 
 
-    renderer->UpdateVisualComponents();
+    renderer->UpdateVisualComponents();*/
 }
 
 void ColliderDebug::OnDestroy()

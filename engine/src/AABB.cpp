@@ -25,6 +25,9 @@ HitResult AABB::IntersectPoint(sf::Vector2f point)
 {
     HitResult result = HitResult();
 
+    halfSize.x=gameObject->transform.localScale.x/2;
+    halfSize.y=gameObject->transform.localScale.y/2;
+
     result.debugHit=false;
 
     sf::Vector2f gameObjectPos=gameObject->transform.GetPosition(); //Get collider position relative to gameObject
@@ -83,6 +86,9 @@ HitResult AABB::IntersectPoint(sf::Vector2f point)
 HitResult AABB::IntersectSegment(sf::Vector2f pos, sf::Vector2f delta, float paddingX, float paddingY)
 {
     HitResult result;
+
+    halfSize.x=gameObject->transform.localScale.x/2;
+    halfSize.y=gameObject->transform.localScale.y/2;
 
     result.debugHit=false;
 
@@ -151,6 +157,9 @@ HitResult AABB::IntersectAABB(AABB *target)
 
     result.debugHit=false;
 
+    halfSize.x=gameObject->transform.localScale.x/2;
+    halfSize.y=gameObject->transform.localScale.y/2;
+
     sf::Vector2f thisPos = gameObject->transform.GetPosition();
     sf::Vector2f targetPos = target->gameObject->transform.GetPosition();
 
@@ -199,6 +208,9 @@ SweepResult AABB::SweepAABB(AABB *target, sf::Vector2f delta)
 
     sf::Vector2f thisPos = gameObject->transform.GetPosition();
     sf::Vector2f targetPos = target->gameObject->transform.GetPosition();
+
+    halfSize.x=gameObject->transform.localScale.x/2;
+    halfSize.y=gameObject->transform.localScale.y/2;
 
     if (delta.x==0 && delta.y==0) //If the sweep doesnt actually
     {

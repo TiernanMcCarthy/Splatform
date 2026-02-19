@@ -57,4 +57,6 @@ struct BehaviourRegistrar {
 
 #define REGISTER_BEHAVIOUR(ClassName) \
 static BehaviourRegistrar ClassName##_registrar_clean(#ClassName, []() { return new ClassName(); }); \
-static BehaviourRegistrar ClassName##_registrar_mangled(typeid(ClassName).name(), []() { return new ClassName(); });
+static BehaviourRegistrar ClassName##_registrar_mangled(typeid(ClassName).name(), []() { return new ClassName(); }); \
+int ForceLink_##ClassName = 0; // identifier for forcing behaviours to be compiled even if they're not included in code
+//This is essential as without it types that might exist in a serialised save file won't be compiled on a build

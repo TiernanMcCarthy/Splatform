@@ -11,6 +11,7 @@ bool BoxRenderer::ApplyImage(std::string path)
 	if (renderTexture->loadFromFile(path))
 	{
 		box.setTexture(renderTexture);
+	    imagePath=path;
 	    return true;
 		//Texture Loaded
 	}

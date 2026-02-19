@@ -101,6 +101,12 @@ void GameObject::SetBehaviourParent(Behaviour* b)
 // -------------------------------------------------------------------------
 
 void GameObject::Serialize(Serializer& s) {
+
+    if (!serialise)
+    {
+        return;
+    }
+
     // 1. Context Setup
     std::string oldCtx = s.currentContext;
     s.currentContext = "GameObject" + std::to_string(ObjectID);
@@ -176,8 +182,6 @@ void GameObject::Serialize(Serializer& s) {
 
                 // 3. Now load the data (Serializer uses the Correct ID to find keys)
                 b->Serialize(s);
-
-                // *** CRITICAL FIX END ***
 
                 behaviours.push_back(b);
             }

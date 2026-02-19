@@ -135,6 +135,8 @@ public:
 
 
 
+    bool serialise=true;
+
 	std::string name;
 
 	Transform transform;

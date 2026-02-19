@@ -56,6 +56,8 @@ class SceneManagement
     static void Destroy(Object* target);
 
 
+
+
     static void SceneStartup();
 
 private:

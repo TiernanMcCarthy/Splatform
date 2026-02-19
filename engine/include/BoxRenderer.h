@@ -25,12 +25,25 @@ public:
 
 	BoxRenderer(sf::Vector2<float> dimensions = sf::Vector2<float>(100,100));
 
+    std::string imagePath;
+
     REFLECT_BEGIN(BoxRenderer, Behaviour)
          s.Property("color", color);
         // Save box size
         sf::Vector2f size = box.getSize();
         s.Property("size", size);
-        if (s.mode == Mode::Loading) box.setSize(size);
+        s.Property("imagePath",imagePath);
+        if (s.mode == Mode::Loading)
+        {
+            box.setSize(size);
+            if (!imagePath.empty())
+            {
+                ApplyImage(imagePath);
+            }
+        }
     REFLECT_END()
+
+private:
+
 
 };

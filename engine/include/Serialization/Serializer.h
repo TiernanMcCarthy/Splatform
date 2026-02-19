@@ -39,6 +39,17 @@ public:
         }
     }
 
+    void Property(const std::string& name, std::string& value) {
+        std::string key = currentContext.empty() ? name : currentContext + "." + name;
+
+        if (mode == Mode::Saving) {
+            database[key] = value;
+        } else if (database.count(key)) {
+            // Direct assignment ensures we get the whole string, spaces and all
+            value = database[key];
+        }
+    }
+
 
     //Overides for specific objects
 

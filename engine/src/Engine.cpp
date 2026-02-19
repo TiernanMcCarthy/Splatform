@@ -183,15 +183,6 @@ void Engine::EngineLoop()
         
         renderWindow.display();
 
-        if (EngineInputSystem::InputSystem->eKey->wasReleasedThisFrame)
-        {
-            SceneManagement::SaveCurrentScene();
-        }
-        else if (EngineInputSystem::InputSystem->MouseTwo->wasReleasedThisFrame)
-        {
-            SceneManagement::LoadScene("MyBeautifulTest");
-        }
-
         //Clear Destruction Stack for Deleted Objects
         SceneManagement::ClearDestructionStack();
     }

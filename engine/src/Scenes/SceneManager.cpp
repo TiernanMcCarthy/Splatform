@@ -144,7 +144,7 @@ void SceneManagement::DeferredLoadScene()
 
     // 2. LOAD FILE
     std::unordered_map<std::string, std::string> db;
-    // ... (Your ifstream loading code) ...
+
     db=currentScene->LoadScene();
 
     Serializer loader(Mode::Loading);

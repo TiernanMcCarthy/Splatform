@@ -6,10 +6,13 @@
 #include "FontManager.h"
 #include "ObjectSpawnList.h"
 #include "StartupSequence.h"
-
+#include "TempEditor/EditorStartup.h"
+#include "TempEditor/SimpleMapEditor.h"
+#include <GeneratedRegistry.h>
 
 int main()
 {
+    ForceLinkAll();
     //Initialising Game Engine
     std::cout << "Initialising Game Engine \n" << std::endl;
     Engine gameEngine = Engine();
@@ -30,8 +33,12 @@ int main()
     }
 
     std::cout << "Starting Engine \n" << std::endl;
-    CollisionTests temp = CollisionTests();
-    gameEngine.AddStartupSequence(&temp);
+
+
+    EditorStartup editorStartup = EditorStartup();
+    gameEngine.AddStartupSequence(&editorStartup);
+    //CollisionTests temp = CollisionTests();
+   // gameEngine.AddStartupSequence(&temp);
     gameEngine.Start();
 
 

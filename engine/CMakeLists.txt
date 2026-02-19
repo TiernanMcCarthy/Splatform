@@ -24,6 +24,8 @@ add_library(Engine SHARED
         include/Scenes/Scene.h
         src/Scenes/SceneManager.cpp
         src/Scenes/Scene.cpp
+        include/Terrain/BuildingBlocks/RectangleBlock.h
+        src/Terrain/BuildingBlocks/RectangleBlock.cpp
 
 )
 
@@ -39,5 +41,6 @@ target_link_libraries(Engine
         sfml-audio
         sfml-system
 )
+target_include_directories(Engine PUBLIC "${CMAKE_BINARY_DIR}/generated")
 
 target_compile_definitions(Engine PRIVATE ENGINE_EXPORTS)
