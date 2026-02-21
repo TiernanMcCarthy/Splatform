@@ -8,6 +8,7 @@
 
 #include "Objects/Behaviour.h"
 
+class BoxRenderer;
 class RectangleBlock;
 class AABB;
 class TestPlayer : public Behaviour
@@ -27,6 +28,8 @@ class TestPlayer : public Behaviour
 
 
     private:
+
+    BoxRenderer* renderer =nullptr;
 
     AABB* collider=nullptr;
 
