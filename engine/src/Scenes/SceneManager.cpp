@@ -204,3 +204,11 @@ void SceneManagement::SceneStartup()
     background->ApplyImage("assets/flatImage.png");
 
 }
+
+
+std::vector<Behaviour *> SceneManagement::CheckBehaviours(GameObject *object) {
+    return object->GetBehaviours();
+}
+
+
+

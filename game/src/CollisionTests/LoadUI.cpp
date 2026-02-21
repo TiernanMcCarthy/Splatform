@@ -6,6 +6,8 @@
 
 #include "CollisionTests/LoadUI.h"
 
+#include <TestPlayer/PlayerScenario.h>
+
 #include "UI/Button.h"
 REGISTER_BEHAVIOUR(LoadUI);
 
@@ -41,5 +43,7 @@ void LoadUI::Start()
     loadSave->attachedButton->OnPress.Subscribe([]() {
     SceneManagement::LoadScene("MyBeautifulTest");
 });
+
+    //loadSave->attachedButton->OnPress.Subscribe([]() {PlayerScenario::Execute();});
 
 }

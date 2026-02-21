@@ -3,6 +3,8 @@
 //
 #include "TempEditor/SimpleMapEditor.h"
 
+#include <TestPlayer/PlayerScenario.h>
+
 #include "EngineInputSystem.h"
 #include "Objects/GameObject.h"
 #include "SceneCamera.h"
@@ -85,6 +87,10 @@ void SimpleMapEditor::CheckStates()
     if (EngineInputSystem::InputSystem->pKey->wasReleasedThisFrame)
     {
         spawnPoint->gameObject->transform.SetPosition(EngineInputSystem::WorldSpaceMousePos());
+    }
+
+    if (EngineInputSystem::InputSystem->MouseTwo->wasReleasedThisFrame) {
+        PlayerScenario::Execute();
     }
 
 }

@@ -33,6 +33,8 @@ add_library(GameLib SHARED
         src/TestPlayer/TestPlayer.cpp
         include/TestPlayer/PlayerSpawn.h
         src/TestPlayer/PlayerSpawn.cpp
+        include/TestPlayer/PlayerScenario.h
+        src/TestPlayer/PlayerScenario.cpp
 )
 
 # Link GameLib to Engine
