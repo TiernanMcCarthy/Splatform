@@ -7,6 +7,7 @@
 #include "Objects/Behaviour.h"
 
 class BoxRenderer;
+class AABB;
 class RectangleBlock : public Behaviour
 {
 
@@ -19,6 +20,8 @@ public:
     void Awake() override;
 
     BoxRenderer* renderer;
+
+    AABB* collider;
 
 
 

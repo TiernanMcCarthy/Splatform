@@ -3,11 +3,13 @@
 //
 #include "TempEditor/SimpleMapEditor.h"
 
-#include <TestPlayer/PlayerScenario.h>
+#include <TestPlayer/TestPlayer.h>
 
 #include "EngineInputSystem.h"
 #include "Objects/GameObject.h"
 #include "SceneCamera.h"
+#include "BoxRenderer.h"
+#include "Constants.h"
 
 void SimpleMapEditor::Start()
 {
@@ -19,10 +21,24 @@ void SimpleMapEditor::Start()
 
     spawnPoint= (new GameObject())->AddBehaviour<PlayerSpawn>();
 
+    player = (new GameObject("TestPlayer"))->AddBehaviour<TestPlayer>();
+
+    player->Start();
+
+    player->isActive=false;
+
+    BoxRenderer* background = (new GameObject("background"))->AddBehaviour<BoxRenderer>();
+
+    background->ApplyImage("assets/greenhill.png");
+
+    background->gameObject->transform.SetPosition(DISPLAYWIDTH/2,DISPLAYHEIGHT/2);
+
+    background->gameObject->transform.localScale=sf::Vector2f(3840*4,256*4);
+
 
     SceneCamera* tempCamera =(new GameObject())->AddBehaviour<SceneCamera>();
 
-    tempCamera->gameObject->serialise=false;
+    //tempCamera->gameObject->serialise=false;
 
 
 }
@@ -90,7 +106,7 @@ void SimpleMapEditor::CheckStates()
     }
 
     if (EngineInputSystem::InputSystem->MouseTwo->wasReleasedThisFrame) {
-        PlayerScenario::Execute();
+        player->gameObject->transform.SetPosition(EngineInputSystem::WorldSpaceMousePos());
     }
 
 }
@@ -100,7 +116,9 @@ void SimpleMapEditor::ManageSaving()
 {
     if (EngineInputSystem::InputSystem->eKey->wasReleasedThisFrame)
     {
+        player->gameObject->isActive=true;
         SceneManagement::SaveCurrentScene();
+
     }
 }
 

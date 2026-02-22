@@ -160,11 +160,15 @@ HitResult AABB::IntersectAABB(AABB *target)
     halfSize.x=gameObject->transform.localScale.x/2;
     halfSize.y=gameObject->transform.localScale.y/2;
 
+    sf::Vector2f targetHalfSize=target->gameObject->transform.localScale;
+    targetHalfSize.x/=2;
+    targetHalfSize.y/=2;
+
     sf::Vector2f thisPos = gameObject->transform.GetPosition();
     sf::Vector2f targetPos = target->gameObject->transform.GetPosition();
 
     float dx= thisPos.x-targetPos.x;
-    float px=(target->halfSize.x+halfSize.x)- std::abs(dx);
+    float px=(targetHalfSize.x+halfSize.x)- std::abs(dx);
 
     if (px<=0) //If PX is less than 0 then no collision can ever take place, return early
     {
@@ -172,7 +176,7 @@ HitResult AABB::IntersectAABB(AABB *target)
     }
 
     float dy= thisPos.y-targetPos.y;
-    float py= (target->halfSize.y+halfSize.y)- std::abs(dy);
+    float py= (targetHalfSize.y+halfSize.y)- std::abs(dy);
 
     if (py<=0)  //Same principle on Y Axis
     {

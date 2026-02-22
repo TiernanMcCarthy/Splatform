@@ -33,11 +33,15 @@ class TestPlayer : public Behaviour
 
     AABB* collider=nullptr;
 
-    float moveSpeed =30;
+    float gravityForce=-9.81f;
+
+    float moveSpeed =180;
 
     float jumpForce=20;
 
     std::vector<RectangleBlock*> blocks;
+
+    void TestCollision();
 };
 
 #endif // SPLATFORM_TESTPLAYER_H

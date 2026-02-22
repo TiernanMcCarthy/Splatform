@@ -166,6 +166,13 @@ void SceneManagement::DeferredLoadScene()
     // 4. DATA INJECTION
     for (int i = 0; i < gameObjects.size(); i++) {
         gameObjects[i]->Serialize(loader);
+
+        gameObjects[i]->Awake(); //should probably call Awake as this is the objects first "load"
+        std::vector<Behaviour*> behaviours=gameObjects[i]->GetBehaviours();
+        for(int t=0; t<behaviours.size(); t++)
+        {
+            behaviours[t]->Awake();
+        }
     }
 
     loadScene=false;

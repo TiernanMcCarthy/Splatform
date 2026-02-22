@@ -8,6 +8,8 @@
 #include "Terrain/BuildingBlocks/RectangleBlock.h"
 #include "TestPlayer/PlayerSpawn.h"
 
+class SceneCamera;
+class TestPlayer;
 /// Temporary measure to just draw rectangular geometry for making "levels" and saving them to disk
 class SimpleMapEditor : public Behaviour
 {
@@ -29,6 +31,8 @@ private:
     RectangleBlock* currentContext= nullptr;
 
     PlayerSpawn* spawnPoint= nullptr;
+
+    TestPlayer* player = nullptr;
 
     sf::Vector2f spawnPos;
 

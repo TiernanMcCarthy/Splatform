@@ -200,15 +200,17 @@ void Engine::SortDrawStack()
     if (drawStack.size() > 1)
     {
         std::sort(drawStack.begin(), drawStack.end(), [](RenderObject* a, RenderObject* b)
-            {
-                float aDepth=a->depth;
-                float bDepth=b->depth;
+        {
+            float aDepth = a->depth;
+            float bDepth = b->depth;
 
-                if (a->drawLayer==DrawMode::UI) {aDepth*=10;}
-                if (b->drawLayer==DrawMode::UI) {bDepth*=10;}
+            if (a->drawLayer == DrawMode::UI) { aDepth += 10000.0f; }
+            if (b->drawLayer == DrawMode::UI) { bDepth += 10000.0f; }
 
-                return aDepth < bDepth;
-            });
+            return aDepth < bDepth;
+        });
+
+
     }
 }
 

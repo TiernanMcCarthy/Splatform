@@ -13,5 +13,7 @@ void PlayerSpawn::Start()
     gameObject->transform.localScale=sf::Vector2f(80,80);
     BoxRenderer* renderer= gameObject->AddBehaviour<BoxRenderer>();
 
+    renderer->depth=2;
+
     renderer->ApplyImage("assets/StartFlag.png");
 }

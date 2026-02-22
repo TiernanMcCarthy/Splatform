@@ -11,8 +11,9 @@ REGISTER_BEHAVIOUR(RectangleBlock)
 
 void RectangleBlock::Awake()
 {
-    gameObject->AddBehaviour<AABB>();
+    collider=gameObject->AddBehaviour<AABB>();
     renderer=gameObject->AddBehaviour<BoxRenderer>();
+    renderer->depth=1;
 }
 
 void RectangleBlock::Update(float deltaTime)
