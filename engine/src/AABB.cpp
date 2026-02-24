@@ -4,19 +4,33 @@
 #include "AABB.h"
 
 #include <cmath>
-#include <stdlib.h>     /* abs */
 
 #include "Objects/GameObject.h"
 
 REGISTER_BEHAVIOUR(AABB);
 AABB::AABB()
 {
-    halfSize=sf::Vector2f(0,0);
+    m_halfSize=sf::Vector2f(0,0);
 }
 
 AABB::AABB(sf::Vector2f half)
 {
-    halfSize=half;
+    m_halfSize=half;
+}
+
+sf::Vector2f AABB::GetHalfSize()
+{
+    if (transformBasedSize)
+    {
+        m_halfSize=gameObject->transform.localScale/2.0f;
+    }
+
+    return m_halfSize;
+}
+
+void AABB::SetHalfSize(sf::Vector2f half)
+{
+    m_halfSize=half;
 }
 
 
@@ -25,8 +39,7 @@ HitResult AABB::IntersectPoint(sf::Vector2f point)
 {
     HitResult result = HitResult();
 
-    halfSize.x=gameObject->transform.localScale.x/2;
-    halfSize.y=gameObject->transform.localScale.y/2;
+    sf::Vector2f halfSize=GetHalfSize();
 
     result.debugHit=false;
 
@@ -87,8 +100,7 @@ HitResult AABB::IntersectSegment(sf::Vector2f pos, sf::Vector2f delta, float pad
 {
     HitResult result;
 
-    halfSize.x=gameObject->transform.localScale.x/2;
-    halfSize.y=gameObject->transform.localScale.y/2;
+    sf::Vector2f halfSize=GetHalfSize();
 
     result.debugHit=false;
 
@@ -157,12 +169,10 @@ HitResult AABB::IntersectAABB(AABB *target)
 
     result.debugHit=false;
 
-    halfSize.x=gameObject->transform.localScale.x/2;
-    halfSize.y=gameObject->transform.localScale.y/2;
+    sf::Vector2f halfSize=GetHalfSize();
 
-    sf::Vector2f targetHalfSize=target->gameObject->transform.localScale;
-    targetHalfSize.x/=2;
-    targetHalfSize.y/=2;
+
+    sf::Vector2f targetHalfSize=target->GetHalfSize();
 
     sf::Vector2f thisPos = gameObject->transform.GetPosition();
     sf::Vector2f targetPos = target->gameObject->transform.GetPosition();
@@ -213,8 +223,7 @@ SweepResult AABB::SweepAABB(AABB *target, sf::Vector2f delta)
     sf::Vector2f thisPos = gameObject->transform.GetPosition();
     sf::Vector2f targetPos = target->gameObject->transform.GetPosition();
 
-    halfSize.x=gameObject->transform.localScale.x/2;
-    halfSize.y=gameObject->transform.localScale.y/2;
+    sf::Vector2f halfSize=GetHalfSize();
 
     if (delta.x==0 && delta.y==0) //If the sweep doesnt actually
     {
@@ -225,7 +234,9 @@ SweepResult AABB::SweepAABB(AABB *target, sf::Vector2f delta)
         return sweep;
     }
 
-    *sweep.hit= IntersectSegment(targetPos,delta,target->halfSize.x,target->halfSize.y);
+    sf::Vector2f targetHalfSize=target->GetHalfSize();
+
+    *sweep.hit= IntersectSegment(targetPos,delta,targetHalfSize.x,targetHalfSize.y);
 
     if (sweep.hit!=nullptr)
     {
@@ -237,10 +248,10 @@ SweepResult AABB::SweepAABB(AABB *target, sf::Vector2f delta)
 
         direction=direction.normalized();
 
-        sweep.hit->hitPosition.x= std::clamp(sweep.hit->hitPosition.x+direction.x*target->halfSize.x,
+        sweep.hit->hitPosition.x= std::clamp(sweep.hit->hitPosition.x+direction.x*targetHalfSize.x,
             thisPos.x-halfSize.x,thisPos.x+halfSize.x);
 
-        sweep.hit->hitPosition.y= std::clamp(sweep.hit->hitPosition.y+direction.y*target->halfSize.y,
+        sweep.hit->hitPosition.y= std::clamp(sweep.hit->hitPosition.y+direction.y*targetHalfSize.y,
             thisPos.y-halfSize.y,thisPos.y+halfSize.y);
 
     }

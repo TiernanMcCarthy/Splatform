@@ -12,11 +12,17 @@
 class AABB : public Collider
 {
     public:
-    sf::Vector2f halfSize;
+
+    bool transformBasedSize=true;
+
 
     AABB();
 
     AABB(sf::Vector2f halfSize);
+
+    sf::Vector2f GetHalfSize();
+
+    void SetHalfSize(sf::Vector2f halfSize);
 
     HitResult IntersectPoint(sf::Vector2f point);
 
@@ -25,6 +31,9 @@ class AABB : public Collider
     HitResult IntersectAABB(AABB *target);
 
     SweepResult SweepAABB(AABB *target, sf::Vector2f delta);
+
+private:
+    sf::Vector2f m_halfSize;
 
     REFLECT_BEGIN(AABB,Collider)
 

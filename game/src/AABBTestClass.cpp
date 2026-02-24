@@ -17,7 +17,7 @@ void AABBTestClass::Start()
 
     gameObject->transform.SetPosition(DISPLAYWIDTH/1.3f,DISPLAYHEIGHT/2);
 
-    collider->halfSize=sf::Vector2f(50,200);
+    collider->SetHalfSize(sf::Vector2f(50,200));
 
     renderer=gameObject->AddBehaviour<BoxRenderer>();
 }

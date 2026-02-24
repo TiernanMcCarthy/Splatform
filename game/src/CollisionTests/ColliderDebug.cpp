@@ -27,7 +27,7 @@ void ColliderDebug::Start()
 
    // gameObject->transform.SetPosition(DISPLAYWIDTH/1.4f,DISPLAYHEIGHT/2);
 
-    ourCollider->halfSize=sf::Vector2f(50,50);
+    ourCollider->SetHalfSize(sf::Vector2f(50,50));
 
     renderer=gameObject->AddBehaviour<BoxRenderer>();
 
@@ -86,7 +86,7 @@ void ColliderDebug::Update(float deltaTime)
 
     gameObject->transform.SetPosition(pos);
 
-    /*
+
 
     //AABB vs  Point
     HitResult result=ourCollider->IntersectPoint(point);
@@ -148,7 +148,7 @@ void ColliderDebug::Update(float deltaTime)
 
 
 
-    renderer->UpdateVisualComponents();*/
+    renderer->UpdateVisualComponents();
 }
 
 void ColliderDebug::OnDestroy()

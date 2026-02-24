@@ -29,19 +29,39 @@ class TestPlayer : public Behaviour
 
     private:
 
+    float horizontalInput;
+    sf::Vector2f velocity=sf::Vector2f(0,0);
+
     BoxRenderer* renderer =nullptr;
 
     AABB* collider=nullptr;
 
+    float groundDrag=0.98f;
+
     float gravityForce=-9.81f;
 
-    float moveSpeed =180;
+    float acceleration =15;
 
-    float jumpForce=20;
+    float maxSpeed=180;
+
+    float jumpForce=600;
+
+    bool tryJump=false;
+    bool isGrounded=false;
 
     std::vector<RectangleBlock*> blocks;
 
     void TestCollision();
+
+    void HandleInput();
+
+    void CheckJump(float deltaTime);
+
+    void ManageDrag();
+
+    void ManageMovement(float deltaTime);
+
+    void ApplyGravity(float deltaTime);
 };
 
 #endif // SPLATFORM_TESTPLAYER_H
