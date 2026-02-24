@@ -3,6 +3,7 @@
 #include "SFML/Window/Event.hpp"
 #include "Systems/FunctionSubscriber.h"
 #include <vector>
+#include <time.h>
 
 
 
@@ -20,13 +21,18 @@ public:
         wasReleasedThisFrame=false;
         isPerformed=false;
         wasPerformedLastFrame=false;
-
+        isHeld=false;
+        pressTime= 0;
     }
 
     bool wasFirstPerformedThisFrame{};
     bool wasReleasedThisFrame{};
 
     bool isPerformed{};
+
+    bool isHeld{};
+
+    long pressTime;
 
 
 
@@ -35,6 +41,8 @@ public:
         wasFirstPerformedThisFrame = false;
         wasReleasedThisFrame = false;
         isPerformed = false;
+        isHeld=false;
+        pressTime=0;
     }
 
     void SetPerformed(bool isHappening)
@@ -51,10 +59,12 @@ public:
             if (!wasPerformedLastFrame)
             {
                 wasFirstPerformedThisFrame=true;
+                pressTime=time(nullptr);
             }
             else
             {
                 wasFirstPerformedThisFrame=false;
+                isHeld=true;
             }
 
             //Record that this action was pressed this frame
@@ -67,6 +77,7 @@ public:
             if (wasPerformedLastFrame==true)
             {
                 wasReleasedThisFrame=true;
+                pressTime=0;
             }
             else
             {
@@ -74,6 +85,8 @@ public:
             }
             wasPerformedLastFrame=false;
             wasFirstPerformedThisFrame=false;
+            isHeld=false;
+            pressTime=0;
         }
     }
 
@@ -116,6 +129,18 @@ public:
     GenericInputContainer *eKey;
 
     GenericInputContainer *pKey;
+
+    GenericInputContainer *upKey;
+
+    GenericInputContainer *downKey;
+
+    GenericInputContainer *leftKey;
+
+    GenericInputContainer *rightKey;
+
+    GenericInputContainer *plus;
+
+    GenericInputContainer *minus;
 
 
 #pragma endregion

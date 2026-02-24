@@ -10,6 +10,19 @@
 #include "SceneCamera.h"
 #include "BoxRenderer.h"
 #include "Constants.h"
+#include "TempEditor/EditorTempCamera.h"
+
+
+
+void SimpleMapEditor::LoadTerrainFromFile()
+{
+    std::string path = "assets/terrain";
+    for (const auto & entry : std::filesystem::directory_iterator(path))
+    {
+
+    }
+}
+
 
 void SimpleMapEditor::Start()
 {
@@ -35,11 +48,23 @@ void SimpleMapEditor::Start()
 
     background->gameObject->transform.localScale=sf::Vector2f(3840*4,256*4);
 
+    camera =(new GameObject())->AddBehaviour<EditorTempCamera>();
 
-    SceneCamera* tempCamera =(new GameObject())->AddBehaviour<SceneCamera>();
+    //camera->Start();
 
-    //tempCamera->gameObject->serialise=false;
+    camera->gameObject->serialise=false;
 
+
+    selection= new GameObject("Selection");
+
+    selection->transform.localScale=sf::Vector2f(tileSize,tileSize);
+
+    BoxRenderer* selectionImage= selection->AddBehaviour<BoxRenderer>();
+
+    selectionImage->ApplyImage("assets/editor/selection.png");
+
+
+    LoadTerrainFromFile();
 
 }
 
@@ -122,11 +147,46 @@ void SimpleMapEditor::ManageSaving()
     }
 }
 
+void SimpleMapEditor::ManageInput()
+{
+    long currentTime=time(nullptr);
 
+    if (EngineInputSystem::InputSystem->upKey->wasReleasedThisFrame ||
+        EngineInputSystem::InputSystem->upKey->isPerformed && currentTime-EngineInputSystem::InputSystem->upKey->pressTime >0.3f )
+    {
+        posY-=1;
+    }
+    if (EngineInputSystem::InputSystem->downKey->wasReleasedThisFrame ||
+        EngineInputSystem::InputSystem->downKey->isPerformed&& currentTime-EngineInputSystem::InputSystem->downKey->pressTime >0.3f  )
+    {
+        posY+=1;
+    }
+
+    if (EngineInputSystem::InputSystem->rightKey->wasReleasedThisFrame ||
+        EngineInputSystem::InputSystem->rightKey->isPerformed && currentTime-EngineInputSystem::InputSystem->rightKey->pressTime >0.3f  )
+    {
+        posX+=1;
+    }
+    if (EngineInputSystem::InputSystem->leftKey->wasReleasedThisFrame ||
+        EngineInputSystem::InputSystem->leftKey->isPerformed&& currentTime-EngineInputSystem::InputSystem->leftKey->pressTime >0.3f  )
+    {
+        posX-=1;
+    }
+
+}
+
+void SimpleMapEditor::ManageSelection()
+{
+
+}
 
 void SimpleMapEditor::Update(float deltaTime)
 {
-    CheckStates();
+    //CheckStates();
+    ManageInput();
     ManageSaving();
+    sf::Vector2f newPos= sf::Vector2f(tileSize*posX*snapSize[currentSnap],tileSize*posY*snapSize[currentSnap]);
+    camera->SetCameraPos(newPos);
+    selection->transform.SetPosition(newPos);
 }
 

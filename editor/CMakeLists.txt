@@ -12,6 +12,8 @@ add_executable(Editor
         src/TempEditor/SimpleMapEditor.cpp
         include/TempEditor/EditorStartup.h
         src/TempEditor/EditorStartup.cpp
+        include/TempEditor/EditorTempCamera.h
+        src/TempEditor/EditorTempCamera.cpp
 
 )
 

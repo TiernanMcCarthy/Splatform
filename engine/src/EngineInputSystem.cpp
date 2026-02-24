@@ -25,6 +25,30 @@ void EngineInputSystem::PollInputs()
             {
                 pKey->isPerformed = true;
             }
+            else if (keyPressed->scancode==sf::Keyboard::Scan::Up)
+            {
+                upKey->isPerformed = true;
+            }
+            else if (keyPressed->scancode==sf::Keyboard::Scan::Down)
+            {
+                downKey->isPerformed = true;
+            }
+            else if (keyPressed->scancode==sf::Keyboard::Scan::Left)
+            {
+                leftKey->isPerformed = true;
+            }
+            else if (keyPressed->scancode==sf::Keyboard::Scan::Right)
+            {
+                rightKey->isPerformed = true;
+            }
+            else if (keyPressed->scancode==sf::Keyboard::Scan::Equal)
+            {
+                plus->isPerformed = true;
+            }
+            else if (keyPressed->scancode==sf::Keyboard::Scan::Hyphen)
+            {
+                minus->isPerformed = true;
+            }
         }
         if(const auto* keyReleased = inputEvents[i].getIf<sf::Event::KeyReleased>())
         {
@@ -35,6 +59,30 @@ void EngineInputSystem::PollInputs()
             else if (keyReleased->scancode==sf::Keyboard::Scan::P)
             {
                 pKey->isPerformed = false;
+            }
+            else if (keyReleased->scancode==sf::Keyboard::Scan::Up)
+            {
+                upKey->isPerformed = false;
+            }
+            else if (keyReleased->scancode==sf::Keyboard::Scan::Down)
+            {
+                downKey->isPerformed = false;
+            }
+            else if (keyReleased->scancode==sf::Keyboard::Scan::Left)
+            {
+                leftKey->isPerformed = false;
+            }
+            else if (keyReleased->scancode==sf::Keyboard::Scan::Right)
+            {
+                rightKey->isPerformed = false;
+            }
+            else if (keyReleased->scancode==sf::Keyboard::Scan::Equal)
+            {
+                plus->isPerformed = false;
+            }
+            else if (keyReleased->scancode==sf::Keyboard::Scan::Hyphen)
+            {
+                minus->isPerformed = false;
             }
         }
         else if (const auto* mousePressed=inputEvents[i].getIf<sf::Event::MouseButtonPressed>())
@@ -87,6 +135,18 @@ EngineInputSystem::EngineInputSystem()
     BindInputProcessing(eKey= new GenericInputContainer());
 
     BindInputProcessing(pKey= new GenericInputContainer());
+
+    BindInputProcessing(upKey= new GenericInputContainer());
+
+    BindInputProcessing(downKey= new GenericInputContainer());
+
+    BindInputProcessing(rightKey= new GenericInputContainer());
+
+    BindInputProcessing(leftKey= new GenericInputContainer());
+
+    BindInputProcessing(plus= new GenericInputContainer());
+
+    BindInputProcessing(minus= new GenericInputContainer());
 
 
 }
