@@ -1,5 +1,7 @@
 #pragma once
 
+#include <AABB.h>
+
 #include "../AABBCollider.h"
 #include "../Objects/Behaviour.h"
 #include "../Systems/FunctionSubscriber.h"
@@ -21,7 +23,7 @@ public:
     void Update(float deltaTime) override;
 
 private:
-    AABBCollider* collider;
+    AABB* collider;
 
     void ManageButton();
 

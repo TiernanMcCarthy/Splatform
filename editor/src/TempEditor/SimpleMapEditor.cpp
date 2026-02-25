@@ -11,15 +11,27 @@
 #include "BoxRenderer.h"
 #include "Constants.h"
 #include "TempEditor/EditorTempCamera.h"
+#include "TempEditor/ButtonFunctionality.h"
 
 
+
+SimpleMapEditor* SimpleMapEditor::instance = nullptr;
 
 void SimpleMapEditor::LoadTerrainFromFile()
 {
     std::string path = "assets/terrain";
+    int iterator =0;
     for (const auto & entry : std::filesystem::directory_iterator(path))
     {
+        SceneObject* newObject= (new GameObject())->AddBehaviour<SceneObject>();
 
+        newObject->Init(entry.path());
+
+        tilePrefabs.push_back(*newObject);
+
+        newObject->gameObject->transform.SetPosition(DISPLAYWIDTH*0.025f,200+iterator*128);
+
+        iterator++;
     }
 }
 
@@ -27,6 +39,8 @@ void SimpleMapEditor::LoadTerrainFromFile()
 void SimpleMapEditor::Start()
 {
     lastObject=nullptr;
+
+    instance=this;
 
     isCreating=false;
 
@@ -61,10 +75,19 @@ void SimpleMapEditor::Start()
 
     BoxRenderer* selectionImage= selection->AddBehaviour<BoxRenderer>();
 
+    selectionImage->depth=100;
+
     selectionImage->ApplyImage("assets/editor/selection.png");
 
 
+    //UI
+
     LoadTerrainFromFile();
+
+    editorButtons= (new GameObject("editorButtons"))->AddBehaviour<ButtonFunctionality>();
+
+    editorButtons->gameObject->serialise=false;
+
 
 }
 

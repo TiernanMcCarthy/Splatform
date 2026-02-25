@@ -9,6 +9,9 @@
 #include "TestPlayer/PlayerSpawn.h"
 #include <unordered_map>
 
+#include "SceneObject.h"
+
+class ButtonFunctionality;
 class EditorTempCamera;
 class SceneCamera;
 class TestPlayer;
@@ -22,11 +25,15 @@ struct Vector2iHash
         return std::hash<int>{}(v.x) ^ (std::hash<int>{}(v.y) << 1);
     }
 };
+
+
+
 /// Temporary measure to just draw rectangular geometry for making "levels" and saving them to disk
 class SimpleMapEditor : public Behaviour {
 public:
 
 
+    static SimpleMapEditor* instance;
 
     void Update(float deltaTime) override;
 
@@ -43,6 +50,12 @@ private:
 
     int currentSnap=1;
 
+    //UI
+    ButtonFunctionality* editorButtons= nullptr;
+
+
+    //
+
     RectangleBlock* lastObject= nullptr;
 
     RectangleBlock* currentContext= nullptr;
@@ -57,7 +70,9 @@ private:
 
     GameObject* selection = nullptr;
 
-    std::unordered_map<sf::Vector2i,GameObject*,Vector2iHash> spawnedObjects;
+    std::vector<GameObject*> tiles;
+
+    std::vector<SceneObject> tilePrefabs;
 
     bool isCreating=false;
 

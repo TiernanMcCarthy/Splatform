@@ -20,7 +20,7 @@ Button::~Button()
 
 void Button::Start()
 {
-    collider = gameObject->AddBehaviour<AABBCollider>();
+    collider = gameObject->AddBehaviour<AABB>();
 
     //collider.
 }
@@ -41,7 +41,7 @@ void Button::ManageButton()
             pos=(sf::Vector2<float>)sf::Mouse::getPosition(Engine::GEngine->GetRenderWindow());
         }
 
-        if (collider->IsPosInside(pos))
+        if (collider->IntersectPoint(pos).debugHit)
         {
             OnPress.Activate();
         }

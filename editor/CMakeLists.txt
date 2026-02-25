@@ -14,6 +14,10 @@ add_executable(Editor
         src/TempEditor/EditorStartup.cpp
         include/TempEditor/EditorTempCamera.h
         src/TempEditor/EditorTempCamera.cpp
+        include/TempEditor/SceneObject.h
+        src/TempEditor/SceneObject.cpp
+        include/TempEditor/ButtonFunctionality.h
+        src/TempEditor/ButtonFunctionality.cpp
 
 )
 
