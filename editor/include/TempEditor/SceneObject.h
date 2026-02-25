@@ -24,9 +24,9 @@ class SceneObject : public Behaviour
 
     Button* selectionButton;
 
+    void SelectObject();
 
-
-    GameObject& CreateObject(sf::Vector2i pos);
+    virtual GameObject& CreateObject(sf::Vector2i pos);
 };
 
 

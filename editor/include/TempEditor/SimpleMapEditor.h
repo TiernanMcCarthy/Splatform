@@ -7,9 +7,12 @@
 #include "Objects/Behaviour.h"
 #include "Terrain/BuildingBlocks/RectangleBlock.h"
 #include "TestPlayer/PlayerSpawn.h"
-#include <unordered_map>
 
 #include "SceneObject.h"
+#include "TerrainTile.h"
+#include "UI/TextBox.h"
+
+#include <map>
 
 class ButtonFunctionality;
 class EditorTempCamera;
@@ -18,11 +21,10 @@ class TestPlayer;
 
 inline int tileSize=64;
 
-struct Vector2iHash
-{
-    std::size_t operator()(const sf::Vector2i& v) const noexcept
-    {
-        return std::hash<int>{}(v.x) ^ (std::hash<int>{}(v.y) << 1);
+struct Vector2iComparator {
+    bool operator()(const sf::Vector2i& lhs, const sf::Vector2i& rhs) const {
+        if (lhs.x != rhs.x) return lhs.x < rhs.x;
+        return lhs.y < rhs.y;
     }
 };
 
@@ -39,6 +41,9 @@ public:
 
     void Start() override;
 
+    void SelectTerrainObject(SceneObject* prefab);
+
+    void DeleteObject();
 
 
 private:
@@ -50,11 +55,18 @@ private:
 
     int currentSnap=1;
 
+    bool tryCreate=false;
+
+    std::map<sf::Vector2i, GameObject*, Vector2iComparator> tileMap;
+
     //UI
     ButtonFunctionality* editorButtons= nullptr;
 
+    TextBox* selectedObject = nullptr;
 
     //
+
+    SceneObject* selectedPrefab=nullptr;
 
     RectangleBlock* lastObject= nullptr;
 
@@ -72,8 +84,6 @@ private:
 
     std::vector<GameObject*> tiles;
 
-    std::vector<SceneObject> tilePrefabs;
-
     bool isCreating=false;
 
     //std::vector<>
@@ -86,13 +96,12 @@ private:
 
     void ManageSaving();
 
-    void FinishBlock();
-
-    void BuildBlock();
+    void ManageCreation();
 
     void CheckStates();
 
     void CreateBlock();
+
 
 
 };

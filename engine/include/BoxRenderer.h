@@ -13,6 +13,8 @@ public:
 
 	sf::Texture* renderTexture = nullptr;
 
+    void SetOutline(bool useOutline,sf::Color outlineColour = sf::Color::Black,float outlineThickness=0);
+
 	bool ApplyImage(std::string path);
 
     void ApplyImage(sf::Image& image);

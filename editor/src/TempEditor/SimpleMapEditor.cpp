@@ -12,6 +12,7 @@
 #include "Constants.h"
 #include "TempEditor/EditorTempCamera.h"
 #include "TempEditor/ButtonFunctionality.h"
+#include "TempEditor/SceneObject.h"
 
 
 
@@ -26,8 +27,6 @@ void SimpleMapEditor::LoadTerrainFromFile()
         SceneObject* newObject= (new GameObject())->AddBehaviour<SceneObject>();
 
         newObject->Init(entry.path());
-
-        tilePrefabs.push_back(*newObject);
 
         newObject->gameObject->transform.SetPosition(DISPLAYWIDTH*0.025f,200+iterator*128);
 
@@ -88,36 +87,29 @@ void SimpleMapEditor::Start()
 
     editorButtons->gameObject->serialise=false;
 
+    selectedObject= gameObject->AddBehaviour<TextBox>();
+
+    selectedObject->depth=55;
+
+    selectedObject->drawLayer= DrawMode::UI;
+
+    selectedObject->offsetPos= sf::Vector2f(DISPLAYWIDTH*0.08f,DISPLAYHEIGHT*0.08f);
+
+    selectedObject->fontSize=40;
+
+    selectedObject->text="No Selection";
+
+    selectedObject->SetColour(sf::Color::White);
+
+
 
 }
 
-void SimpleMapEditor::FinishBlock()
+void SimpleMapEditor::SelectTerrainObject(SceneObject *prefab)
 {
-
-    lastObject=currentContext;
-    currentContext=nullptr;
-
-    isCreating=false;
-
-
-
+    selectedObject->text=prefab->objectname;
+    selectedPrefab=prefab;
 }
-
-
-void SimpleMapEditor::BuildBlock()
-{
-
-    sf::Vector2f mousePos = EngineInputSystem::WorldSpaceMousePos();
-
-    sf::Vector2f centerPos = (spawnPos + mousePos) / 2.0f;
-
-    float width = std::abs(mousePos.x - spawnPos.x);
-    float height = std::abs(mousePos.y - spawnPos.y);
-
-    currentContext->gameObject->transform.SetPosition(centerPos);
-    currentContext->gameObject->transform.localScale = sf::Vector2f(width, height);
-}
-
 
 void SimpleMapEditor::CreateBlock()
 {
@@ -132,21 +124,6 @@ void SimpleMapEditor::CreateBlock()
 
 void SimpleMapEditor::CheckStates()
 {
-    if (EngineInputSystem::InputSystem->MouseOne->wasFirstPerformedThisFrame)
-    {
-        isCreating=true;
-        CreateBlock();
-    }
-    else if (EngineInputSystem::InputSystem->MouseOne->wasReleasedThisFrame)
-    {
-        isCreating=false;
-        FinishBlock();
-    }
-
-    if (isCreating)
-    {
-        BuildBlock();
-    }
 
     if (EngineInputSystem::InputSystem->pKey->wasReleasedThisFrame)
     {
@@ -166,13 +143,14 @@ void SimpleMapEditor::ManageSaving()
     {
         player->gameObject->isActive=true;
         SceneManagement::SaveCurrentScene();
-
     }
 }
 
 void SimpleMapEditor::ManageInput()
 {
     long currentTime=time(nullptr);
+
+    tryCreate=false;
 
     if (EngineInputSystem::InputSystem->upKey->wasReleasedThisFrame ||
         EngineInputSystem::InputSystem->upKey->isPerformed && currentTime-EngineInputSystem::InputSystem->upKey->pressTime >0.3f )
@@ -196,6 +174,61 @@ void SimpleMapEditor::ManageInput()
         posX-=1;
     }
 
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Delete))
+    {
+        DeleteObject();
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
+    {
+        tryCreate=true;
+    }
+
+}
+
+void SimpleMapEditor::DeleteObject()
+{
+    sf::Vector2i pos(posX*tileSize, posY*tileSize);
+
+    auto it = tileMap.find(pos);
+
+    if (it != tileMap.end()) {
+        // Position is taken, delete object
+        SceneManagement::Destroy(it->second);
+        tileMap.erase(it);
+
+    }
+}
+
+void SimpleMapEditor::ManageCreation()
+{
+    if (!tryCreate)
+    {
+        return;
+    }
+
+    if (selectedPrefab==nullptr)
+    {
+        return;
+    }
+
+    sf::Vector2i pos(posX*tileSize, posY*tileSize);
+
+    auto it = tileMap.find(pos);
+
+    if (it == tileMap.end()) {
+        // Position is empty, create a new object
+        if (selectedPrefab != nullptr) {
+
+            tileMap[pos] = &selectedPrefab->CreateObject(sf::Vector2i(tileSize * posX * snapSize[currentSnap], tileSize * posY * snapSize[currentSnap]));
+        }
+    }
+    else //position is full, create nothing
+    {
+
+    }
+
+
 }
 
 void SimpleMapEditor::ManageSelection()
@@ -207,6 +240,7 @@ void SimpleMapEditor::Update(float deltaTime)
 {
     //CheckStates();
     ManageInput();
+    ManageCreation();
     ManageSaving();
     sf::Vector2f newPos= sf::Vector2f(tileSize*posX*snapSize[currentSnap],tileSize*posY*snapSize[currentSnap]);
     camera->SetCameraPos(newPos);

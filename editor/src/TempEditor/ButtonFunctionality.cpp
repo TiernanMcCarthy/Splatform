@@ -3,6 +3,8 @@
 //
 #include "TempEditor/ButtonFunctionality.h"
 
+#include "TempEditor/SimpleMapEditor.h"
+
 #include <BoxRenderer.h>
 #include <Constants.h>
 #include <Objects/GameObject.h>
@@ -25,7 +27,7 @@ void ButtonFunctionality::Start()
 
     canvas->gameObject->transform.localScale= sf::Vector2f(DISPLAYWIDTH,DISPLAYHEIGHT*0.1f);
 
-    canvas->gameObject->transform.SetPosition(DISPLAYWIDTH/2,DISPLAYHEIGHT*0.9f);
+    canvas->gameObject->transform.SetPosition(DISPLAYWIDTH/2,DISPLAYHEIGHT*0.95f);
 
     deleteObject= (new GameObject("DeleteButton"))->AddBehaviour<Button>();
 
@@ -41,7 +43,11 @@ void ButtonFunctionality::Start()
 
     deleteObject->gameObject->transform.localScale= sf::Vector2f(80,80);
 
-    deleteObject->gameObject->transform.SetPosition(DISPLAYWIDTH/2,DISPLAYHEIGHT*0.89f);
+    deleteObject->gameObject->transform.SetPosition(DISPLAYWIDTH/2,DISPLAYHEIGHT*0.94f);
+
+    deleteObject->OnPress.Subscribe(std::bind(&SimpleMapEditor::DeleteObject,SimpleMapEditor::instance));
+
+    deleteObject->worldSpace=false;
 
     TextBox* deleteText= deleteObject->gameObject->AddBehaviour<TextBox>();
 
@@ -73,5 +79,9 @@ void ButtonFunctionality::Start()
 
     terrainText->drawLayer=DrawMode::UI;
 
-    terrainText->offsetPos= sf::Vector2f(-35,-DISPLAYHEIGHT/0.45f);
+    terrainText->offsetPos= sf::Vector2f(-50,-DISPLAYHEIGHT*0.45f);
+
+    terrainText->text="Terrain";
+
+    terrainText->depth=50;
 }

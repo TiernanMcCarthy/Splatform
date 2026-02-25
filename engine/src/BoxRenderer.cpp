@@ -3,6 +3,19 @@
 #include <iostream>
 REGISTER_BEHAVIOUR(BoxRenderer);
 
+void BoxRenderer::SetOutline(bool useOutline, sf::Color outlineColour, float outlineThickness)
+{
+
+    if (!useOutline)
+    {
+        box.setOutlineThickness(0);
+    }
+    else
+    {
+        box.setOutlineColor(outlineColour);
+        box.setOutlineThickness(outlineThickness);
+    }
+}
 
 bool BoxRenderer::ApplyImage(std::string path)
 {

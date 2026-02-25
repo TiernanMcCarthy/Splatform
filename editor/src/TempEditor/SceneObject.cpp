@@ -3,10 +3,15 @@
 //
 #include "TempEditor/SceneObject.h"
 
+#include "TempEditor/SimpleMapEditor.h"
+
 #include <Objects/GameObject.h>
 #include <Terrain/BuildingBlocks/RectangleBlock.h>
 
-
+void SceneObject::SelectObject()
+{
+    SimpleMapEditor::instance->SelectTerrainObject(this);
+}
 void SceneObject::Init(std::string filePath)
 {
     path = filePath;
@@ -26,16 +31,18 @@ void SceneObject::Init(std::string filePath)
 
     selectionButton= gameObject->AddBehaviour<Button>();
 
-    //selectionButton->OnPress.Subscribe()
+    selectionButton->worldSpace=false;
+
+    selectionButton->OnPress.Subscribe(std::bind(&SceneObject::SelectObject,this));
 
     gameObject->serialise=false;
 }
 
 GameObject& SceneObject::CreateObject(sf::Vector2i pos)
 {
-
-
     RectangleBlock* prefab = (new GameObject(objectname))->AddBehaviour<RectangleBlock>();
+
+    prefab->renderer->ApplyImage(path);
 
     prefab->gameObject->transform.SetPosition(sf::Vector2f(pos.x,pos.y));
     prefab->gameObject->transform.localScale=sf::Vector2f(64,64);
