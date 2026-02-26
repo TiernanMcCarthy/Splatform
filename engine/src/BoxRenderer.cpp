@@ -79,6 +79,11 @@ void BoxRenderer::UpdateVisualComponents()
     }
 }
 
+void BoxRenderer::OnDestroy()
+{
+    RenderObject::OnDestroy();
+    Engine::GEngine->RemoveDrawObject(this);
+}
 
 void BoxRenderer::Start()
 {

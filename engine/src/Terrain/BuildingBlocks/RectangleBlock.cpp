@@ -11,8 +11,18 @@ REGISTER_BEHAVIOUR(RectangleBlock)
 
 void RectangleBlock::Awake()
 {
-    collider=gameObject->AddBehaviour<AABB>();
-    renderer=gameObject->AddBehaviour<BoxRenderer>();
+    // Search the parent GameObject for the renderer sibling
+    renderer = gameObject->GetBehaviour<BoxRenderer>();
+    collider = gameObject->GetBehaviour<AABB>();
+
+    if (renderer == nullptr)
+    {
+        renderer= gameObject->AddBehaviour<BoxRenderer>();
+    }
+    if (collider == nullptr)
+    {
+        collider = gameObject->AddBehaviour<AABB>();
+    }
     renderer->depth=1;
 }
 

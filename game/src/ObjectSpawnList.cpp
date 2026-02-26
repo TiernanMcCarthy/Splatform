@@ -11,7 +11,6 @@
 
 //Game
 #include "SceneCamera.h"
-#include "TestScript.h"
 #include "GameManager.h"
 #include <UI/GameSpeedUI.h>
 #include <UI/ScreenspaceButton.h>
@@ -31,7 +30,6 @@ void ObjectSpawnList::Execute()
 {
      GameObject* temp= new GameObject("Our First Button");
 
-     TestScript* testButton = temp->AddBehaviour<TestScript>();
 
 
      //Generate Camera

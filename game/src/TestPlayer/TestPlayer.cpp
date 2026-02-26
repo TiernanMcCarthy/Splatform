@@ -47,6 +47,10 @@ void TestPlayer::Start()
 
 }
 
+void TestPlayer::AddScore(int scoreValue)
+{
+    score+=scoreValue;
+}
 
 void TestPlayer::TestCollision()
 {

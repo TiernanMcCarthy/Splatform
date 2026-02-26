@@ -3,7 +3,6 @@
 add_library(GameLib SHARED
         src/ObjectSpawnList.cpp
         src/SceneCamera.cpp
-        src/TestScript.cpp
         src/WorldMap.cpp
         include/TerrainTile.h
         src/TerrainTile.cpp
@@ -35,6 +34,9 @@ add_library(GameLib SHARED
         src/TestPlayer/PlayerSpawn.cpp
         include/TestPlayer/PlayerScenario.h
         src/TestPlayer/PlayerScenario.cpp
+        include/TestPlayer/TestCollectable.h
+        include/TestPlayer/PlayerHUD.h
+        src/TestPlayer/TestCollectable.cpp
 )
 
 # Link GameLib to Engine

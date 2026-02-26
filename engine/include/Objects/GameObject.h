@@ -169,7 +169,7 @@ public:
 
 	virtual void Start();
 
-	void OnDestroy() override;
+    void OnDestroy() override;
 
     std::vector<Behaviour*> GetBehaviours();
 

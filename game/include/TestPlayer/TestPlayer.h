@@ -20,21 +20,28 @@ class TestPlayer : public Behaviour
 
     void Update(float deltaTime) override;
 
+    int GetScore() const {return score;}
+
+    void AddScore(int scoreValue);
+
     REFLECT_BEGIN(TestPlayer, Behaviour)
 
 
     REFLECT_END()
 
-
+    //would move to private, but current collision simple is inadequate
+    AABB* collider=nullptr;
 
     private:
+
+    int score=0;
 
     float horizontalInput;
     sf::Vector2f velocity=sf::Vector2f(0,0);
 
     BoxRenderer* renderer =nullptr;
 
-    AABB* collider=nullptr;
+
 
     float groundDrag=0.98f;
 

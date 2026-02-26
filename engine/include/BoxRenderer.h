@@ -23,6 +23,8 @@ public:
 
 	void UpdateVisualComponents() override;
 
+    void OnDestroy() override;
+
 	void Start() override;
 
 	BoxRenderer(sf::Vector2<float> dimensions = sf::Vector2<float>(100,100));

@@ -72,6 +72,8 @@ void SimpleMapEditor::Start()
 
     selection->transform.localScale=sf::Vector2f(tileSize,tileSize);
 
+    selection->serialise=false;
+
     BoxRenderer* selectionImage= selection->AddBehaviour<BoxRenderer>();
 
     selectionImage->depth=100;
@@ -240,6 +242,7 @@ void SimpleMapEditor::Update(float deltaTime)
 {
     //CheckStates();
     ManageInput();
+    CheckStates();
     ManageCreation();
     ManageSaving();
     sf::Vector2f newPos= sf::Vector2f(tileSize*posX*snapSize[currentSnap],tileSize*posY*snapSize[currentSnap]);

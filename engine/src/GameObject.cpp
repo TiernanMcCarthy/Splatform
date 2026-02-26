@@ -27,9 +27,9 @@ GameObject::~GameObject()
 }
 void GameObject::OnDestroy()
 {
-    for (auto b : behaviours)
+    for (int i = behaviours.size() - 1; i >= 0; --i)
     {
-        b->OnDestroy();
+        behaviours[i]->OnDestroy();
     }
     SceneManagement::RemoveObject(this);
 }
