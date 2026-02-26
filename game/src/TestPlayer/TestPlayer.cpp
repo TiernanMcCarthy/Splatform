@@ -7,11 +7,12 @@
 #include <Objects/GameObject.h>
 
 #include "BoxRenderer.h"
+#include "SceneCamera.h"
 
 REGISTER_BEHAVIOUR(TestPlayer)
 
-#include "Collider.h"
 #include "AABB.h"
+#include "Collider.h"
 #include "Scenes/SceneManager.h"
 #include "Terrain/BuildingBlocks/RectangleBlock.h"
 #include "TestPlayer/PlayerSpawn.h"
@@ -43,6 +44,12 @@ void TestPlayer::Start()
    {
        gameObject->transform.SetPosition(spawn->gameObject->transform.GetPosition());
    }
+
+    if (Engine::GEngine->GetPlayMode()==PlayMode::Game)
+    {
+        SceneCamera* tempCam= (new GameObject("Blah"))->AddBehaviour<SceneCamera>();
+    }
+
 
 
 }

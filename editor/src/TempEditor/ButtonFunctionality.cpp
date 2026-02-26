@@ -3,6 +3,7 @@
 //
 #include "TempEditor/ButtonFunctionality.h"
 
+#include "TempEditor/EditorButton.h"
 #include "TempEditor/SimpleMapEditor.h"
 
 #include <BoxRenderer.h>
@@ -29,36 +30,16 @@ void ButtonFunctionality::Start()
 
     canvas->gameObject->transform.SetPosition(DISPLAYWIDTH/2,DISPLAYHEIGHT*0.95f);
 
-    deleteObject= (new GameObject("DeleteButton"))->AddBehaviour<Button>();
+    //deleteButton
 
-    deleteObject->gameObject->serialise=false;
+    deleteObject= (new GameObject("DeleteButton"))->AddBehaviour<EditorButton>();
 
-    deleteObject->gameObject->AddBehaviour<BoxRenderer>();
+    deleteObject->Setup(sf::Color::Red,"Delete",sf::Vector2f(80,80),sf::Vector2f(DISPLAYWIDTH/2,DISPLAYHEIGHT*0.94f));
 
-    deleteObject->gameObject->GetBehaviour<BoxRenderer>()->drawLayer=DrawMode::UI;
+    deleteObject->button->OnPress.Subscribe(std::bind(&SimpleMapEditor::DeleteObject,SimpleMapEditor::instance));
 
-    deleteObject->gameObject->GetBehaviour<BoxRenderer>()->color=sf::Color::Red;
+    deleteObject->text->offsetPos=sf::Vector2f(-35,-15);
 
-    deleteObject->gameObject->GetBehaviour<BoxRenderer>()->depth=59;
-
-    deleteObject->gameObject->transform.localScale= sf::Vector2f(80,80);
-
-    deleteObject->gameObject->transform.SetPosition(DISPLAYWIDTH/2,DISPLAYHEIGHT*0.94f);
-
-    deleteObject->OnPress.Subscribe(std::bind(&SimpleMapEditor::DeleteObject,SimpleMapEditor::instance));
-
-    deleteObject->worldSpace=false;
-
-    TextBox* deleteText= deleteObject->gameObject->AddBehaviour<TextBox>();
-
-    deleteText->drawLayer=DrawMode::UI;
-
-    deleteText->offsetPos= sf::Vector2f(-35,-15);
-    deleteText->fontSize=22;
-
-    deleteText->depth=60;
-
-    deleteText->text="Delete";
 
     //Create terrain canvas
     terrainCanvas=(new GameObject("canvas"))->AddBehaviour<BoxRenderer>();
@@ -79,9 +60,11 @@ void ButtonFunctionality::Start()
 
     terrainText->drawLayer=DrawMode::UI;
 
-    terrainText->offsetPos= sf::Vector2f(-50,-DISPLAYHEIGHT*0.45f);
+    terrainText->offsetPos= sf::Vector2f(-45,-DISPLAYHEIGHT*0.45f);
 
-    terrainText->text="Terrain";
+    terrainText->text="Prefabs";
+
+    terrainText->fontSize=24;
 
     terrainText->depth=50;
 }

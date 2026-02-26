@@ -48,6 +48,11 @@ public:
 
     void EnterPlayMode();
 
+    void SetPlayMode(PlayMode mode)
+    {
+        enginePlayMode=mode;
+    }
+
     void ExitPlayMode();
 
     PlayMode GetPlayMode();

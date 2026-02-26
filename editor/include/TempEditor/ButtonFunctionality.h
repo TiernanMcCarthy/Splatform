@@ -7,6 +7,7 @@
 #include <Objects/Behaviour.h>
 #include <UI/Button.h>
 
+class EditorButton;
 class BoxRenderer;
 
 class ButtonFunctionality : public Behaviour
@@ -17,7 +18,7 @@ public:
 
 private:
 
-    Button* deleteObject =nullptr;
+    EditorButton* deleteObject =nullptr;
 
     BoxRenderer* canvas = nullptr;
 

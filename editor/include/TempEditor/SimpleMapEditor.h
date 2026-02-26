@@ -64,6 +64,10 @@ private:
 
     TextBox* selectedObject = nullptr;
 
+    TextBox* coordinates = nullptr;
+
+    std::vector<GameObject*> prefabSpacer;
+
     //
 
     SceneObject* selectedPrefab=nullptr;
@@ -87,6 +91,8 @@ private:
     bool isCreating=false;
 
     //std::vector<>
+
+    void SortPrefabs();
 
     void LoadTerrainFromFile();
 

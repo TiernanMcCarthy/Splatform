@@ -1,6 +1,7 @@
 //
 // Created by Tiern on 19/02/2026.
 //
+
 #include "TempEditor/SimpleMapEditor.h"
 
 #include <TestPlayer/TestPlayer.h>
@@ -28,12 +29,20 @@ void SimpleMapEditor::LoadTerrainFromFile()
 
         newObject->Init(entry.path());
 
-        newObject->gameObject->transform.SetPosition(DISPLAYWIDTH*0.025f,200+iterator*128);
+        //newObject->gameObject->transform.SetPosition(DISPLAYWIDTH*0.025f,200+iterator*128);
 
-        iterator++;
+        prefabSpacer.push_back(newObject->gameObject);
     }
 }
 
+void SimpleMapEditor::SortPrefabs()
+{
+    float firstPos=200;
+    for (int i=0;i<prefabSpacer.size();i++)
+    {
+        prefabSpacer[i]->transform.SetPosition(DISPLAYWIDTH*0.025f,firstPos+i*tileSize*2);
+    }
+}
 
 void SimpleMapEditor::Start()
 {
@@ -102,6 +111,16 @@ void SimpleMapEditor::Start()
     selectedObject->text="No Selection";
 
     selectedObject->SetColour(sf::Color::White);
+
+    coordinates=gameObject->AddBehaviour<TextBox>();
+
+    coordinates->offsetPos=sf::Vector2f(DISPLAYWIDTH*0.08f,DISPLAYHEIGHT*0.16f);
+
+    coordinates->drawLayer= DrawMode::UI;
+
+    coordinates->fontSize=40;
+
+    coordinates->SetColour(sf::Color::White);
 
 
 
@@ -241,10 +260,18 @@ void SimpleMapEditor::ManageSelection()
 void SimpleMapEditor::Update(float deltaTime)
 {
     //CheckStates();
+    SortPrefabs();
     ManageInput();
     CheckStates();
     ManageCreation();
     ManageSaving();
+
+    std::stringstream cordString;
+
+    cordString<<'('<<posX<<','<<posY<<')'<<std::endl;
+    coordinates->text= cordString.str();
+
+
     sf::Vector2f newPos= sf::Vector2f(tileSize*posX*snapSize[currentSnap],tileSize*posY*snapSize[currentSnap]);
     camera->SetCameraPos(newPos);
     selection->transform.SetPosition(newPos);

@@ -18,6 +18,9 @@ add_executable(Editor
         src/TempEditor/SceneObject.cpp
         include/TempEditor/ButtonFunctionality.h
         src/TempEditor/ButtonFunctionality.cpp
+        include/TempEditor/EditorButton.h
+        src/TempEditor/EditorButton.cpp
+        include/TempEditor/GenericCollectable.h
 
 )
 
@@ -27,7 +30,6 @@ target_include_directories(Editor PRIVATE include)
 
 # Link to Game Lib
 target_link_libraries(Editor PRIVATE GameLib)
-
 
 #Move required dlls to editor location
 if(WIN32)
